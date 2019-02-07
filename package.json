@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^3.0.0-alpha.23",
+    "concurrently": "^3.6.1",
     "normalize.css": "^8.0.1",
     "react": "^16.6.3",
     "react-bootstrap": "^0.32.4",
@@ -21,12 +22,8 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && npm start",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "echo This runs afterwards."
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "proxy": "http://localhost:8080"
 }
