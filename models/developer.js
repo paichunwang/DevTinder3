@@ -87,19 +87,22 @@ module.exports = function(sequelize, DataTypes) {
   //associations here
 
   Developer.associate = function(models) {
+    
     models.Developer.hasMany(models.ProjectDeveloper, {
       foreignKey: {
         allowNull: true
       }
     });
-  };
 
-  Developer.associate = function(models) {
     models.Developer.hasMany(models.Project, {
       foreignKey: {
         allowNull: true
       }
     });
+
   };
+
+ 
+
   return Developer;
 };

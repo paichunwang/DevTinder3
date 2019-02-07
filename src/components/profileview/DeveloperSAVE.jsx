@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../mainpage/navBar/navbar";
 import "./developerMain.css";
-import Developerimage from "../../../assets/image/developer.jpg";
+import DeveloperImage from "../../../assets/image/alternativeImage";
 
 export default class developerMain extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class developerMain extends Component {
             <div className="flex flex-2">
               <div className="mol col1">
                 <div className="image round fit">
-                  <img src={Developerimage} alt="" />
+                  <img src={DeveloperImage} alt="" />
                 </div>
               </div>
               <div className="mol col2">

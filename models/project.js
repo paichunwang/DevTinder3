@@ -96,13 +96,15 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  Project.associate = function(models) {
+  Project.associate = function(models){
+
     models.Project.hasMany(models.ProjectDeveloper, {
       foreignKey: {
         allowNull: true
       }
     });
-  };
+    
+  }
 
   return Project;
 };

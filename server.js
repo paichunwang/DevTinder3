@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // const cookieParser = require("cookie-parser");
 
-const routes = require("./routes/api-routes");
+const routes = require("./routes/api/index");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -17,15 +17,17 @@ app.use(bodyParser.json());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client"));
+  app.use(express.static("client/build"));
 }
 
 // Add routes, both API and view
 app.use(routes);
 
+
+
 //start the api server and sequelized the connection
-db.sequelize.sync({ force: false }).then(function() {
+db.sequelize.sync({ force: true }).then(function() {
   app.listen(PORT, () => {
-    console.log(`🌎  ==> API Server now listening on PORT ${PORT}! `);
+    console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   });
 });

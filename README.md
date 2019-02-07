@@ -1,2 +1,13 @@
-# DevTinder3
-Platform to connect customers who need dev support on a project to developers who can work on their projects based on their expertise to gain experience to get closer to their dream jobs or make some extra money on the side.
+Please see our presentation below for more information on our project!
+
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-01.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-02.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-03.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-04.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-05.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-06.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-07.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-08.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-09.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-10.png)
+![](./DevTinder-PPT/DevTinder-PPT-(Read-Only)-11.png)
