@@ -4,6 +4,8 @@
   "description": "Target Audience: Bootcamp students, Bootcamp grads, Junior Developers, and Any developer looking to make some side money.",
   "main": "server.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Patrick Wang",
