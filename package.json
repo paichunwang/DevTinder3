@@ -4,12 +4,9 @@
   "description": "Target Audience: Bootcamp students, Bootcamp grads, Junior Developers, and Any developer looking to make some side money.",
   "main": "server.js",
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "serve -s build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "cd client && npm run build"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Patrick Wang",
   "license": "MIT",
