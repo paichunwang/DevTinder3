@@ -22,7 +22,7 @@
     "client": "cd client && npm install && npm start",
     "server": "cd server && npm install && npm start",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "echo This runs afterwards."
+    "heroku-postbuild": "cd client && npm start"
   },
   "proxy": "http://localhost:8080"
 }
