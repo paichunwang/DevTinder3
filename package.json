@@ -2,11 +2,11 @@
   "name": "the-dev-tinder",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
-  "devDependencies": {},
   "scripts": {
-    "postinstall": "npm install --prefix server && npm install --prefix client",
-    "start": "cd client && npm start"
+    "client": "cd client && npm install && npm start",
+    "server": "cd server && npm install && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "postinstall": "npm install --prefix server && npm install --prefix client"
   },
   "proxy": "http://localhost:8080"
 }

@@ -19,11 +19,11 @@ MongoClient.connect(
       console.log(`mongoDB server on port: ${PORT}!`);
     });
 
-    // db.collection("user")
-    //   .find()
-    //   .toArray(function(err, results) {
-    //     console.log("Testing MongoDB query result: ", results);
-    //     // send HTML file populated with quotes here
-    //   });
+    db.collection("user")
+      .find()
+      .toArray(function(err, results) {
+        console.log("Testing MongoDB query result: ", results);
+        // send HTML file populated with quotes here
+      });
   }
 );
