@@ -2,9 +2,14 @@ const express = require("express");
 const app = express();
 const MongoClient = require("mongodb").MongoClient;
 
+//dotenv for development connection to mongodb with heroku
 require("dotenv").config();
 
+//declare heroku port or local port
 const PORT = process.env.PORT || 3001;
+
+//set express static folder as client
+app.use(express.static("client"));
 
 var db;
 
