@@ -19,10 +19,7 @@
     "nodemon": "^1.11.0"
   },
   "scripts": {
-    "client": "cd client && npm install && npm start",
-    "server": "cd server && npm install && npm start",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm start"
+    "postinstall": "npm install --prefix server && npm install --prefix client"
   },
   "proxy": "http://localhost:8080"
 }
