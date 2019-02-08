@@ -5,6 +5,7 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && npm start",
+    "start": "concurrently \"npm run client\" \"npm run server\"",
     "postinstall": "npm install --prefix server && npm install --prefix client"
   },
   "proxy": "http://localhost:8080"
