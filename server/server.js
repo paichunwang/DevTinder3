@@ -7,7 +7,7 @@ const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport");
 const path = require("path");
 const app = express();
-const PORT = process.env.PORT || 8080;
+// const PORT = process.env.PORT || 8080;
 // Route requires
 const user = require("./routes/user");
 
@@ -40,6 +40,6 @@ app.use(passport.session()); // calls the deserializeUser
 app.use("/user", user);
 
 // Starting Server
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`App listening on PORT: ${PORT}`);
 });
