@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const MongoClient = require("mongodb").MongoClient;
 
 //dotenv for development connection to mongodb with heroku
@@ -8,7 +9,7 @@ require("dotenv").config();
 //declare heroku port or local port
 const PORT = process.env.PORT || 3001;
 
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 var db;
 
@@ -20,7 +21,7 @@ MongoClient.connect(
     db = client.db(process.env.mongoDB_db);
 
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+      res.sendFile(path.join(__dirname, "client", "index.html"));
     });
 
     app.listen(PORT, () => {
