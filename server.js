@@ -8,10 +8,7 @@ require("dotenv").config();
 //declare heroku port or local port
 const PORT = process.env.PORT || 3001;
 
-//set express static folder as client
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 var db;
 
@@ -21,6 +18,10 @@ MongoClient.connect(
   (err, client) => {
     if (err) return console.log(err);
     db = client.db(process.env.mongoDB_db);
+
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    });
 
     app.listen(PORT, () => {
       console.log(`mongoDB server on port: ${PORT}!`);
