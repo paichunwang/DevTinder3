@@ -9,7 +9,9 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 
 //set express static folder as client
-app.use(express.static("client"));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 var db;
 
