@@ -33,5 +33,9 @@
     "express-http-proxy": "^1.5.1",
     "nodemon": "^1.17.5"
   },
+  "engines": {
+    "node": "10.15.1",
+    "npm": "6.4.1"
+  },
   "proxy": "http://localhost:8080"
 }
