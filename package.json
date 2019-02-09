@@ -9,6 +9,7 @@
   },
   "scripts": {
     "client": "cd client && npm start",
+    "build": "react-scripts build",
     "server": "cd server && npm start",
     "start": "concurrently \"npm run client\" \"npm run server\"",
     "postinstall": "npm install --prefix server && npm install --prefix client"
