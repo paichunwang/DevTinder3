@@ -5,7 +5,6 @@ import Mainpage from "./components/mainPage/index";
 import Information from "./components/profileview/Information";
 import Profile from "./components/user/profile_system/index";
 import Project from "./components/user/project_postAuth/index";
-import Login from "./components/user/login/Login";
 
 const App = () => (
   <Router>
@@ -13,7 +12,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Mainpage} />
         <Route exact path="/gettingstarted" component={Information} />
-        <Route exact path="/login" component={Login} />
+        {/* <Route exact path="/login" component={Login} /> */}
         <Route exact path="/testing/profile" component={Profile} />
         <Route exact path="/testing/project" component={Project} />
       </Switch>

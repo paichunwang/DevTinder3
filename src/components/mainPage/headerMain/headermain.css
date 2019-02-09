@@ -2,6 +2,7 @@
   display: -ms-flexbox;
   -ms-flex-pack: center;
   -ms-flex-align: center;
+  padding: 8em 0 6em 0;
   -moz-align-items: center;
   -webkit-align-items: center;
   -ms-align-items: center;
@@ -128,6 +129,7 @@
 @media screen and (max-width: 736px) {
   #banner {
     min-height: 0;
+    padding: 8em 2em 4em 2em;
   }
 
   #banner .inner {

@@ -1,38 +1,33 @@
 const express = require("express");
+
+const bodyParser = require("body-parser");
+// const cookieParser = require("cookie-parser");
+
+const routes = require("./routes/api/index");
 const app = express();
-const path = require("path");
-const MongoClient = require("mongodb").MongoClient;
-
-//dotenv for development connection to mongodb with heroku
-require("dotenv").config();
-
-//declare heroku port or local port
 const PORT = process.env.PORT || 3001;
 
-app.use(express.static(path.join(__dirname, "client/build")));
+const db = require("./models");
 
-var db;
+// Define middleware here
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// app.use(cookieParser());
 
-MongoClient.connect(
-  process.env.mongoDB_uri,
-  { useNewUrlParser: true },
-  (err, client) => {
-    if (err) return console.log(err);
-    db = client.db(process.env.mongoDB_db);
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "client", "index.html"));
-    });
+// Add routes, both API and view
+app.use(routes);
 
-    app.listen(PORT, () => {
-      console.log(`mongoDB server on port: ${PORT}!`);
-    });
 
-    db.collection("user")
-      .find()
-      .toArray(function(err, results) {
-        console.log("Testing MongoDB query result: ", results);
-        // send HTML file populated with quotes here
-      });
-  }
-);
+
+//start the api server and sequelized the connection
+db.sequelize.sync({ force: true }).then(function() {
+  app.listen(PORT, () => {
+    console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+  });
+});
