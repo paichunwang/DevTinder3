@@ -1,12 +1,10 @@
-require("dotenv").config();
-
 //Connect to Mongo database
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
 //your local database url
 //27017 is the default mongoDB port
-const uri = process.env.mongoDB_uri;
+const uri = "mongodb://localhost:27017/simple-mern-passport";
 
 mongoose.connect(uri).then(
   () => {
