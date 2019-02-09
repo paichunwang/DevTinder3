@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
-
+console.log("HITTING SERVER.js");
 
 //start the api server and sequelized the connection
 db.sequelize.sync({ force: true }).then(function() {
