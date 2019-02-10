@@ -24,10 +24,7 @@ require("dotenv").config();
 //     process.exit(1);
 //   });
 
-// Serve static files from the React app
-// app.use(express.static(path.join(__dirname, "client/build")));
-
-//this usess custom router in routes/routes.js
+//this uses custom router in routes/routes.js
 app.use(router);
 
 //body parser for decoding https request

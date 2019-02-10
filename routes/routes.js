@@ -3,6 +3,11 @@ const app = express();
 const generatePassword = require("password-generator");
 const path = require("path");
 
+//catch all non-existing routes and serve the react static files
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+
 app.get("/api/passwords", (req, res) => {
   const count = 5;
 
@@ -15,10 +20,6 @@ app.get("/api/passwords", (req, res) => {
   res.json(passwords);
 
   console.log(`Sent ${count} passwords`);
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
 module.exports = app;
