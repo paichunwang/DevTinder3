@@ -27,6 +27,11 @@ require("dotenv").config();
 //this uses custom router in routes/routes.js
 app.use(router);
 
+//catch all non-existing routes and serve the react static files
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+
 //body parser for decoding https request
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
