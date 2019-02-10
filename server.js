@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 5000;
 // const cors = require("cors");
+const path = require("path");
 
 const router = require("./routes/routes");
 
@@ -27,8 +28,10 @@ require("dotenv").config();
 //this uses custom router in routes/routes.js
 app.use(router);
 
-// Serve up static assets (usually on heroku)
-app.use(express.static("client/build"));
+//catch all non-existing routes and serve the react static files
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 //body parser for decoding https request
 app.use(bodyParser.urlencoded({ extended: true }));
