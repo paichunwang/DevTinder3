@@ -26,7 +26,7 @@ require("dotenv").config();
 //   });
 
 //this uses custom router in routes/routes.js
-app.use(express.static(path.join(__dirname, "/client/build/index.html")));
+app.use("/", express.static("public"));
 // app.use(router);
 
 //body parser for decoding https request
