@@ -19,7 +19,7 @@ app.get("/api/passwords", (req, res) => {
 
 //catch all non-existing routes and serve the react static files
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  res.sendFile(path.join(__dirname + "../client/build/index.html"));
 });
 
 module.exports = app;
