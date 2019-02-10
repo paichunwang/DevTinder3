@@ -28,9 +28,7 @@ require("dotenv").config();
 app.use(router);
 
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+app.use(express.static("client/build"));
 
 //body parser for decoding https request
 app.use(bodyParser.urlencoded({ extended: true }));
