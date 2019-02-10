@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -7,7 +7,65 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import LoginIcon from "@material-ui/icons/Input";
+import RegsIcon from "@material-ui/icons/HowToReg";
+
+import { Link } from "react-router-dom";
+
 import "./navbar.css";
+// import { withRouter } from "react-router-dom";
+
+class Navbar extends Component {
+  handleLogin = () => {
+    console.log("Clicking Login button");
+  };
+
+  handleSignup = () => {
+    console.log("Clicking Signup button");
+  };
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              DevTinder
+            </Typography>
+            <Button
+              component={Link}
+              to="/login"
+              onClick={this.handleLogin}
+              color="inherit"
+              className={classes.button}
+            >
+              Login
+              <LoginIcon className={classes.rightIcon} />
+            </Button>
+            <Button
+              component={Link}
+              to="/login"
+              onClick={this.handleSignup}
+              color="inherit"
+              className={classes.button}
+            >
+              Signup
+              <RegsIcon className={classes.rightIcon} />
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
 
 const styles = {
   root: {
@@ -22,31 +80,42 @@ const styles = {
   }
 };
 
-function ButtonAppBar(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            DevTinder
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-}
+// function ButtonAppBar(props) {
+//   const { classes } = props;
+//   return (
+//     <div className={classes.root}>
+//       <AppBar position="static">
+//         <Toolbar>
+//           <IconButton
+//             className={classes.menuButton}
+//             color="inherit"
+//             aria-label="Menu"
+//           >
+//             <MenuIcon />
+//           </IconButton>
+//           <Typography variant="h6" color="inherit" className={classes.grow}>
+//             DevTinder
+//           </Typography>
+//           <Button
+//             onClick={this.routeChange}
+//             color="inherit"
+//             className={classes.button}
+//           >
+//             Login
+//             <LoginIcon className={classes.rightIcon} />
+//           </Button>
+//           <Button color="inherit" className={classes.button}>
+//             Signup
+//             <RegsIcon className={classes.rightIcon} />
+//           </Button>
+//         </Toolbar>
+//       </AppBar>
+//     </div>
+//   );
+// }
 
-ButtonAppBar.propTypes = {
+Navbar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ButtonAppBar);
+export default withStyles(styles)(Navbar);
