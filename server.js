@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const generatePassword = require("password-generator");
 const app = express();
+const port = process.env.PORT || 5000;
 
 // Put all API endpoints under '/api'
 app.get("/api/passwords", (req, res) => {
@@ -18,13 +19,18 @@ app.get("/api/passwords", (req, res) => {
   console.log(`Sent ${count} passwords`);
 });
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+  //
+  app.get("*", (req, res) => {
+    res.sendfile(path.join((__dirname = "client/build/index.html")));
+  });
+}
+
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  res.sendFile(path.join(__dirname + "/client/public/index.html"));
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port);
-
-console.log(`Password generator listening on ${port}`);
+app.listen(port, (req, res) => {
+  console.log(`server listening on port: ${port}`);
+});
