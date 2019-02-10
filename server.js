@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000;
 // const cors = require("cors");
 const path = require("path");
 
-const router = require("./routes/routes");
+// const router = require("./routes/routes");
 
 require("dotenv").config();
 
@@ -27,7 +27,7 @@ require("dotenv").config();
 
 //this uses custom router in routes/routes.js
 app.use(express.static(path.join(__dirname, "/client/build/index.html")));
-app.use(router);
+// app.use(router);
 
 //body parser for decoding https request
 app.use(bodyParser.urlencoded({ extended: true }));
