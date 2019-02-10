@@ -27,10 +27,10 @@ require("dotenv").config();
 //this uses custom router in routes/routes.js
 app.use(router);
 
-//catch all non-existing routes and serve the react static files
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
-});
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 //body parser for decoding https request
 app.use(bodyParser.urlencoded({ extended: true }));
