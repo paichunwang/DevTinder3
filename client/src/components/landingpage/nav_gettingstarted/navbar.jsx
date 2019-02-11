@@ -24,6 +24,14 @@ class Navbar extends Component {
     console.log("Clicking Signup button");
   };
 
+  componentWillMount() {
+    console.log("Hitting Navbar Render");
+  }
+
+  componentDidUpdate() {
+    console.log("Did component update?");
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -43,7 +51,7 @@ class Navbar extends Component {
             <Button
               component={Link}
               to="/login"
-              onClick={this.handleLogin}
+              state="hello"
               color="inherit"
               className={classes.button}
             >
@@ -52,7 +60,7 @@ class Navbar extends Component {
             </Button>
             <Button
               component={Link}
-              to="/login"
+              to="/gettingstarted"
               onClick={this.handleSignup}
               color="inherit"
               className={classes.button}

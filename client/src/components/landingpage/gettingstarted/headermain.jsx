@@ -40,7 +40,7 @@ function ContainedButtons(props) {
               color="primary"
               className={classes.button}
             >
-              Get Started
+              Let's Get Started!
             </Button>
           </header>
         </div>

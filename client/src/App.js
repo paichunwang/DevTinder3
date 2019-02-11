@@ -1,17 +1,37 @@
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Mainpage from "./components/landingpage/index";
+import Loginpage from "./components/loginpage/index";
 
-const App = () => (
-  <Router>
-    <div>
-      <Switch>
-        <Route exact path="/" component={Mainpage} />
-      </Switch>
-    </div>
-  </Router>
-);
+class App extends Component {
+  shouldComponentUpdate() {
+    console.log("Should component update?");
+  }
+  render() {
+    return (
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/" component={Mainpage} />
+            <Route exact path="/login" component={Loginpage} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
+
+// const App = () => (
+//   <Router>
+//     <div>
+//       <Switch>
+//         <Route exact path="/" component={Mainpage} />
+//         <Route exact path="/login" component={Loginpage} />
+//       </Switch>
+//     </div>
+//   </Router>
+// );
 
 export default App;
 

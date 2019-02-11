@@ -1,0 +1,65 @@
+#root {
+  height: 100%;
+  width: 100%;
+  /* background-color: #337ab7; */
+  background-image: linear-gradient(#0277bd, #58c1f0);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  text-align: -webkit-center;
+}
+
+.column,
+.login_page_title,
+.rowUser,
+.rowPassword,
+.rowLogaction {
+  /* border: 1px red solid; */
+}
+.column {
+  width: 50%;
+  height: 50%;
+  background-color: #ffffff60;
+  margin-top: 20vh;
+  padding: 50px;
+  border-radius: 15px;
+}
+
+.login_page_title,
+.rowUser,
+.rowPassword,
+.rowLogaction {
+  width: 100%;
+  text-align: center;
+  padding: 5px 0px;
+}
+
+.usernameInput,
+.passwordInput {
+  width: 300px;
+}
+
+.usernameInput .label,
+.passwordInput .label {
+  width: 110px;
+  padding-left: 30px;
+}
+
+.ui[class*="left icon"].input > input {
+  padding-left: 10px !important;
+}
+
+.loginAction {
+  width: 300px !important;
+  margin: 0px !important;
+  padding: 11px 0px !important;
+}
+
+.forgotpassword {
+  margin: 20px;
+}
+
+.forgotAction {
+  width: 200px;
+  font-size: 10pt;
+}
