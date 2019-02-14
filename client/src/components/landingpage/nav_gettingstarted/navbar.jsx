@@ -10,28 +10,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import LoginIcon from "@material-ui/icons/Input";
 import RegsIcon from "@material-ui/icons/HowToReg";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import "./navbar.css";
 // import { withRouter } from "react-router-dom";
 
 class Navbar extends Component {
-  handleLogin = () => {
-    console.log("Clicking Login button");
-  };
-
-  handleSignup = () => {
-    console.log("Clicking Signup button");
-  };
-
-  componentWillMount() {
-    console.log("Hitting Navbar Render");
-  }
-
-  componentDidUpdate() {
-    console.log("Did component update?");
-  }
-
   render() {
     const { classes } = this.props;
     return (
@@ -49,8 +33,9 @@ class Navbar extends Component {
               DevTinder
             </Typography>
             <Button
-              component={Link}
-              to="/login"
+              // component={Link}
+              // to="/login"
+              href="/login"
               state="hello"
               color="inherit"
               className={classes.button}
@@ -59,8 +44,9 @@ class Navbar extends Component {
               <LoginIcon className={classes.rightIcon} />
             </Button>
             <Button
-              component={Link}
-              to="/gettingstarted"
+              // component={Link}
+              // to="/login"
+              href="/signup"
               onClick={this.handleSignup}
               color="inherit"
               className={classes.button}

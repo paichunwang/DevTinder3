@@ -163,7 +163,7 @@
   }
 }
 
-body.is-loading #banner .inner {
+/* body.is-loading #banner .inner {
   -moz-transform: scale(0.99);
   -webkit-transform: scale(0.99);
   -ms-transform: scale(0.99);
@@ -173,4 +173,4 @@ body.is-loading #banner .inner {
 
 body.is-loading #banner:before {
   opacity: 1;
-}
+} */

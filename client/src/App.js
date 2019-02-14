@@ -6,15 +6,24 @@ import Loginpage from "./components/loginpage/index";
 
 class App extends Component {
   shouldComponentUpdate() {
-    console.log("Should component update?");
+    console.log("Should component update");
   }
+  componentDidMount() {
+    console.log("App Component Did Mount ... call some thing here for state");
+  }
+
   render() {
     return (
       <Router>
         <div>
           <Switch>
             <Route exact path="/" component={Mainpage} />
-            <Route exact path="/login" component={Loginpage} />
+            <Route
+              exact
+              path="/login"
+              component={Loginpage}
+              someComponentState={"newvalue"}
+            />
           </Switch>
         </div>
       </Router>
