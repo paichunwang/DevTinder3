@@ -4,7 +4,7 @@ import Navigation from "./nav_gettingstarted/navbar";
 
 const Mainpage = () => (
   <div>
-    <Gettingstarted />
+    {/* <Gettingstarted /> */}
     <Navigation />
   </div>
 );
