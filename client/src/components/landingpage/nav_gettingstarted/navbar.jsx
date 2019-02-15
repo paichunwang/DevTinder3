@@ -13,7 +13,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 // import { Link } from "react-router-dom";
 
-const theme = createMuiTheme({
+const Theme = createMuiTheme({
   palette: {
     primary: {
       main: "rgba(0, 0, 0, 0.5)"
@@ -41,7 +41,7 @@ class Navbar extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={Theme}>
         <div className={classes.root}>
           <AppBar position="absolute" color="primary">
             <Toolbar>

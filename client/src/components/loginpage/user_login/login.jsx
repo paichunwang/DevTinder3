@@ -3,6 +3,14 @@ import { Input, Icon } from "semantic-ui-react";
 import "./login.css";
 
 class Login extends Component {
+  //need to check if login is active
+
+  //axios post for user login
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log("handleSubmit");
+  }
+
   render() {
     return (
       <div>
@@ -34,7 +42,10 @@ class Login extends Component {
           </div>
           <div className="rowLogaction">
             <div className="login">
-              <button className="ui secondary button loginAction">
+              <button
+                className="ui secondary button loginAction"
+                onClick={this.handleSubmit}
+              >
                 Sign In
               </button>
             </div>

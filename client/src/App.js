@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Mainpage from "./components/landingpage/index";
 import Loginpage from "./components/loginpage/index";
+import Signpage from "./components/signpage/index";
 
 class App extends Component {
   shouldComponentUpdate() {
@@ -18,12 +19,8 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path="/" component={Mainpage} />
-            <Route
-              exact
-              path="/login"
-              component={Loginpage}
-              someComponentState={"newvalue"}
-            />
+            <Route exact path="/login" component={Loginpage} />
+            <Route exact path="/signup" component={Signpage} />
           </Switch>
         </div>
       </Router>
