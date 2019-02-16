@@ -14,6 +14,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 // import { Link } from "react-router-dom";
 
 const Theme = createMuiTheme({
+  typography: { useNextVariants: true },
   palette: {
     primary: {
       main: "rgba(0, 0, 0, 0.5)"
