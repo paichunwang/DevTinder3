@@ -1,22 +1,29 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
+//UI design materialUI and semanticUI
 import { withStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Icon } from "semantic-ui-react";
-
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
+
+//show/hide password
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
+//route caller
+import axios from "axios";
+
+//external CSS for signup over-ride
 import "./signup.css";
 
 const theme = createMuiTheme({
   typography: { useNextVariants: true },
   palette: {
     primary: { 500: "#3498db" },
-    error: { 500: "#FFFFFF" }
+    error: { 500: "#f44336" }
   }
 });
 
@@ -79,11 +86,6 @@ class Signup extends Component {
 
   //update state with value from input field
   handleChange(event) {
-    console.log(
-      "Hitting state change method",
-      event.target.name,
-      event.target.value
-    );
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -94,40 +96,62 @@ class Signup extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
+  // handleEmailValidation = email => {
+  //   //email address (RFC 2822 mailbox) regex certification
+  //   const regexp = new RegExp(
+  //     /^((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|"((?=[\x01-\x7f])[^"\\]|\\[\x01-\x7f])*"\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|"((?=[\x01-\x7f])[^"\\]|\\[\x01-\x7f])*")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)$/
+  //   );
+  //   if (regexp.test(email)) {
+  //     console.log("email pattern match");
+  //   } else {
+  //     console.log("email pattern DO NOT match");
+  //   }
+  // };
+
   //get values when user click Join now
   handleSubmit(event) {
-    console.log("sign-up handleSubmit");
-    console.log(
-      "First Name: " + this.state.fname,
-      "Last Name: " + this.state.lname,
-      "Email:" + this.state.email,
-      "Password: " + this.state.password
-    );
+    // console.log("sign-up handleSubmit");
+    // console.log(
+    //   "First Name: " + this.state.fname,
+    //   "Last Name: " + this.state.lname,
+    //   "Email:" + this.state.email,
+    //   "Password: " + this.state.password
+    // );
 
     event.preventDefault();
 
-    //request to server to add a new username/password
-    // axios
-    //   .post("/user/", {
-    //     username: this.state.username,
-    //     password: this.state.password
-    //   })
-    //   .then(response => {
-    //     console.log(response);
-    //     if (!response.data.errmsg) {
-    //       console.log("successful signup");
-    //       this.setState({
-    //         //redirect to login page
-    //         redirectTo: "/login"
-    //       });
-    //     } else {
-    //       console.log("username already taken");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("signup error: ");
-    //     console.log(error);
-    //   });
+    console.log(event);
+
+    // const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    // if (regexp.test(this.state.email)) {
+    //   console.log("email pattern match");
+    //   // request to server to add a new username/password
+    //   axios
+    //     .post("/user/", {
+    //       firstname: this.state.fname,
+    //       lastname: this.state.lname,
+    //       email: this.state.email,
+    //       password: this.state.password
+    //     })
+    //     .then(response => {
+    //       // console.log(response);
+    //       if (!response.data.errmsg) {
+    //         console.log("successful signup");
+    //         // this.setState({
+    //         //   //redirect to login page
+    //         //   redirectTo: "/login"
+    //         // });
+    //       } else {
+    //         console.log("account with email already exist");
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log("signup error: ");
+    //       console.log(error);
+    //     });
+    // } else {
+    //   console.log("email pattern DO NOT match");
+    // }
   }
 
   render() {
@@ -146,6 +170,7 @@ class Signup extends Component {
                 return (
                   <div key={keyIndex}>
                     <TextField
+                      // error={true}
                       style={inputStyle}
                       name={keyName}
                       // id="outlined-name"
@@ -211,7 +236,9 @@ class Signup extends Component {
           </div>
           <hr className="hr-text" data-content="OR" />
           <div>
-            <p>Already on DevTinder? Sign In </p>
+            <p style={{ padding: "20px 0px 0px" }}>
+              Already on DevTinder? Sign In{" "}
+            </p>
           </div>
         </div>
       </div>
