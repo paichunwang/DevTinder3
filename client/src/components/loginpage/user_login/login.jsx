@@ -23,11 +23,11 @@ class Login extends Component {
           </div>
           <div className="rowUser">
             <Input
-              className="usernameInput"
-              label="Username"
+              className="emailInput"
+              label="Email"
               iconPosition="left"
-              icon="user"
-              placeholder="ie: Johnsmith123"
+              icon="envelope"
+              placeholder="ie: John@google.com"
             />
           </div>
           <div className="rowPassword">

@@ -34,12 +34,12 @@
   padding: 5px 0px;
 }
 
-.usernameInput,
+.emailInput,
 .passwordInput {
   width: 300px;
 }
 
-.usernameInput .label,
+.emailInput .label,
 .passwordInput .label {
   width: 110px;
   padding-left: 30px;

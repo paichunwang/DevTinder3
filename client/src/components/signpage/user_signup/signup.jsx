@@ -122,36 +122,36 @@ class Signup extends Component {
 
     console.log(event);
 
-    // const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    // if (regexp.test(this.state.email)) {
-    //   console.log("email pattern match");
-    //   // request to server to add a new username/password
-    //   axios
-    //     .post("/user/", {
-    //       firstname: this.state.fname,
-    //       lastname: this.state.lname,
-    //       email: this.state.email,
-    //       password: this.state.password
-    //     })
-    //     .then(response => {
-    //       // console.log(response);
-    //       if (!response.data.errmsg) {
-    //         console.log("successful signup");
-    //         // this.setState({
-    //         //   //redirect to login page
-    //         //   redirectTo: "/login"
-    //         // });
-    //       } else {
-    //         console.log("account with email already exist");
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log("signup error: ");
-    //       console.log(error);
-    //     });
-    // } else {
-    //   console.log("email pattern DO NOT match");
-    // }
+    const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    if (regexp.test(this.state.email)) {
+      console.log("email pattern match");
+      // request to server to add a new username/password
+      axios
+        .post("/user/", {
+          firstname: this.state.fname,
+          lastname: this.state.lname,
+          email: this.state.email,
+          password: this.state.password
+        })
+        .then(response => {
+          // console.log(response);
+          if (!response.data.errmsg) {
+            console.log("successful signup");
+            // this.setState({
+            //   //redirect to login page
+            //   redirectTo: "/login"
+            // });
+          } else {
+            console.log("account with email already exist");
+          }
+        })
+        .catch(error => {
+          console.log("signup error: ");
+          console.log(error);
+        });
+    } else {
+      console.log("email pattern DO NOT match");
+    }
   }
 
   render() {

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Mainpage from "./components/landingpage/index";
 import Loginpage from "./components/loginpage/index";
 import Signpage from "./components/signpage/index";
+import Started from "./components/gettingstarted/index";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
             <Route exact path="/" component={Mainpage} />
             <Route exact path="/login" component={Loginpage} />
             <Route exact path="/signup" component={Signpage} />
+            <Route exact path="/gettingstarted" component={Started} />
           </Switch>
         </div>
       </Router>

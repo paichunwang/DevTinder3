@@ -1,5 +1,5 @@
 import React from "react";
-import Gettingstarted from "./gettingstarted/headermain";
+import Gettingstarted from "./main_landingpage/headermain";
 import Navigation from "./nav_gettingstarted/navbar";
 
 const Mainpage = () => (
