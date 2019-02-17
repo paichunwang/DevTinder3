@@ -5,6 +5,7 @@ import Mainpage from "./components/landingpage/index";
 import Loginpage from "./components/loginpage/index";
 import Signpage from "./components/signpage/index";
 import Started from "./components/gettingstarted/index";
+import User from "./components/user/index";
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
             <Route exact path="/login" component={Loginpage} />
             <Route exact path="/signup" component={Signpage} />
             <Route exact path="/gettingstarted" component={Started} />
+            <Route exact path="/user" component={User} />
           </Switch>
         </div>
       </Router>
