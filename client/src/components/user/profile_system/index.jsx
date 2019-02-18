@@ -52,9 +52,9 @@ class ProfileIndex extends React.Component {
           textColor="primary"
           centered
         >
-          <Tab label="Account" />
-          <Tab label="Skills" />
-          <Tab label="Role" />
+          <Tab label="Account Settings" />
+          <Tab label="Indicate Skills" />
+          <Tab label="Select Role" />
         </Tabs>
         {/* </div> */}
         {value === 0 && (
