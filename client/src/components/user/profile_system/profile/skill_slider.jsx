@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 const update_button = {
   // border: "1px red solid",
   width: "100%",
-  margin: "30px 10px"
+  margin: "30px 10px 10px"
 };
 
 const styles = theme => ({
@@ -84,13 +84,27 @@ class SkillSlider extends React.Component {
             <div
               className={keyName}
               key={keyIndex}
-              style={{ width: "100%", padding: "10px" }}
+              style={{ width: "100%", padding: "10px 25px" }}
             >
               <Typography
+                component={"span"}
                 id="label"
-                style={{ width: "100%", paddingBottom: "20px" }}
+                style={{
+                  width: "100%",
+                  paddingBottom: "10px",
+                  textAlign: "left"
+                }}
               >
                 {skills_values[keyName]}
+
+                {
+                  <span
+                    style={{ fontSize: "8pt", color: "grey", float: "right" }}
+                  >
+                    {" Level of Mastery: "}
+                    {this.state.skill[keyName]}
+                  </span>
+                }
               </Typography>
               <Slider
                 // classes={{ container: classes.slider }}
@@ -105,6 +119,18 @@ class SkillSlider extends React.Component {
             </div>
           );
         })}
+        <div
+          style={{
+            color: "grey",
+            fontSize: "7pt",
+            padding: "0px",
+            margin: "20px 0px 0px",
+            textAlign: "center",
+            width: "100%"
+          }}
+        >
+          <span>Level of mastery range from 0 (UNFAMILIAR) to 10 (EXPERT)</span>{" "}
+        </div>
         <Button
           style={update_button}
           variant="contained"
