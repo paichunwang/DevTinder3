@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 
 import ProfileAttribute from "./profile/profile";
 import ProfileSlider from "./profile/skill_slider";
+import ProfileChoice from "./profile/role_choice";
 
 function TabContainer(props) {
   return (
@@ -69,7 +70,7 @@ class ProfileIndex extends React.Component {
         )}
         {value === 2 && (
           <TabContainer>
-            Some thing here for changing role between developer and client
+            <ProfileChoice />
           </TabContainer>
         )}
       </Paper>
