@@ -141,7 +141,14 @@ class PersistentDrawerLeft extends React.Component {
           </div>
 
           <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
+            {[
+              "Profile Settings/user",
+              "Add Projects/add",
+              "Open Invites/invite",
+              "Open Projects/project",
+              "Completed Projects/complete",
+              "Sign Out"
+            ].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

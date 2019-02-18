@@ -3,6 +3,14 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
+import Button from "@material-ui/core/Button";
+
+const update_button = {
+  // border: "1px red solid",
+  width: "100%",
+  margin: "10px 25px"
+};
+
 const styles = theme => ({
   container: {
     display: "flex",
@@ -70,6 +78,14 @@ class Profile extends React.Component {
             />
           );
         })}
+        <Button
+          style={update_button}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Update Account Settings
+        </Button>
       </div>
     );
   }

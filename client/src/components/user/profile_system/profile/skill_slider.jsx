@@ -5,6 +5,14 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/lab/Slider";
 
+import Button from "@material-ui/core/Button";
+
+const update_button = {
+  // border: "1px red solid",
+  width: "100%",
+  margin: "30px 10px"
+};
+
 const styles = theme => ({
   container: {
     display: "flex",
@@ -97,6 +105,14 @@ class SkillSlider extends React.Component {
             </div>
           );
         })}
+        <Button
+          style={update_button}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Update Indicated Skills
+        </Button>
       </div>
     );
   }
