@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 //UI design materialUI and semanticUI
-import { withStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Icon } from "semantic-ui-react";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,14 +17,6 @@ import axios from "axios";
 
 //external CSS for signup over-ride
 import "./signup.css";
-
-const theme = createMuiTheme({
-  typography: { useNextVariants: true },
-  palette: {
-    primary: { 500: "#3498db" },
-    error: { 500: "#f44336" }
-  }
-});
 
 const styles = theme => ({
   root: {
@@ -164,62 +155,60 @@ class Signup extends Component {
             </p>
             <h3>Signup for DevTinder</h3>
           </div>
-          <MuiThemeProvider theme={theme}>
-            {Object.keys(Values).map((keyName, keyIndex) => {
-              if (keyName !== "password") {
-                return (
-                  <div key={keyIndex}>
-                    <TextField
-                      // error={true}
-                      style={inputStyle}
-                      name={keyName}
-                      // id="outlined-name"
-                      //does this id matter? prob near the call for values
-                      value={this.state.keyName}
-                      onChange={this.handleChange}
-                      fullWidth={true}
-                      label={Values[keyName]}
-                      className={keyName}
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={keyIndex}>
-                    <TextField
-                      name={keyName}
-                      id="outlined-adornment-password"
-                      style={passwordStyle}
-                      className={keyName}
-                      variant="outlined"
-                      type={this.state.showPassword ? "text" : "password"}
-                      label={Values[keyName]}
-                      value={this.state.keyName}
-                      onChange={this.handleChange}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="Toggle password visibility"
-                              onClick={this.handleClickShowPassword}
-                            >
-                              {this.state.showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </div>
-                );
-              }
-            })}
-          </MuiThemeProvider>
+          {Object.keys(Values).map((keyName, keyIndex) => {
+            if (keyName !== "password") {
+              return (
+                <div key={keyIndex}>
+                  <TextField
+                    // error={true}
+                    style={inputStyle}
+                    name={keyName}
+                    // id="outlined-name"
+                    //does this id matter? prob near the call for values
+                    value={this.state.keyName}
+                    onChange={this.handleChange}
+                    fullWidth={true}
+                    label={Values[keyName]}
+                    className={keyName}
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </div>
+              );
+            } else {
+              return (
+                <div key={keyIndex}>
+                  <TextField
+                    name={keyName}
+                    id="outlined-adornment-password"
+                    style={passwordStyle}
+                    className={keyName}
+                    variant="outlined"
+                    type={this.state.showPassword ? "text" : "password"}
+                    label={Values[keyName]}
+                    value={this.state.keyName}
+                    onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="Toggle password visibility"
+                            onClick={this.handleClickShowPassword}
+                          >
+                            {this.state.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </div>
+              );
+            }
+          })}
           <p style={{ color: "gray" }}>
             By clicking Join now, you agree to DevTinder's User Agreement,
             Privacy Policy, and Cookie Policy

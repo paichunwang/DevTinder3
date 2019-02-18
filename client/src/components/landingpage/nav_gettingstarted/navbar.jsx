@@ -9,21 +9,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import LoginIcon from "@material-ui/icons/Input";
 import RegsIcon from "@material-ui/icons/HowToReg";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
-// import { Link } from "react-router-dom";
-
-const Theme = createMuiTheme({
-  typography: { useNextVariants: true },
-  palette: {
-    primary: {
-      main: "rgba(0, 0, 0, 0.5)"
-    },
-    secondary: {
-      main: "#FFFFFF"
-    }
-  }
-});
 
 const styles = {
   root: {
@@ -42,50 +27,44 @@ class Navbar extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <MuiThemeProvider theme={Theme}>
-        <div className={classes.root}>
-          <AppBar position="absolute" color="primary">
-            <Toolbar>
-              <IconButton
-                className={classes.menuButton}
-                color="secondary"
-                aria-label="Menu"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                color="secondary"
-                className={classes.grow}
-              >
-                DevTinder
-              </Typography>
-              <Button
-                // component={Link}
-                // to="/login"
-                href="/login"
-                state="hello"
-                color="secondary"
-                className={classes.button}
-              >
-                Login
-                <LoginIcon className={classes.rightIcon} />
-              </Button>
-              <Button
-                // component={Link}
-                // to="/login"
-                href="/signup"
-                onClick={this.handleSignup}
-                color="secondary"
-                className={classes.button}
-              >
-                Signup
-                <RegsIcon className={classes.rightIcon} />
-              </Button>
-            </Toolbar>
-          </AppBar>
-        </div>
-      </MuiThemeProvider>
+      <div className={classes.root}>
+        <AppBar position="absolute" style={{ backgroundColor: "#0000004D" }}>
+          <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              color="secondary"
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="secondary" className={classes.grow}>
+              DevTinder
+            </Typography>
+            <Button
+              // component={Link}
+              // to="/login"
+              href="/login"
+              state="hello"
+              color="secondary"
+              className={classes.button}
+            >
+              Login
+              <LoginIcon className={classes.rightIcon} />
+            </Button>
+            <Button
+              // component={Link}
+              // to="/login"
+              href="/signup"
+              onClick={this.handleSignup}
+              color="secondary"
+              className={classes.button}
+            >
+              Signup
+              <RegsIcon className={classes.rightIcon} />
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </div>
     );
   }
 }

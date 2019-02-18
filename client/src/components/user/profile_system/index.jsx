@@ -23,7 +23,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     flexGrow: 1
   }
