@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 const update_button = {
   // border: "1px red solid",
   width: "100%",
-  margin: "30px 10px 10px"
+  margin: "30px 25px 10px"
 };
 
 const styles = theme => ({

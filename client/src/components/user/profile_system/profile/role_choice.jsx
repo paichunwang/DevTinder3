@@ -6,17 +6,25 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 
+import Button from "@material-ui/core/Button";
+
+const update_button = {
+  // border: "1px red solid",
+  width: "100%",
+  margin: "10px 0px "
+};
+
 const styles = theme => ({
   root: {
-    display: "flex",
-    border: "1px red solid"
-  },
-  formControl: {
-    margin: theme.spacing.unit * 3
-  },
-  group: {
-    margin: `${theme.spacing.unit}px 0`
+    // display: "flex",
+    width: "100%"
   }
+  //   formControl: {
+  //     margin: theme.spacing.unit * 3
+  //   },
+  //   group: {
+  //     margin: `${theme.spacing.unit}px 0`
+  //   }
 });
 
 class RadioButtonsGroup extends React.Component {
@@ -55,6 +63,16 @@ class RadioButtonsGroup extends React.Component {
             />
           </RadioGroup>
         </FormControl>
+        <div style={{ width: "100%" }}>
+          <Button
+            style={update_button}
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Update Account Settings
+          </Button>
+        </div>
       </div>
     );
   }
