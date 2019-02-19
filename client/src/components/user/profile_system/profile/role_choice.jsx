@@ -63,7 +63,7 @@ class RadioButtonsGroup extends React.Component {
             />
           </RadioGroup>
         </FormControl>
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", padding: "0px 25px" }}>
           <Button
             style={update_button}
             variant="contained"

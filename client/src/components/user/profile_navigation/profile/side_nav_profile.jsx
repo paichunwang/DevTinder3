@@ -18,6 +18,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 
+import { NavLink } from "react-router-dom";
+
 import Profile from "../../profile_system/index";
 
 const drawerWidth = 240;
@@ -78,6 +80,15 @@ const styles = theme => ({
     marginLeft: 0
   }
 });
+
+const ListRoutes = {
+  "/user": "Profile Settings",
+  "/add": "Add Projects",
+  "/invite": "Open Invites",
+  "/project": "Open Projects",
+  "/complete": "Completed Projects",
+  "/signout": "Sign Out"
+};
 
 class PersistentDrawerLeft extends React.Component {
   state = {
@@ -141,7 +152,22 @@ class PersistentDrawerLeft extends React.Component {
           </div>
 
           <List>
-            {[
+            {Object.keys(ListRoutes).map((keyName, keyIndex) => {
+              return (
+                <ListItem
+                  button={true}
+                  key={ListRoutes[keyName]}
+                  component={NavLink}
+                  to={keyName}
+                >
+                  <ListItemIcon>
+                    {keyIndex % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={ListRoutes[keyName]} />
+                </ListItem>
+              );
+            })}
+            {/* {[
               "Profile Settings/user",
               "Add Projects/add",
               "Open Invites/invite",
@@ -149,13 +175,18 @@ class PersistentDrawerLeft extends React.Component {
               "Completed Projects/complete",
               "Sign Out"
             ].map((text, index) => (
-              <ListItem button key={text}>
+              <ListItem
+                button={true}
+                key={text}
+                component={NavLink}
+                to="/dashboard"
+              >
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
-            ))}
+            ))} */}
           </List>
         </Drawer>
         {/* this changes content on drawer opening */}
