@@ -17,10 +17,13 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import DirectionWalk from "@material-ui/icons/DirectionsWalk";
 
 import { NavLink } from "react-router-dom";
 
 import Profile from "../../profile_system/index";
+
+import Button from "@material-ui/core/Button";
 
 const drawerWidth = 240;
 
@@ -81,16 +84,20 @@ const styles = theme => ({
   }
 });
 
-const ListRoutes = {
-  "/user": "Profile Settings",
-  "/add": "Add Projects",
-  "/invite": "Open Invites",
-  "/project": "Open Projects",
-  "/complete": "Completed Projects",
-  "/signout": "Sign Out"
+const Logoutbutton = {
+  marginRight: "20px"
 };
 
-class PersistentDrawerLeft extends React.Component {
+const ListRoutes = {
+  "/user": "Profile Settings",
+  "/user/add": "Add Projects",
+  "/user/invite": "Open Invites",
+  "/user/project": "Open Projects",
+  "/user/complete": "Completed Projects",
+  "/user/signout": "Sign Out"
+};
+
+class Sidenav extends React.Component {
   state = {
     open: false
   };
@@ -116,7 +123,7 @@ class PersistentDrawerLeft extends React.Component {
             [classes.appBarShift]: open
           })}
         >
-          <Toolbar disableGutters={!open}>
+          <Toolbar disableGutters={true}>
             {/* OPTIONS ICON FOR OPENING DRAWER */}
             <IconButton
               color="inherit"
@@ -126,9 +133,18 @@ class PersistentDrawerLeft extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography
+              variant="h6"
+              color="inherit"
+              style={{ flex: 1, textAlign: "left", paddingLeft: "15px" }}
+              noWrap
+            >
               USER NAME GOES HERE
             </Typography>
+            <Button color="inherit" style={Logoutbutton}>
+              <DirectionWalk />
+              Sign out
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -167,29 +183,9 @@ class PersistentDrawerLeft extends React.Component {
                 </ListItem>
               );
             })}
-            {/* {[
-              "Profile Settings/user",
-              "Add Projects/add",
-              "Open Invites/invite",
-              "Open Projects/project",
-              "Completed Projects/complete",
-              "Sign Out"
-            ].map((text, index) => (
-              <ListItem
-                button={true}
-                key={text}
-                component={NavLink}
-                to="/dashboard"
-              >
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))} */}
           </List>
         </Drawer>
-        {/* this changes content on drawer opening */}
+        {/* this changes content spacing on drawer opening */}
         {/* <main
           className={classNames(classes.content, {
             [classes.contentShift]: open
@@ -204,9 +200,9 @@ class PersistentDrawerLeft extends React.Component {
   }
 }
 
-PersistentDrawerLeft.propTypes = {
+Sidenav.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(PersistentDrawerLeft);
+export default withStyles(styles, { withTheme: true })(Sidenav);
