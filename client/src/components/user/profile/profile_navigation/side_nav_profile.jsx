@@ -21,8 +21,6 @@ import DirectionWalk from "@material-ui/icons/DirectionsWalk";
 
 import { NavLink } from "react-router-dom";
 
-import Profile from "../../profile_system/index";
-
 import Button from "@material-ui/core/Button";
 
 const drawerWidth = 240;
@@ -193,7 +191,7 @@ class Sidenav extends React.Component {
         > */}
         <main className={classNames(classes.content)}>
           <div className={classes.drawerHeader} />
-          <Profile />
+          {/* <Profile /> */}
         </main>
       </div>
     );

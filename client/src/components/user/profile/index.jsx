@@ -8,9 +8,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 
-import ProfileAttribute from "./profile/profile";
-import ProfileSlider from "./profile/skill_slider";
-import ProfileChoice from "./profile/role_choice";
+import ProfileSettings from "./profile_settings/account_settings";
+import ProfileSlider from "./profile_settings/skill_slider";
+import ProfileChoice from "./profile_settings/role_choice";
 
 function TabContainer(props) {
   return (
@@ -60,7 +60,7 @@ class ProfileIndex extends React.Component {
         {/* </div> */}
         {value === 0 && (
           <TabContainer>
-            <ProfileAttribute />
+            <ProfileSettings />
           </TabContainer>
         )}
         {value === 1 && (
@@ -83,31 +83,3 @@ ProfileIndex.propTypes = {
 };
 
 export default withStyles(styles)(ProfileIndex);
-
-//   render() {
-//     const { classes } = this.props;
-//     return (
-//       <div>
-//         <form className={classes.container} noValidate autoComplete="off">
-//           <div
-//             style={{
-//               borderRadius: "5px 5px 0px 0px",
-//               width: "100%",
-//               padding: "20px 0px",
-//               textAlign: "center"
-//             }}
-//           >
-//             HELLO
-//           </div>
-//           "Hello"
-//         </form>
-//       </div>
-//     );
-//   }
-// }
-
-// ProfileIndex.propTypes = {
-//   classes: PropTypes.object.isRequired
-// };
-
-// export default withStyles(styles)(ProfileIndex);
