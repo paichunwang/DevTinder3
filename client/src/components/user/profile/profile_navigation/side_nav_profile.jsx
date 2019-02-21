@@ -9,17 +9,20 @@ import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import DirectionWalk from "@material-ui/icons/DirectionsWalk";
 
-import { NavLink } from "react-router-dom";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import DirectionWalk from "@material-ui/icons/DirectionsWalk"; //Logout
+import ArrowRight from "@material-ui/icons/ArrowRight"; //Location Seperator
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import AddCircle from "@material-ui/icons/AddCircle";
+import Drafts from "@material-ui/icons/Drafts";
+import FolderOpen from "@material-ui/icons/FolderOpen";
+import Folder from "@material-ui/icons/Folder";
 
 import Button from "@material-ui/core/Button";
 
@@ -95,6 +98,15 @@ const ListRoutes = {
   "/user/signout": "Sign Out"
 };
 
+const IconRoutes = [
+  <AccountCircle />,
+  <AddCircle />,
+  <Drafts />,
+  <FolderOpen />,
+  <Folder />,
+  <DirectionWalk />
+];
+
 class Sidenav extends React.Component {
   state = {
     open: false
@@ -109,7 +121,7 @@ class Sidenav extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, currentLocation } = this.props;
     const { open } = this.state;
 
     return (
@@ -137,7 +149,8 @@ class Sidenav extends React.Component {
               style={{ flex: 1, textAlign: "left", paddingLeft: "15px" }}
               noWrap
             >
-              USER NAME GOES HERE
+              USER NAME GOES HERE <ArrowRight style={{ fontSize: "10pt" }} />{" "}
+              {ListRoutes[currentLocation]}
             </Typography>
             <Button color="inherit" style={Logoutbutton}>
               <DirectionWalk />
@@ -171,12 +184,12 @@ class Sidenav extends React.Component {
                 <ListItem
                   button={true}
                   key={ListRoutes[keyName]}
-                  component={NavLink}
-                  to={keyName}
+                  value={keyName}
+                  // component={NavLink}
+                  // to={keyName}
+                  onClick={() => this.props.action(keyName)}
                 >
-                  <ListItemIcon>
-                    {keyIndex % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
+                  <ListItemIcon>{IconRoutes[keyIndex]}</ListItemIcon>
                   <ListItemText primary={ListRoutes[keyName]} />
                 </ListItem>
               );
