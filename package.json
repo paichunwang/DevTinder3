@@ -26,5 +26,9 @@
     "express": "^4.16.4",
     "mongoose": "^5.4.11",
     "password-generator": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-prettier": "^3.0.1",
+    "prettier": "^1.16.4"
   }
 }
