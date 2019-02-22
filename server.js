@@ -9,6 +9,11 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const passport = require("./server/passport");
+
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+
 require("dotenv").config();
 
 app.use(cors());
@@ -33,6 +38,22 @@ app.use(
     extended: true
   })
 );
+
+//express-session for logging cookie
+app.use(
+  session({
+    secret: "fraggle-rock", //pick a random string to make the hash that is generated secure
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    resave: false, //required
+    saveUninitialized: false, //required
+    maxAge: 1000 * 60 * 24 * 7
+  })
+);
+
+// Passport for middleware
+app.use(passport.initialize());
+app.use(passport.session()); // calls the deserializeUser
+
 //use routes defined in routes/routes folder.
 app.use(router);
 

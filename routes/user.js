@@ -1,30 +1,15 @@
 const express = require("express");
 const app = express.Router();
-const path = require("path");
+// const path = require("path");
 const User = require("../server/database/models/user");
-// const passport = require("../passport");
-
-// use this to check if db and localhost was connecting
-//const generatePassword = require("password-generator");
-// app.get("/api/passwords", (req, res) => {
-//   const count = 5;
-
-//   // Generate some passwords
-//   const passwords = Array.from(Array(count).keys()).map(i =>
-//     generatePassword(12, false)
-//   );
-
-//   // Return them as json
-//   res.json(passwords);
-
-//   console.log(`Sent ${count} passwords`);
-// });
+const passport = require("passport");
+const LocalStrategy = require("../server/passport/localStrategy");
+passport.use(LocalStrategy);
 
 app.post("/user/", (req, res) => {
   console.log("user signup routes.js");
   const { firstname, lastname, email, password } = req.body;
-  // console.log(firstname, lastname, email, password);
-  // const { fname, lname, email, password } = req.body;
+
   // // ADD VALIDATION
   User.findOne({ email: email }, (err, user) => {
     if (err) {
@@ -48,9 +33,27 @@ app.post("/user/", (req, res) => {
   });
 });
 
-//catch all non-existing routes and serve the react static files
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/../client/build/index.html"));
+app.get("/testget", (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (err) {
+      console.log("did not find user", err);
+    } else {
+      console.log("found user");
+    }
+  });
 });
+
+app.post("/user/login", passport.authenticate("local"), (req, res) => {
+  console.log("logged in", req.user);
+  var userInfo = {
+    username: req.user.username
+  };
+  res.send(userInfo);
+});
+
+//catch all non-existing routes and serve the react static files
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/../client/build/index.html"));
+// });
 
 module.exports = app;
