@@ -5,6 +5,8 @@ import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
 
+import axios from "axios";
+
 const update_button = {
   // border: "1px red solid",
   width: "100%",
@@ -41,7 +43,7 @@ class Profile extends React.Component {
       email: this.props.display.email,
       github: this.props.display.github,
       protfolio: this.props.display.protfolio,
-      password: this.props.display.password,
+      password: "Enter current password here ...",
       newPassword: this.props.display.newPassword
       // }
     };
@@ -55,11 +57,28 @@ class Profile extends React.Component {
     console.log(event.target.name + event.target.value);
   };
 
-  handleUpdate = () => {
+  handleUpdate = event => {
     //   something here to catch update on the profile attribute and check if password change, or all validation is correct
     console.log("hitting account handleupdate");
     console.log(this.state);
-
+    event.preventDefault();
+    axios
+      .post("/user/update", {
+        id: this.state.id,
+        email: this.state.email,
+        firstName: this.state.fname
+      })
+      .then(response => {
+        console.log("login response: ", response);
+        if (response.status === 200) {
+          this.setState({
+            redirectTo: "/user"
+          });
+        }
+      })
+      .catch(error => {
+        console.log("user account page update error: ", error);
+      });
     //need validation on profile, github, protfolio, password and newPassword
   };
 
@@ -78,7 +97,9 @@ class Profile extends React.Component {
               <TextField
                 key={keyIndex}
                 id="outlined-full-width"
-                label={profile_values[keyName] + ": Disabled from Edits"}
+                label={
+                  profile_values[keyName] + ": Login Credential - Edit Disabled"
+                }
                 style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
                 placeholder={this.state[keyName]}
                 disabled

@@ -40,7 +40,7 @@ class ProfileIndex extends React.Component {
   };
 
   render() {
-    console.log(this.props.userInfo);
+    // console.log(this.props.userInfo);
     const { classes } = this.props;
     const { value } = this.state;
 
