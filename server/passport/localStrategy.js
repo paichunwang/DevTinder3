@@ -12,12 +12,12 @@ const strategy = new LocalStrategy(
       if (err) {
         return done("local strat error", err);
       }
-      // if (!user) {
-      //   return done(null, false, { message: "Incorrect username" });
-      // }
-      // if (!user.checkPassword(password)) {
-      //   return done(null, false, { message: "Incorrect password" });
-      // }
+      if (!user) {
+        return done(null, false, { message: "Incorrect username" });
+      }
+      if (!user.checkPassword(password)) {
+        return done(null, false, { message: "Incorrect password" });
+      }
       return done(null, user);
     });
   }

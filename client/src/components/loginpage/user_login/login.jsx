@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Input, Icon } from "semantic-ui-react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
 
@@ -14,6 +15,8 @@ class Login extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.getCookie = this.getCookie.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   handleChange(event) {
@@ -37,7 +40,7 @@ class Login extends Component {
         console.log("login response: ", response);
         if (response.status === 200) {
           this.setState({
-            redirectTo: "/"
+            redirectTo: "/user"
           });
         }
       })
@@ -47,61 +50,91 @@ class Login extends Component {
       });
   }
 
+  componentDidMount() {
+    this.getCookie();
+  }
+
+  getCookie() {
+    axios.get("/user/").then(response => {
+      console.log("Get user response: ");
+      console.log(response.data);
+      if (response.data.user) {
+        console.log("Get User: There is a user saved in the server session: ");
+
+        this.setState({
+          loggedIn: true,
+          username: response.data.user.username,
+          redirectTo: "/user"
+        });
+      } else {
+        console.log("Get user: no user");
+        this.setState({
+          loggedIn: false,
+          username: null
+        });
+      }
+    });
+  }
+
   render() {
-    return (
-      <div>
-        <div className="column">
-          <div className="login_page_title">
-            <p>
-              <Icon className="computerIcon" name="computer" size="huge" />
-            </p>
-            devTinder
-          </div>
-          <div className="rowUser">
-            <Input
-              name="email"
-              className="emailInput"
-              label="Email"
-              iconPosition="left"
-              icon="envelope"
-              placeholder="ie: John@google.com"
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="rowPassword">
-            <Input
-              name="password"
-              type="password"
-              className="passwordInput"
-              label="Password"
-              iconPosition="left"
-              icon="key"
-              placeholder="ie: maryklover123"
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="rowLogaction">
-            <div className="login">
-              <button
-                className="ui secondary button loginAction"
-                onClick={this.handleSubmit}
-              >
-                Sign In
-              </button>
+    if (this.state.redirectTo) {
+      return <Redirect to={{ pathname: this.state.redirectTo }} />;
+    } else {
+      return (
+        <div>
+          <div className="column">
+            <div className="login_page_title">
+              <p>
+                <Icon className="computerIcon" name="computer" size="huge" />
+              </p>
+              devTinder
             </div>
-            <div className="forgotpassword">
-              <button className="ui basic button forgotAction">
-                Forgot Password?
-              </button>
+            <div className="rowUser">
+              <Input
+                name="email"
+                className="emailInput"
+                label="Email"
+                iconPosition="left"
+                icon="envelope"
+                placeholder="ie: John@google.com"
+                onChange={this.handleChange}
+              />
             </div>
-            <div className="newDevtinder">
-              <p>New to DevTinder?</p>
-              Sign Up and start using DevTinder
+            <div className="rowPassword">
+              <Input
+                name="password"
+                type="password"
+                className="passwordInput"
+                label="Password"
+                iconPosition="left"
+                icon="key"
+                placeholder="ie: maryklover123"
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="rowLogaction">
+              <div className="login">
+                <button
+                  className="ui secondary button loginAction"
+                  onClick={this.handleSubmit}
+                >
+                  Sign In
+                </button>
+              </div>
+              <div className="forgotpassword">
+                <button className="ui basic button forgotAction">
+                  Forgot Password?
+                </button>
+              </div>
+              <div className="newDevtinder">
+                <p>New to DevTinder?</p>
+                Sign Up and start using DevTinder
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

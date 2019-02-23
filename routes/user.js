@@ -6,6 +6,18 @@ const passport = require("passport");
 const LocalStrategy = require("../server/passport/localStrategy");
 passport.use(LocalStrategy);
 
+//check existing user base on cookie
+app.get("/user/", (req, res, next) => {
+  console.log("===== user!!======");
+  console.log(req.user);
+  if (req.user) {
+    res.json({ user: req.user });
+  } else {
+    res.json({ user: null });
+  }
+});
+
+//new user signup
 app.post("/user/", (req, res) => {
   console.log("user signup routes.js");
   const { firstname, lastname, email, password } = req.body;
@@ -16,7 +28,7 @@ app.post("/user/", (req, res) => {
       console.log("user signup post error: ", err);
     } else if (user) {
       res.json({
-        error: `Sorry, already a user with the username: ${email}`
+        error: `Sorry, already a user with the email: ${email}`
       });
     } else {
       const newUser = new User({
@@ -33,16 +45,7 @@ app.post("/user/", (req, res) => {
   });
 });
 
-app.get("/testget", (req, res) => {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    if (err) {
-      console.log("did not find user", err);
-    } else {
-      console.log("found user");
-    }
-  });
-});
-
+//authenticate user and log cookie
 app.post("/user/login", passport.authenticate("local"), (req, res) => {
   console.log("logged in", req.user);
   var userInfo = {
@@ -51,9 +54,9 @@ app.post("/user/login", passport.authenticate("local"), (req, res) => {
   res.send(userInfo);
 });
 
-//catch all non-existing routes and serve the react static files
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname + "/../client/build/index.html"));
-// });
+// catch all non-existing routes and serve the react static files
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/../client/build/index.html"));
+});
 
 module.exports = app;

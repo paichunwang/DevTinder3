@@ -20,7 +20,73 @@ const theme = createMuiTheme({
   }
 });
 
+// function PrivateRoute({ component: Component, authenticated, ...rest }) {
+//   return (
+//     <Route
+//       {...rest}
+//       render={props =>
+//         authenticated === true ? (
+//           <Component {...props} />
+//         ) : (
+//           <Redirect
+//             to={{ pathname: "/login", state: { from: props.location } }}
+//           />
+//         )
+//       }
+//     />
+//   );
+// }
+
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      loggedIn: false,
+      username: null,
+      authenticated: false
+    };
+
+    //   this.getUser = this.getUser.bind(this);
+    //   this.componentDidMount = this.componentDidMount.bind(this);
+    //   this.updateUser = this.updateUser.bind(this);
+  }
+
+  // componentDidMount() {
+  //   this.getUser();
+  // }
+
+  // updateUser(userObject) {
+  //   this.setState(userObject);
+  // }
+
+  // getUser() {
+  //   axios.get("/user/").then(response => {
+  //     console.log("Get user response: ");
+  //     console.log(response.data);
+  //     if (response.data.user) {
+  //       console.log("Got User: There is a user saved in the server session: ");
+
+  //       this.setState({
+  //         loggedIn: true,
+  //         username: response.data.user.username
+  //       });
+  //     } else {
+  //       console.log("Get user: no user");
+  //       this.setState({
+  //         loggedIn: false,
+  //         username: null
+  //       });
+  //     }
+  //   });
+  // }
+
+  //this catches when cookie have user session stored and push user to /user page
+  // renderRedirect = () => {
+  //   if (this.state.loggedIn) {
+  //     return <Redirect to="/user" />;
+  //   }
+  // };
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
@@ -32,6 +98,7 @@ class App extends Component {
               <Route exact path="/signup" component={Signpage} />
               <Route exact path="/gettingstarted" component={Started} />
               <Route exact path="/user" component={User} />
+              {/* {this.renderRedirect()} */}
             </Switch>
           </div>
         </Router>
