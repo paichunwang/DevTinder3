@@ -40,6 +40,7 @@ class ProfileIndex extends React.Component {
   };
 
   render() {
+    console.log(this.props.userInfo);
     const { classes } = this.props;
     const { value } = this.state;
 
@@ -60,7 +61,7 @@ class ProfileIndex extends React.Component {
         {/* </div> */}
         {value === 0 && (
           <TabContainer>
-            <ProfileSettings />
+            <ProfileSettings display={this.props.userInfo} />
           </TabContainer>
         )}
         {value === 1 && (

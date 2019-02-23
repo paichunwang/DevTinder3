@@ -22,6 +22,7 @@ const profile_values = {
   profile: "Profile Image Link",
   fname: "First Name",
   lname: "Last Name",
+  email: "Email",
   github: "Github Link",
   protfolio: "Protfolio Link",
   password: "Current Password",
@@ -29,60 +30,94 @@ const profile_values = {
 };
 
 class Profile extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      user: {
-        profile: "State Profile",
-        fname: "State FName",
-        lname: "State LName",
-        github: "State Github",
-        protfolio: "State Protfolio",
-        password: "State password // this will need to be hashed or dummy code",
-        newPassword: "Password must be 6 letter and more"
-      }
+      // user: {
+      id: this.props.display._id,
+      profile: this.props.display.profile,
+      fname: this.props.display.firstName,
+      lname: this.props.display.lastName,
+      email: this.props.display.email,
+      github: this.props.display.github,
+      protfolio: this.props.display.protfolio,
+      password: this.props.display.password,
+      newPassword: this.props.display.newPassword
+      // }
     };
   }
 
-  handleChange = name => (e, value) => {
+  handleChange = event => {
     ///   something here to catch change on the profile attribute with value, placeholder will keep in place of previous
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+    console.log(event.target.name + event.target.value);
   };
 
   handleUpdate = () => {
     //   something here to catch update on the profile attribute and check if password change, or all validation is correct
+    console.log("hitting account handleupdate");
+    console.log(this.state);
+
+    //need validation on profile, github, protfolio, password and newPassword
   };
 
   render() {
+    // console.log(this.state.user.id); // this is the id for update call
     const { classes } = this.props;
+    // const { _id, firstName, lastName, email } = this.props.display;
     return (
       <div
         className={classes.container}
         // style={{ border: "1px red solid" }}
       >
         {Object.keys(profile_values).map((keyName, keyIndex) => {
-          return (
-            <TextField
-              key={keyIndex}
-              id="outlined-full-width"
-              label={profile_values[keyName]}
-              style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-              placeholder={this.state.user[keyName]}
-              // value={this.state.user[keyName]}
-              // helperText=""
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-          );
+          if (keyName === "email") {
+            return (
+              <TextField
+                key={keyIndex}
+                id="outlined-full-width"
+                label={profile_values[keyName] + ": Disabled from Edits"}
+                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                placeholder={this.state[keyName]}
+                disabled
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            );
+          } else {
+            return (
+              <TextField
+                key={keyIndex}
+                name={Object.keys(profile_values)[keyIndex]}
+                id="outlined-full-width"
+                label={profile_values[keyName]}
+                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                placeholder={this.state[keyName]}
+                // value={this.state.user[keyName]}
+                // helperText=""
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={this.handleChange}
+              />
+            );
+          }
         })}
         <Button
           style={update_button}
           variant="contained"
           color="primary"
           className={classes.button}
+          onClick={this.handleUpdate}
         >
           Update Account Settings
         </Button>

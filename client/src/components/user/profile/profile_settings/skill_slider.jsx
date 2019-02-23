@@ -36,23 +36,15 @@ class SkillSlider extends React.Component {
   constructor() {
     super();
     this.state = {
-      user: {
-        profile: "State Profile",
-        fname: "State FName",
-        lname: "State LName",
-        github: "State Github",
-        protfolio: "State Protfolio",
-        password: "State password // this will need to be hashed or dummy code"
-      },
       skill: {
-        angular: 1,
-        css: 2,
-        html: 3,
-        java: 4,
-        javascript: 5,
-        nodejs: 6,
-        python: 7,
-        reactjs: 8
+        angular: 0,
+        css: 0,
+        html: 0,
+        java: 0,
+        javascript: 0,
+        nodejs: 0,
+        python: 0,
+        reactjs: 0
       }
     };
   }

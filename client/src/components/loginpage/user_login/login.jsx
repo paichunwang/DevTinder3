@@ -9,8 +9,7 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
+      userInfo: null,
       redirectTo: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,7 +19,7 @@ class Login extends Component {
   }
 
   handleChange(event) {
-    console.log(event.target.name, event.target.value);
+    // console.log(event.target.name, event.target.value);
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -59,18 +58,19 @@ class Login extends Component {
       console.log("Get user response: ");
       console.log(response.data);
       if (response.data.user) {
-        console.log("Get User: There is a user saved in the server session: ");
+        // console.log("Get User: There is a user saved in the server session: ");
+        // console.log(response.data.user[0]);
+        // const { email, firsName, lastName, id } = response.data.user[0];
 
         this.setState({
-          loggedIn: true,
-          username: response.data.user.username,
+          userInfo: response.data.user,
           redirectTo: "/user"
         });
       } else {
         console.log("Get user: no user");
         this.setState({
-          loggedIn: false,
-          username: null
+          userInfo: null,
+          email: null
         });
       }
     });
@@ -78,7 +78,11 @@ class Login extends Component {
 
   render() {
     if (this.state.redirectTo) {
-      return <Redirect to={{ pathname: this.state.redirectTo }} />;
+      return (
+        <Redirect
+          to={{ pathname: this.state.redirectTo, state: this.state.userInfo }}
+        />
+      );
     } else {
       return (
         <div>

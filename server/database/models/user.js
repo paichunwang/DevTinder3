@@ -5,10 +5,18 @@ mongoose.promise = Promise;
 
 // Define userSchema
 const userSchema = new Schema({
-  firstName: { type: String, unique: false, required: false },
-  lastName: { type: String, unique: false, required: false },
-  email: { type: String, unique: false, required: false },
-  password: { type: String, unique: false, required: false }
+  firstName: { type: String, unique: false, required: true },
+  lastName: { type: String, unique: false, required: true },
+  email: { type: String, unique: false, required: true },
+  password: { type: String, unique: false, required: true },
+  angular: { type: Number, unique: false, required: false },
+  css: { type: Number, unique: false, required: false },
+  html: { type: Number, unique: false, required: false },
+  java: { type: Number, unique: false, required: false },
+  javascript: { type: Number, unique: false, required: false },
+  nodejs: { type: Number, unique: false, required: false },
+  python: { type: Number, unique: false, required: false },
+  reactjs: { type: Number, unique: false, required: false }
 });
 
 // Define schema methods

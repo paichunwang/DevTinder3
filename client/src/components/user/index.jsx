@@ -12,10 +12,11 @@ class User extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handler = this.handler.bind(this);
     this.state = {
-      currentLocation: "/user"
+      currentLocation: "/user",
+      userInfo: this.props.location.state[0]
     };
+    this.handler = this.handler.bind(this);
   }
 
   handler(location) {
@@ -27,15 +28,16 @@ class User extends React.Component {
   }
 
   render() {
-    console.log(this.state.currentLocation);
-
+    // console.log(this.state.currentLocation);
+    // console.log("this.props", this.props.location.state[0]);
     const { currentLocation } = this.state;
+    // const { userInfo } = this.state.userInfo;
 
     return (
       <div>
         <Sidenav action={this.handler} currentLocation={currentLocation} />
         <div style={userContent}>
-          {currentLocation === "/user" && <Profile />}
+          {currentLocation === "/user" && <Profile {...this.state} />}
           {currentLocation === "/user/add" && <Project />}
           {currentLocation === "/user/invite" && "INVITE"}
           {currentLocation === "/user/project" && "PROJECT"}

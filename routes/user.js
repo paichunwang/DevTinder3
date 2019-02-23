@@ -6,7 +6,7 @@ const passport = require("passport");
 const LocalStrategy = require("../server/passport/localStrategy");
 passport.use(LocalStrategy);
 
-//check existing user base on cookie
+//check existing user base on cookie, when user return
 app.get("/user/", (req, res, next) => {
   console.log("===== user!!======");
   console.log(req.user);
@@ -48,8 +48,10 @@ app.post("/user/", (req, res) => {
 //authenticate user and log cookie
 app.post("/user/login", passport.authenticate("local"), (req, res) => {
   console.log("logged in", req.user);
-  var userInfo = {
-    username: req.user.username
+  let userInfo = {
+    fName: req.user.firstName,
+    lName: req.user.lastName,
+    email: req.user.email
   };
   res.send(userInfo);
 });
