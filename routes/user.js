@@ -58,20 +58,16 @@ app.post("/user/login", passport.authenticate("local"), (req, res) => {
 
 //user account update method
 app.post("/user/update", (req, res) => {
-  const { id, email, firstName } = req.body;
-  console.log(email, id, firstName);
+  const { id } = req.body;
+  console.log(req.body);
 
-  User.findOneAndUpdate(
-    { _id: id },
-    { $set: { firstName: firstName } },
-    (err, user) => {
-      if (err) {
-        console.log("account settings : user id lookup error", err);
-      } else {
-        res.json(user);
-      }
+  User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
+    if (err) {
+      console.log("account settings : user id lookup error", err);
+    } else {
+      res.json(user);
     }
-  );
+  });
 });
 
 // catch all non-existing routes and serve the react static files

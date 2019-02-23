@@ -13,7 +13,7 @@ passport.serializeUser((user, done) => {
 // user object attaches to the request as req.user
 passport.deserializeUser((id, done) => {
   console.log("DeserializeUser called");
-  User.find({ _id: id }, "firstName lastName email", (err, user) => {
+  User.find({ _id: id }, (err, user) => {
     // console.log("*** Deserialize user, user:");
     // console.log(user);
     // console.log("--------------");
