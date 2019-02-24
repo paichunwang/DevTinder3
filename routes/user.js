@@ -84,6 +84,18 @@ app.post("/update/user", (req, res) => {
   });
 });
 
+//user account re-render method
+app.get("/update/user/render", (req, res) => {
+  User.findById(req.query.id, (err, user) => {
+    if (err) {
+      console.log("Did not find user to update", err);
+    } else {
+      res.json(user);
+    }
+  });
+  console.log("hitting user render update id", req.query.id);
+});
+
 // catch all non-existing routes and serve the react static files
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/../client/build/index.html"));

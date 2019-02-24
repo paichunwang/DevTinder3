@@ -27,6 +27,11 @@ app.use(function(req, res, next) {
   next();
 });
 
+//detect if heroku or localhost, and serve the proper static files. Localhost is served in routes folder
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+}
+
 //serving static folder and routes folder
 app.use(express.static(path.join(__dirname, "client/build")));
 
@@ -49,18 +54,13 @@ app.use(
     maxAge: 1000 * 60 * 24 * 7
   })
 );
-
-// Passport for middleware
+// Passport for middleware, placed near the bottom since high ups will create multiple calls
+//https://github.com/jaredhanson/passport/issues/14#issuecomment-4863459
 app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
 
 //use routes defined in routes/routes folder.
 app.use(router);
-
-//detect if heroku or localhost, and serve the proper static files. Localhost is served in routes folder
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/build")));
-}
 
 mongoose
   .connect(process.env.MONGODB_URI, { useNewUrlParser: true })

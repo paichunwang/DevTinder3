@@ -37,7 +37,7 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       redirectTo: null,
-      id: this.props.display._id,
+      id: this.props.display.id,
       profile: this.props.display.profile,
       fname: this.props.display.firstName,
       lname: this.props.display.lastName,
@@ -51,11 +51,9 @@ class Profile extends React.Component {
   }
 
   handleChange = event => {
-    ///   something here to catch change on the profile attribute with value, placeholder will keep in place of previous
     this.setState({
       [event.target.name]: event.target.value
     });
-    // console.log(event.target.name + event.target.value);
   };
 
   handleUpdate = event => {
@@ -75,9 +73,29 @@ class Profile extends React.Component {
       .then(response => {
         console.log("login response: ", response);
         if (response.status === 200) {
-          this.setState({
-            redirectTo: "/login"
-          });
+          // axios
+          //   .get("/update/user/render", { params: { id: this.state.id } })
+          //   .then(response => {
+          //     if (response.status === 200) {
+          //       console.log("Set state for user");
+          //       this.setState({
+          //         id: this.state.id,
+          //         firstName: this.state.fname,
+          //         lastName: this.state.lname,
+          //         profile: this.state.profile,
+          //         github: this.state.github,
+          //         protfolio: this.state.protfolio
+          //       });
+          //     }
+          //   })
+          //   .catch(error => {
+          //     console.log("user id render error: ", error);
+          //   });
+          // this.setState(prevState=>({
+          //   users: [newUser, ...prevState.users]
+          // }))
+          // console.log(response.data);
+          // console.log(this.state.firstName);
         }
       })
       .catch(error => {
