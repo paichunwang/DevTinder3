@@ -37,17 +37,35 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       redirectTo: null,
-      id: this.props.display.id,
-      profile: this.props.display.profile,
-      fname: this.props.display.firstName,
-      lname: this.props.display.lastName,
-      email: this.props.display.email,
-      github: this.props.display.github,
-      protfolio: this.props.display.protfolio,
-      password: "Enter current password here ...",
-      newPassword: this.props.display.newPassword
+      id: null,
+      profile: null,
+      fname: null,
+      lname: null,
+      github: null,
+      protfolio: null,
+      password: null,
+      newPassword: null
     };
     console.log("account setting props: ", this.props);
+  }
+
+  componentDidMount() {
+    if (this.state.id == null) {
+      console.log("mouting props state component");
+      this.setState({
+        id: this.props.display.id,
+        profile: this.props.display.profile,
+        fname: this.props.display.firstName,
+        lname: this.props.display.lastName,
+        email: this.props.display.email,
+        github: this.props.display.github,
+        protfolio: this.props.display.protfolio,
+        password: "Enter current password here ...",
+        newPassword: this.props.display.newPassword
+      });
+    } else {
+      console.log("New state available, not changing state.");
+    }
   }
 
   handleChange = event => {
@@ -73,6 +91,9 @@ class Profile extends React.Component {
       .then(response => {
         console.log("login response: ", response);
         if (response.status === 200) {
+          console.log("passing back this.state to this.props.display");
+          this.props.display(this.state);
+          console.log("Checking props", this.props.display);
           // axios
           //   .get("/update/user/render", { params: { id: this.state.id } })
           //   .then(response => {
@@ -146,7 +167,7 @@ class Profile extends React.Component {
                   label={profile_values[keyName]}
                   style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
                   placeholder={this.state[keyName]}
-                  // value={this.state.user[keyName]}
+                  // value={this.state[keyName]}
                   // helperText=""
                   fullWidth
                   margin="normal"
