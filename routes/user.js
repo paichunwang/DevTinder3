@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express.Router();
-// const path = require("path");
+const path = require("path");
 const User = require("../server/database/models/user");
 const passport = require("passport");
 const LocalStrategy = require("../server/passport/localStrategy");
