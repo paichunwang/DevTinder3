@@ -47,6 +47,7 @@ class Profile extends React.Component {
       password: "Enter current password here ...",
       newPassword: this.props.display.newPassword
     };
+    console.log("account setting props: ", this.props);
   }
 
   handleChange = event => {
@@ -63,7 +64,7 @@ class Profile extends React.Component {
     console.log(this.state);
     event.preventDefault();
     axios
-      .post("/user/update", {
+      .post("/update/user", {
         id: this.state.id,
         firstName: this.state.fname,
         lastName: this.state.lname,

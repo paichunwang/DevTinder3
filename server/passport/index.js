@@ -4,7 +4,7 @@ const User = require("../database/models/user");
 
 // called on login, saves the id to session req.session.passport.user = {id:'..'}
 passport.serializeUser((user, done) => {
-  console.log("*** serializeUser called, user: ");
+  console.log("Passport serializeUser called, user: ");
   //   console.log(user); // the whole raw user object!
   //   console.log("---------");
   done(null, { _id: user._id });
@@ -12,13 +12,17 @@ passport.serializeUser((user, done) => {
 
 // user object attaches to the request as req.user
 passport.deserializeUser((id, done) => {
-  console.log("DeserializeUser called");
-  User.find({ _id: id }, (err, user) => {
-    // console.log("*** Deserialize user, user:");
-    // console.log(user);
-    // console.log("--------------");
-    done(err, user);
-  });
+  console.log(
+    "Passport DeserializeUser called, passing back user info, if any"
+  );
+  User.find(
+    { _id: id },
+    "_id firstName lastName profile github protfolio",
+    (err, user) => {
+      console.log(user);
+      done(err, user);
+    }
+  );
 });
 
 //  Use Strategies

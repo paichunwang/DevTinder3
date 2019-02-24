@@ -14,9 +14,10 @@ class User extends React.Component {
 
     this.state = {
       currentLocation: "/user",
-      userInfo: this.props.location.state[0]
+      userInfo: this.props.location.state.userInfo
     };
     this.handler = this.handler.bind(this);
+    console.log("user index props: ", this.props.location.state.userInfo);
   }
 
   handler(location) {

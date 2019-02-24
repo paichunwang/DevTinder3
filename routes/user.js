@@ -6,10 +6,9 @@ const passport = require("passport");
 const LocalStrategy = require("../server/passport/localStrategy");
 passport.use(LocalStrategy);
 
-//check existing user base on cookie, when user return
+//user passport deserializer to get information, if user exists, send user information back to front
 app.get("/user/", (req, res, next) => {
-  console.log("===== user!!======");
-  console.log(req.user);
+  console.log("GET /user/ routes: ", req.user);
   if (req.user) {
     res.json({ user: req.user });
   } else {
@@ -47,17 +46,32 @@ app.post("/user/", (req, res) => {
 
 //authenticate user and log cookie
 app.post("/user/login", passport.authenticate("local"), (req, res) => {
-  console.log("logged in", req.user);
+  // console.log("logged in", req.user);
+
+  const {
+    _id,
+    firstName,
+    lastName,
+    email,
+    github,
+    profile,
+    protfolio
+  } = req.user;
   let userInfo = {
-    fName: req.user.firstName,
-    lName: req.user.lastName,
-    email: req.user.email
+    id: _id,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    github: github,
+    profile: profile,
+    protfolio: protfolio
   };
+  console.log("info sent back to front end", userInfo);
   res.send(userInfo);
 });
 
 //user account update method
-app.post("/user/update", (req, res) => {
+app.post("/update/user", (req, res) => {
   const { id } = req.body;
   console.log(req.body);
 
