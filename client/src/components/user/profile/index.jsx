@@ -32,8 +32,8 @@ const styles = () => ({
 
 class ProfileIndex extends React.Component {
   state = {
-    value: 0,
-    user: this.props.userInfo
+    value: 0
+    // user: this.props.userInfo
   };
 
   handleChange = (event, value) => {
@@ -47,8 +47,8 @@ class ProfileIndex extends React.Component {
 
   render() {
     console.log("index render for account setting", this.props.userInfo);
-    const { classes } = this.props;
-    const { value, user } = this.state;
+    const { classes, userInfo } = this.props;
+    const { value } = this.state;
 
     return (
       <Paper className={classes.root}>
@@ -68,7 +68,7 @@ class ProfileIndex extends React.Component {
         {value === 0 && (
           <TabContainer>
             <ProfileSettings
-              display={user}
+              display={userInfo}
               onChildUpdate={this.handleChildUpdate}
             />
           </TabContainer>

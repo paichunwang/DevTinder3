@@ -86,7 +86,12 @@ class User extends React.Component {
             </div>
           </>
         )}
-        {userInfo === null && <div>hitting null</div>}
+        {userInfo === null && (
+          <div>
+            hitting null, need some thing here for loading page incase query
+            took too long
+          </div>
+        )}
       </div>
     );
   }

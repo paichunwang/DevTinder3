@@ -44,8 +44,8 @@ class Profile extends React.Component {
       email: this.props.display.email,
       github: this.props.display.github,
       protfolio: this.props.display.protfolio,
-      password: "Enter current password here ...",
-      newPassword: this.props.display.newPassword,
+      password: "",
+      newPassword: "",
       placeholder: {
         profile: this.props.display.profile,
         firstName: this.props.display.firstName,
@@ -53,8 +53,8 @@ class Profile extends React.Component {
         email: this.props.display.email,
         github: this.props.display.github,
         protfolio: this.props.display.protfolio,
-        password: "**********",
-        newPassword: ""
+        password: "Enter current password",
+        newPassword: "Enter new password"
       }
     };
     console.log("account setting props: ", this.props);
@@ -94,6 +94,18 @@ class Profile extends React.Component {
     //need validation on profile, github, protfolio, password and newPassword
   };
 
+  componentDidMount() {
+    console.log("hitting did mount on account setting");
+    this.setState({
+      id: this.state.id,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      profile: this.state.profile,
+      github: this.state.github,
+      protfolio: this.state.protfolio
+    });
+  }
+
   render() {
     if (this.state.redirectTo) {
       return <Redirect to={{ pathname: this.state.redirectTo }} />;
@@ -110,7 +122,7 @@ class Profile extends React.Component {
               return (
                 <TextField
                   key={keyIndex}
-                  id="outlined-full-width"
+                  id={"outlined-full-width " + keyIndex}
                   label={
                     profile_values[keyName] +
                     ": Login Credential - Edit Disabled"
@@ -126,15 +138,36 @@ class Profile extends React.Component {
                   }}
                 />
               );
+            } else if (keyName === "password" || keyName === "newPassword") {
+              return (
+                <TextField
+                  key={keyIndex}
+                  name={Object.keys(profile_values)[keyIndex]}
+                  id={"outlined-full-width " + keyIndex}
+                  label={profile_values[keyName] + ": 6 or more characters"}
+                  style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                  placeholder={placeholder[keyName]}
+                  // value={this.state[keyName]}
+                  // helperText=""
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  type="password"
+                  onChange={this.handleChange}
+                />
+              );
             } else {
               return (
                 <TextField
                   key={keyIndex}
                   name={Object.keys(profile_values)[keyIndex]}
-                  id="outlined-full-width"
+                  id={"outlined-full-width " + keyIndex}
                   label={profile_values[keyName]}
                   style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                  placeholder={placeholder[keyName]}
+                  // placeholder={placeholder[keyName]}
                   value={this.state[keyName]}
                   // helperText=""
                   fullWidth
