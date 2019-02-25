@@ -32,7 +32,7 @@ const styles = () => ({
 
 class ProfileIndex extends React.Component {
   state = {
-    value: 0
+    value: 1
     // user: this.props.userInfo
   };
 
@@ -75,7 +75,10 @@ class ProfileIndex extends React.Component {
         )}
         {value === 1 && (
           <TabContainer>
-            <ProfileSlider />
+            <ProfileSlider
+              display={userInfo}
+              onChildUpdate={this.handleChildUpdate}
+            />
           </TabContainer>
         )}
         {value === 2 && (

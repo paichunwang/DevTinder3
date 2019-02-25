@@ -17,7 +17,7 @@ passport.deserializeUser((id, done) => {
   );
   User.find(
     { _id: id },
-    "_id firstName lastName email profile github protfolio",
+    "_id firstName lastName email profile github protfolio angular css html java javascript nodejs python reactjs",
     (err, user) => {
       console.log(user);
       done(err, user);
