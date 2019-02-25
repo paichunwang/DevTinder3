@@ -9,7 +9,6 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      userInfo: null,
       redirectTo: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,7 +37,7 @@ class Login extends Component {
         console.log("login response data: ", response.data);
         if (response.status === 200) {
           this.setState({
-            userInfo: response.data,
+            // userInfo: response.data,
             redirectTo: "/user"
           });
           console.log("post login user response: ", response.data);
@@ -53,6 +52,7 @@ class Login extends Component {
     this.getCookie();
   }
 
+  //this call is not passported
   getCookie() {
     axios.get("/user/").then(response => {
       console.log("Get user response: ");
@@ -60,13 +60,11 @@ class Login extends Component {
       //here need to pass id back from passport call
       if (response.data.user) {
         this.setState({
-          redirectTo: "/user",
-          userInfo: response.data.user[0]
+          redirectTo: "/user"
         });
       } else {
         console.log("No user found.");
         this.setState({
-          userInfo: null,
           redirectTo: null
         });
       }
@@ -76,14 +74,7 @@ class Login extends Component {
   render() {
     if (this.state.redirectTo) {
       console.log("Hiting loginpage user_login login Redirect");
-      return (
-        <Redirect
-          to={{
-            state: { userInfo: this.state.userInfo },
-            pathname: this.state.redirectTo
-          }}
-        />
-      );
+      return <Redirect to={{ pathname: this.state.redirectTo }} />;
     } else {
       return (
         <div>

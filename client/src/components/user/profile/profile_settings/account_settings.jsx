@@ -23,8 +23,8 @@ const styles = theme => ({
 
 const profile_values = {
   profile: "Profile Image Link",
-  fname: "First Name",
-  lname: "Last Name",
+  firstName: "First Name",
+  lastName: "Last Name",
   email: "Email",
   github: "Github Link",
   protfolio: "Protfolio Link",
@@ -37,41 +37,35 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       redirectTo: null,
-      id: null,
-      profile: null,
-      fname: null,
-      lname: null,
-      github: null,
-      protfolio: null,
-      password: null,
-      newPassword: null
-    };
-    console.log("account setting props: ", this.props);
-  }
-
-  componentDidMount() {
-    if (this.state.id == null) {
-      console.log("mouting props state component");
-      this.setState({
-        id: this.props.display.id,
+      id: this.props.display._id,
+      profile: this.props.display.profile,
+      firstName: this.props.display.firstName,
+      lastName: this.props.display.lastName,
+      email: this.props.display.email,
+      github: this.props.display.github,
+      protfolio: this.props.display.protfolio,
+      password: "Enter current password here ...",
+      newPassword: this.props.display.newPassword,
+      placeholder: {
         profile: this.props.display.profile,
-        fname: this.props.display.firstName,
-        lname: this.props.display.lastName,
+        firstName: this.props.display.firstName,
+        lastName: this.props.display.lastName,
         email: this.props.display.email,
         github: this.props.display.github,
         protfolio: this.props.display.protfolio,
-        password: "Enter current password here ...",
-        newPassword: this.props.display.newPassword
-      });
-    } else {
-      console.log("New state available, not changing state.");
-    }
+        password: "**********",
+        newPassword: ""
+      }
+    };
+    console.log("account setting props: ", this.props);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
+    console.log("this.state", this.state);
   };
 
   handleUpdate = event => {
@@ -82,8 +76,8 @@ class Profile extends React.Component {
     axios
       .post("/update/user", {
         id: this.state.id,
-        firstName: this.state.fname,
-        lastName: this.state.lname,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
         profile: this.state.profile,
         github: this.state.github,
         protfolio: this.state.protfolio
@@ -91,32 +85,7 @@ class Profile extends React.Component {
       .then(response => {
         console.log("login response: ", response);
         if (response.status === 200) {
-          console.log("passing back this.state to this.props.display");
-          this.props.display(this.state);
-          console.log("Checking props", this.props.display);
-          // axios
-          //   .get("/update/user/render", { params: { id: this.state.id } })
-          //   .then(response => {
-          //     if (response.status === 200) {
-          //       console.log("Set state for user");
-          //       this.setState({
-          //         id: this.state.id,
-          //         firstName: this.state.fname,
-          //         lastName: this.state.lname,
-          //         profile: this.state.profile,
-          //         github: this.state.github,
-          //         protfolio: this.state.protfolio
-          //       });
-          //     }
-          //   })
-          //   .catch(error => {
-          //     console.log("user id render error: ", error);
-          //   });
-          // this.setState(prevState=>({
-          //   users: [newUser, ...prevState.users]
-          // }))
-          // console.log(response.data);
-          // console.log(this.state.firstName);
+          this.props.onChildUpdate(this.state);
         }
       })
       .catch(error => {
@@ -129,9 +98,8 @@ class Profile extends React.Component {
     if (this.state.redirectTo) {
       return <Redirect to={{ pathname: this.state.redirectTo }} />;
     } else {
-      // console.log(this.state); // this is the id for update call
       const { classes } = this.props;
-      // const { _id, firstName, lastName, email } = this.props.display;
+      const { placeholder } = this.state;
       return (
         <div
           className={classes.container}
@@ -166,8 +134,8 @@ class Profile extends React.Component {
                   id="outlined-full-width"
                   label={profile_values[keyName]}
                   style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                  placeholder={this.state[keyName]}
-                  // value={this.state[keyName]}
+                  placeholder={placeholder[keyName]}
+                  value={this.state[keyName]}
                   // helperText=""
                   fullWidth
                   margin="normal"

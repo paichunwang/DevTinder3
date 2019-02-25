@@ -3,6 +3,7 @@ const LocalStrategy = require("passport-local").Strategy;
 
 const strategy = new LocalStrategy(
   {
+    // custom field check with passport local
     usernameField: "email",
     passwordField: "password",
     session: false
