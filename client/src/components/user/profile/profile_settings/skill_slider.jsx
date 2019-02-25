@@ -38,6 +38,7 @@ class SkillSlider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      location: "skillSlider",
       angular: this.props.display.angular,
       css: this.props.display.css,
       html: this.props.display.html,

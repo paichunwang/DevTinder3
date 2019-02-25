@@ -17,7 +17,9 @@ class User extends React.Component {
     this.state = {
       currentLocation: "/user",
       // set to null since only want what the passport deserializer calls on THIS page.
-      userInfo: null
+      userInfo: null,
+      skillSlider: null,
+      roleChoice: null
     };
     this.handler = this.handler.bind(this);
     this.getCookie = this.getCookie.bind(this);
@@ -34,8 +36,9 @@ class User extends React.Component {
 
   handleChildUpdate = values => {
     console.log("hitting handleChildUpdate user index with ", values);
+    console.log("Value location", [values.location]);
     this.setState({
-      userInfo: values
+      [values.location]: values
     });
   };
 
@@ -50,12 +53,55 @@ class User extends React.Component {
       console.log(response.data.user);
       //here need to pass id back from passport call
       if (response.data.user) {
+        const {
+          _id,
+          email,
+          firstName,
+          lastName,
+          profile,
+          github,
+          protfolio,
+          angular,
+          css,
+          html,
+          java,
+          javascript,
+          nodejs,
+          python,
+          reactjs,
+          role
+        } = response.data.user[0];
         this.setState({
           // redirectTo: "/user",
-          userInfo: response.data.user[0]
+          userInfo: {
+            _id,
+            email,
+            firstName,
+            lastName,
+            profile,
+            github,
+            protfolio
+          },
+          skillSlider: {
+            _id,
+            angular,
+            css,
+            html,
+            java,
+            javascript,
+            nodejs,
+            python,
+            reactjs
+          },
+          roleChoice: { _id, role }
         });
+        console.log(
+          this.state.userInfo,
+          this.state.skillSlider,
+          this.state.roleChoice
+        );
       } else {
-        console.log("No user found.");
+        console.log("No user found. redircting user back to /login");
       }
     });
   }
@@ -63,7 +109,7 @@ class User extends React.Component {
   render() {
     console.log(this.props);
     console.log("this.state in user index", this.state);
-    const { currentLocation, userInfo } = this.state;
+    const { currentLocation, userInfo, skillSlider, roleChoice } = this.state;
     // const { userInfo } = this.state.userInfo;
 
     return (
@@ -75,6 +121,8 @@ class User extends React.Component {
               {currentLocation === "/user" && (
                 <Profile
                   userInfo={userInfo}
+                  skillSlider={skillSlider}
+                  roleChoice={roleChoice}
                   onChildUpdate={this.handleChildUpdate}
                 />
               )}

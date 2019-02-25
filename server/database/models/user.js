@@ -19,7 +19,8 @@ const userSchema = new Schema({
   javascript: { type: Number, unique: false, required: false },
   nodejs: { type: Number, unique: false, required: false },
   python: { type: Number, unique: false, required: false },
-  reactjs: { type: Number, unique: false, required: false }
+  reactjs: { type: Number, unique: false, required: false },
+  role: { type: String, unique: false, required: false }
 });
 
 // Define schema methods

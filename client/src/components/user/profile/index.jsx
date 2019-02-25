@@ -32,7 +32,7 @@ const styles = () => ({
 
 class ProfileIndex extends React.Component {
   state = {
-    value: 1
+    value: 2
     // user: this.props.userInfo
   };
 
@@ -46,8 +46,8 @@ class ProfileIndex extends React.Component {
   };
 
   render() {
-    console.log("index render for account setting", this.props.userInfo);
-    const { classes, userInfo } = this.props;
+    console.log("index render for account setting", this.props);
+    const { classes, userInfo, skillSlider, roleChoice } = this.props;
     const { value } = this.state;
 
     return (
@@ -76,14 +76,17 @@ class ProfileIndex extends React.Component {
         {value === 1 && (
           <TabContainer>
             <ProfileSlider
-              display={userInfo}
+              display={skillSlider}
               onChildUpdate={this.handleChildUpdate}
             />
           </TabContainer>
         )}
         {value === 2 && (
           <TabContainer>
-            <ProfileChoice />
+            <ProfileChoice
+              display={roleChoice}
+              onChildUpdate={this.handleChildUpdate}
+            />
           </TabContainer>
         )}
       </Paper>

@@ -8,6 +8,8 @@ import FormControl from "@material-ui/core/FormControl";
 
 import Button from "@material-ui/core/Button";
 
+import axios from "axios";
+
 const update_button = {
   // border: "1px red solid",
   width: "100%",
@@ -28,12 +30,39 @@ const styles = theme => ({
 });
 
 class RadioButtonsGroup extends React.Component {
-  state = {
-    value: "developer"
-  };
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+    this.state = {
+      location: "roleChoice",
+      role: this.props.display.role
+    };
+  }
 
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    console.log(event.target.value);
+    this.setState({ role: event.target.value }, function() {
+      console.log(this.state);
+    });
+  };
+
+  handleUpdate = event => {
+    console.log("hitting role_choice handleUpdate");
+    event.preventDefault();
+    axios
+      .post("/update/user", {
+        id: this.props.display._id,
+        role: this.state.role
+      })
+      .then(response => {
+        console.log("role update response: ", response);
+        if (response.status === 200) {
+          this.props.onChildUpdate(this.state);
+        }
+      })
+      .catch(error => {
+        console.log("role update error: ", error);
+      });
   };
 
   render() {
@@ -46,7 +75,7 @@ class RadioButtonsGroup extends React.Component {
             aria-label="gender"
             name="gender2"
             className={classes.group}
-            value={this.state.value}
+            value={this.state.role}
             onChange={this.handleChange}
           >
             <FormControlLabel
@@ -69,6 +98,7 @@ class RadioButtonsGroup extends React.Component {
             variant="contained"
             color="primary"
             className={classes.button}
+            onClick={this.handleUpdate}
           >
             Update Account Settings
           </Button>
