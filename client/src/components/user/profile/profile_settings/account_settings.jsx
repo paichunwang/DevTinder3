@@ -36,6 +36,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      location: "userInfo",
       redirectTo: null,
       id: this.props.display._id,
       profile: this.props.display.profile,
