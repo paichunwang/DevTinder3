@@ -19,7 +19,8 @@ class User extends React.Component {
       // set to null since only want what the passport deserializer calls on THIS page.
       userInfo: null,
       skillSlider: null,
-      roleChoice: null
+      roleChoice: null,
+      navBar: null
     };
     this.handler = this.handler.bind(this);
     this.getCookie = this.getCookie.bind(this);
@@ -37,9 +38,22 @@ class User extends React.Component {
   handleChildUpdate = values => {
     console.log("hitting handleChildUpdate user index with ", values);
     console.log("Value location", [values.location]);
-    this.setState({
-      [values.location]: values
-    });
+
+    if (values.firstName || values.lastName) {
+      this.setState(
+        {
+          [values.location]: values,
+          navBar: { firstName: values.firstName, lastName: values.lastName }
+        },
+        function() {
+          console.log("hitting values with first name");
+        }
+      );
+    } else {
+      this.setState({
+        [values.location]: values
+      });
+    }
   };
 
   componentDidMount() {
@@ -71,34 +85,36 @@ class User extends React.Component {
           reactjs,
           role
         } = response.data.user[0];
-        this.setState({
-          // redirectTo: "/user",
-          userInfo: {
-            _id,
-            email,
-            firstName,
-            lastName,
-            profile,
-            github,
-            protfolio
+        this.setState(
+          {
+            // redirectTo: "/user",
+            userInfo: {
+              _id,
+              email,
+              firstName,
+              lastName,
+              profile,
+              github,
+              protfolio
+            },
+            skillSlider: {
+              _id,
+              angular,
+              css,
+              html,
+              java,
+              javascript,
+              nodejs,
+              python,
+              reactjs
+            },
+            roleChoice: { _id, role },
+            navBar: { firstName, lastName, role }
           },
-          skillSlider: {
-            _id,
-            angular,
-            css,
-            html,
-            java,
-            javascript,
-            nodejs,
-            python,
-            reactjs
-          },
-          roleChoice: { _id, role }
-        });
-        console.log(
-          this.state.userInfo,
-          this.state.skillSlider,
-          this.state.roleChoice
+          function() {
+            console.log(this.state.userInfo, this.state.skillSlider);
+            console.log(this.state.roleChoice, this.state.navBar);
+          }
         );
       } else {
         console.log("No user found. redircting user back to /login");
@@ -109,14 +125,24 @@ class User extends React.Component {
   render() {
     console.log(this.props);
     console.log("this.state in user index", this.state);
-    const { currentLocation, userInfo, skillSlider, roleChoice } = this.state;
+    const {
+      currentLocation,
+      userInfo,
+      skillSlider,
+      roleChoice,
+      navBar
+    } = this.state;
     // const { userInfo } = this.state.userInfo;
 
     return (
       <div>
         {userInfo !== null && (
           <>
-            <Sidenav action={this.handler} currentLocation={currentLocation} />
+            <Sidenav
+              action={this.handler}
+              currentLocation={currentLocation}
+              display={navBar}
+            />
             <div style={userContent}>
               {currentLocation === "/user" && (
                 <Profile

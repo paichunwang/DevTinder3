@@ -32,7 +32,7 @@ const styles = () => ({
 
 class ProfileIndex extends React.Component {
   state = {
-    value: 2
+    value: 0
     // user: this.props.userInfo
   };
 

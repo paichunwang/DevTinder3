@@ -121,8 +121,9 @@ class Sidenav extends React.Component {
   };
 
   render() {
-    const { classes, theme, currentLocation } = this.props;
+    const { classes, theme, currentLocation, display } = this.props;
     const { open } = this.state;
+    // console.log("this.prop sidenav", this.props.display);
 
     return (
       <div className={classes.root}>
@@ -149,7 +150,8 @@ class Sidenav extends React.Component {
               style={{ flex: 1, textAlign: "left", paddingLeft: "15px" }}
               noWrap
             >
-              USER NAME GOES HERE <ArrowRight style={{ fontSize: "10pt" }} />{" "}
+              {display.firstName + " " + display.lastName}
+              <ArrowRight style={{ fontSize: "10pt" }} />{" "}
               {ListRoutes[currentLocation]}
             </Typography>
             <Button color="inherit" style={Logoutbutton}>
@@ -196,15 +198,8 @@ class Sidenav extends React.Component {
             })}
           </List>
         </Drawer>
-        {/* this changes content spacing on drawer opening */}
-        {/* <main
-          className={classNames(classes.content, {
-            [classes.contentShift]: open
-          })}
-        > */}
         <main className={classNames(classes.content)}>
           <div className={classes.drawerHeader} />
-          {/* <Profile /> */}
         </main>
       </div>
     );
