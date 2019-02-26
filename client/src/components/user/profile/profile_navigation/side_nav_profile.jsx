@@ -179,7 +179,6 @@ class Sidenav extends React.Component {
           }}
         >
           <div className={classes.drawerHeader}>
-            {/* close button for drawer */}
             <IconButton onClick={this.handleDrawerClose}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
@@ -188,8 +187,6 @@ class Sidenav extends React.Component {
               )}
             </IconButton>
           </div>
-
-          {/* <List> */}
           {display.role == null && <>PLEASE SELECT ROLE FIRST</>}
           {display.role === "client" && (
             <>
@@ -221,8 +218,6 @@ class Sidenav extends React.Component {
                       button={true}
                       key={ListRoutes[keyName]}
                       value={keyName}
-                      // component={NavLink}
-                      // to={keyName}
                       onClick={() => this.props.action(keyName)}
                     >
                       <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
@@ -233,22 +228,6 @@ class Sidenav extends React.Component {
               )}
             </>
           )}
-          {/* <>{Object.keys(ListRoutes).map((keyName, keyIndex) => {
-              return (
-                <ListItem
-                  button={true}
-                  key={ListRoutes[keyName]}
-                  value={keyName}
-                  // component={NavLink}
-                  // to={keyName}
-                  onClick={() => this.props.action(keyName)}
-                >
-                  <ListItemIcon>{IconRoutes[keyIndex]}</ListItemIcon>
-                  <ListItemText primary={ListRoutes[keyName]} />
-                </ListItem>
-              );
-            })}</> */}
-          {/* </List> */}
         </Drawer>
         <main className={classNames(classes.content)}>
           <div className={classes.drawerHeader} />
