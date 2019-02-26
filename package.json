@@ -31,7 +31,8 @@
     "mongoose": "^5.4.11",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "password-generator": "^2.2.0"
+    "password-generator": "^2.2.0",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^3.0.1",

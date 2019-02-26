@@ -1,5 +1,8 @@
 const express = require("express");
 const path = require("path");
+
+// const http = require("http");
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -33,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //serving static folder and routes folder
-app.use(express.static(path.join(__dirname, "client/build")));
+// app.use(express.static(path.join(__dirname, "client/build")));
 
 //use body parser and urlencoded to parse data, otherwise cant use it.
 app.use(bodyParser.json());
@@ -78,5 +81,11 @@ mongoose
   });
 
 app.listen(port, (req, res) => {
-  console.log(`server listening on port: ${port}`);
+  console.log(`App server listening on port: ${port}`);
 });
+
+// const server = http.createServer(app);
+// const io = require("socket.io").listen(server); //pass a http.Server instance
+// server.listen(80, (req, res) => {
+//   console.log(`socket io server listening`);
+// }); //listen on port 80
