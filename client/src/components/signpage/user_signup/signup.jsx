@@ -111,8 +111,6 @@ class Signup extends Component {
 
     event.preventDefault();
 
-    console.log(event);
-
     const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     if (regexp.test(this.state.email)) {
       console.log("email pattern match");
@@ -125,8 +123,8 @@ class Signup extends Component {
           password: this.state.password
         })
         .then(response => {
-          // console.log(response);
-          if (!response.data.errmsg) {
+          console.log(response);
+          if (!response.data.error) {
             console.log("successful signup");
             // this.setState({
             //   //redirect to login page

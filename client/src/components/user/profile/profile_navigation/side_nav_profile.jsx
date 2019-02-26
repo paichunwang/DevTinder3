@@ -98,19 +98,23 @@ const ListRoutes = {
   "/user/signout": "Sign Out"
 };
 
-const IconRoutes = [
-  <AccountCircle />,
-  <AddCircle />,
-  <Drafts />,
-  <FolderOpen />,
-  <Folder />,
-  <DirectionWalk />
-];
+const IconRoutes = {
+  "/user": <AccountCircle />,
+  "/user/add": <AddCircle />,
+  "/user/invite": <Drafts />,
+  "/user/project": <FolderOpen />,
+  "/user/complete": <Folder />,
+  "/user/signout": <DirectionWalk />
+};
 
 class Sidenav extends React.Component {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+      // navList: this.props.display.role
+    };
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -123,7 +127,12 @@ class Sidenav extends React.Component {
   render() {
     const { classes, theme, currentLocation, display } = this.props;
     const { open } = this.state;
-    // console.log("this.prop sidenav", this.props.display);
+    console.log("this.prop sidenav", this.props.display);
+
+    const objectWithoutKey = (object, key) => {
+      const { [key]: deletedKey, ...filterList } = object;
+      return filterList;
+    };
 
     return (
       <div className={classes.root}>
@@ -180,8 +189,51 @@ class Sidenav extends React.Component {
             </IconButton>
           </div>
 
-          <List>
-            {Object.keys(ListRoutes).map((keyName, keyIndex) => {
+          {/* <List> */}
+          {display.role == null && <>PLEASE SELECT ROLE FIRST</>}
+          {display.role === "client" && (
+            <>
+              {Object.keys(objectWithoutKey(ListRoutes, "/user/invite")).map(
+                (keyName, keyIndex) => {
+                  return (
+                    <ListItem
+                      button={true}
+                      key={ListRoutes[keyName]}
+                      value={keyName}
+                      // component={NavLink}
+                      // to={keyName}
+                      onClick={() => this.props.action(keyName)}
+                    >
+                      <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                      <ListItemText primary={ListRoutes[keyName]} />
+                    </ListItem>
+                  );
+                }
+              )}
+            </>
+          )}
+          {display.role === "developer" && (
+            <>
+              {Object.keys(objectWithoutKey(ListRoutes, "/user/add")).map(
+                (keyName, keyIndex) => {
+                  return (
+                    <ListItem
+                      button={true}
+                      key={ListRoutes[keyName]}
+                      value={keyName}
+                      // component={NavLink}
+                      // to={keyName}
+                      onClick={() => this.props.action(keyName)}
+                    >
+                      <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                      <ListItemText primary={ListRoutes[keyName]} />
+                    </ListItem>
+                  );
+                }
+              )}
+            </>
+          )}
+          {/* <>{Object.keys(ListRoutes).map((keyName, keyIndex) => {
               return (
                 <ListItem
                   button={true}
@@ -195,8 +247,8 @@ class Sidenav extends React.Component {
                   <ListItemText primary={ListRoutes[keyName]} />
                 </ListItem>
               );
-            })}
-          </List>
+            })}</> */}
+          {/* </List> */}
         </Drawer>
         <main className={classNames(classes.content)}>
           <div className={classes.drawerHeader} />

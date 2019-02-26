@@ -39,20 +39,49 @@ class User extends React.Component {
     console.log("hitting handleChildUpdate user index with ", values);
     console.log("Value location", [values.location]);
 
+    //need to catch when user name gets replace by "" empty content
     if (values.firstName || values.lastName) {
       this.setState(
         {
           [values.location]: values,
-          navBar: { firstName: values.firstName, lastName: values.lastName }
+          navBar: {
+            ...this.state.navBar,
+            firstName: values.firstName,
+            lastName: values.lastName
+          }
         },
         function() {
-          console.log("hitting values with first name");
+          console.log(
+            "hitting values with first or last name",
+            this.state.navBar
+          );
+        }
+      );
+    } else if (values.role) {
+      this.setState(
+        {
+          [values.location]: values,
+          navBar: {
+            ...this.state.navBar,
+            role: values.role
+          }
+        },
+        function() {
+          console.log(
+            "hitting role change and updating navbar display state",
+            this.state.navBar
+          );
         }
       );
     } else {
-      this.setState({
-        [values.location]: values
-      });
+      this.setState(
+        {
+          [values.location]: values
+        },
+        function() {
+          console.log("Hitting generic value / state change", values);
+        }
+      );
     }
   };
 
@@ -136,6 +165,7 @@ class User extends React.Component {
 
     return (
       <div>
+        {console.log("this is navbar state checking", navBar)}
         {userInfo !== null && (
           <>
             <Sidenav
