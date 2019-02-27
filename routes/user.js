@@ -85,6 +85,44 @@ app.post("/update/user", (req, res) => {
   });
 });
 
+app.post("/user/addProject", (req, res) => {
+  const {
+    ownerID,
+    projectName,
+    projectDescription,
+    projectSkillReq,
+    projectBudget,
+    projectDue,
+    projectInit
+  } = req.body;
+
+  console.log("add project", req.body);
+
+  Project.findOne({ projectName: projectName }, (err, project) => {
+    if (err) {
+      console.log("project findone error: ", err);
+    } else if (project) {
+      res.json({
+        error: `Sorry, already a project with the name: ${projectName}`
+      });
+    } else {
+      const newProject = new Project({
+        ownerID: ownerID,
+        projectName: projectName,
+        projectDescription: projectDescription,
+        projectSkillReq: projectSkillReq,
+        projectBudget: projectBudget
+        // projectDue: projectDue,
+        // projectInit: projectInit
+      });
+      newProject.save((err, savedProject) => {
+        if (err) return res.json(err);
+        res.json(savedProject);
+      });
+    }
+  });
+});
+
 app.get("/user/callProject", (req, res) => {
   // User.findOne;
 });

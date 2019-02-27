@@ -191,7 +191,7 @@ class User extends React.Component {
                 />
               )}
               {currentLocation === "/user/add" && (
-                <Project addProject={this.addProject} />
+                <Project addProject={this.addProject} userID={roleChoice} />
               )}
               {currentLocation === "/user/invite" && (
                 <Project inviteProject={this.callProject} />

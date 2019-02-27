@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
+import axios from "axios";
+
 import Button from "@material-ui/core/Button";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -16,18 +18,22 @@ import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
+// import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-const update_button = {
-  // border: "1px red solid",
-  width: "100%",
-  margin: "10px 25px"
-};
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
+
+// const update_button = {
+//   // border: "1px red solid",
+//   width: "100%",
+//   margin: "10px 25px"
+// };
 
 const styles = theme => ({
   container: {
@@ -74,11 +80,12 @@ const getStepContent = (classes, step, actionThis, error, skillList) => {
             id={"outlined-full-width " + keyIndex}
             label={add_project_inputs[keyName]}
             style={{ textAlign: "-webkit-left" }}
-            // placeholder={placeholder[keyName]}
             value={actionThis.state[keyName]}
             // helperText=""
             // rows="3"
             // multiline
+            required
+            error={actionThis.state.errorOn.projectName}
             fullWidth
             margin="normal"
             variant="outlined"
@@ -93,13 +100,13 @@ const getStepContent = (classes, step, actionThis, error, skillList) => {
           //   key={keyIndex}
           // required
           fullWidth
-          error={error}
+          error={actionThis.state.errorOn.skillReq}
           component="fieldset"
           className={classes.formControl}
         >
           <FormLabel component="legend" style={{ padding: "0px" }}>
             <p style={{ margin: "0px" }}>
-              Please select at least one requirement
+              Please check at least one requirement
             </p>
           </FormLabel>
           <FormGroup style={{ display: "inline-block" }}>
@@ -112,7 +119,7 @@ const getStepContent = (classes, step, actionThis, error, skillList) => {
                       color="primary"
                       checked={actionThis.state[keyName]}
                       onChange={actionThis.handleSkillChange([keyName])}
-                      value="angular"
+                      value={keyName}
                     />
                   }
                   label={skill_req[keyName]}
@@ -129,14 +136,15 @@ const getStepContent = (classes, step, actionThis, error, skillList) => {
           <FormControl
             style={{ padding: "10px" }}
             className={classes.margin}
+            error={actionThis.state.errorOn.setBudget}
             fullWidth
           >
             <InputLabel htmlFor="adornment-amount">
-              Project Allocation: in whole dollar amount
+              Please enter digits only
             </InputLabel>
             <Input
               id="adornment-amount"
-              value={actionThis.state.minBudget}
+              value={actionThis.state.budget}
               onChange={actionThis.handleBudgetChange("budget")}
               type="number"
               startAdornment={
@@ -147,10 +155,21 @@ const getStepContent = (classes, step, actionThis, error, skillList) => {
         </>
       );
     case 3:
-      return `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`;
+      return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Grid container className={classes.grid}>
+            <DatePicker
+              disablePast={true}
+              margin="normal"
+              label="Date picker"
+              value={actionThis.state.selectedDate}
+              onChange={actionThis.handleDateChange}
+              variant="outlined"
+              error={actionThis.state.errorOn.setDue}
+            />
+          </Grid>
+        </MuiPickersUtilsProvider>
+      );
     default:
       return "Unknown step";
   }
@@ -160,7 +179,7 @@ class AddProject extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 2,
+      activeStep: 0,
       projectName: "",
       projectDescription: "",
       angular: false,
@@ -171,16 +190,95 @@ class AddProject extends React.Component {
       nodejs: false,
       python: false,
       reactjs: false,
-      budget: 0
+      budget: "",
+      selectedDate: new Date(),
+      errorOn: {
+        projectName: false,
+        skillReq: false,
+        setBudget: false,
+        setDue: false
+      }
     };
     this.handleSkillChange = this.handleSkillChange.bind(this);
     this.handleProjectInfoChange = this.handleProjectInfoChange.bind(this);
   }
 
   handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1
-    }));
+    //Project Information Checker
+    if (this.state.activeStep === 0) {
+      if (this.state.projectName.length < 3) {
+        // console.log("Error on Project Name");
+        this.setState(state => ({
+          errorOn: { projectName: true }
+        }));
+      } else {
+        this.setState(state => ({
+          activeStep: state.activeStep + 1
+        }));
+      }
+    }
+
+    //Skill Requirement Checker *NOTE THIS IS A REVERSE SETTER
+    if (this.state.activeStep === 1) {
+      if (
+        this.state.angular ||
+        this.state.css ||
+        this.state.html ||
+        this.state.java ||
+        this.state.javascript ||
+        this.state.nodejs ||
+        this.state.python ||
+        this.state.reactjs
+      ) {
+        this.setState(state => ({
+          activeStep: state.activeStep + 1,
+          errorOn: { skillReq: false }
+        }));
+      } else {
+        // console.log("Error on Skill Requirement");
+        this.setState(state => ({
+          errorOn: { skillReq: true }
+        }));
+      }
+    }
+
+    //Project Budget Checker
+    if (this.state.activeStep === 2) {
+      console.log("Hitting 2");
+      if (this.state.budget.length < 1) {
+        // console.log("Error on budget");
+        this.setState(state => ({
+          errorOn: { setBudget: true }
+        }));
+      } else {
+        this.setState(state => ({
+          activeStep: state.activeStep + 1,
+          errorOn: { setBudget: false }
+        }));
+      }
+    }
+
+    //Project Post
+    if (this.state.activeStep === 3) {
+      console.log("Posting to MongoDB");
+      // /user/addProject routes
+      axios
+        .post("/update/user", {
+          ownerID: this.props.userID._id,
+          projectName: this.state.projectName,
+          projectDescription: this.state.projectDescription,
+          projectSkillReq: "Requirement",
+          projectBudget: this.state.budget
+          // projectDue: this.state.selectedDate,
+          // projectInit: new Date()
+        })
+        .then(response => {
+          console.log("login response: ", response);
+        })
+        .catch(error => {
+          console.log("add project page error: ", error);
+        });
+    }
   };
 
   handleBack = () => {
@@ -191,17 +289,49 @@ class AddProject extends React.Component {
 
   handleReset = () => {
     this.setState({
-      activeStep: 0
+      activeStep: 0,
+      projectName: "",
+      projectDescription: "",
+      angular: false,
+      css: false,
+      html: false,
+      java: false,
+      javascript: false,
+      nodejs: false,
+      python: false,
+      reactjs: false,
+      budget: "",
+      selectedDate: new Date() + 1
     });
   };
 
   handleProjectInfoChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
+    if (event.target.name === "projectName") {
+      if (event.target.value.length >= 3) {
+        // console.log("hitting project change value checker: PASS");
+        this.setState({
+          [event.target.name]: event.target.value,
+          errorOn: { projectName: false }
+        });
+      } else {
+        // console.log("hitting project change value checker: FAIL");
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+        this.setState({
+          [event.target.name]: event.target.value,
+          errorOn: { projectName: true }
+        });
+      }
+    } else {
+      this.setState({
+        [event.target.name]: event.target.value
+      });
+    }
   };
 
   handleSkillChange = name => event => {
+    //user filter to catch if skill req is < 1 and return true errrOn
     this.setState({ [name]: event.target.checked });
   };
 
@@ -209,9 +339,14 @@ class AddProject extends React.Component {
     this.setState({ [name]: parseInt(event.target.value) });
   };
 
+  handleDateChange = date => {
+    // console.log("the date in date changer", date);
+    this.setState({ selectedDate: date });
+  };
+
   render() {
-    console.log("the THIS of class Profile", this);
-    console.log(this.state);
+    // console.log("the THIS of class Profile", this);
+    // console.log(this.state);
     const { classes } = this.props;
     const steps = getSteps();
     const {
@@ -237,11 +372,13 @@ class AddProject extends React.Component {
     ];
 
     const error = skillList.filter(values => values).length < 1;
+    console.log("addproject props: ", this.props);
     return (
       <div
         className={classes.container}
         style={{
-          border: "1px red solid",
+          // border: "1px red solid",
+          borderRadius: 4,
           padding: "30px",
           backgroundColor: "white"
         }}
@@ -277,7 +414,7 @@ class AddProject extends React.Component {
                       onClick={this.handleNext}
                       className={classes.button}
                     >
-                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      {activeStep === steps.length - 1 ? "Add Project" : "Next"}
                     </Button>
                   </div>
                 </div>
@@ -303,15 +440,6 @@ class AddProject extends React.Component {
             </Paper>
           </div>
         )}
-        <Button
-          style={update_button}
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={this.handleUpdate}
-        >
-          Update Account Settings
-        </Button>
       </div>
     );
   }

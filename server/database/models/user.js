@@ -7,7 +7,7 @@ mongoose.promise = Promise;
 const userSchema = new Schema({
   firstName: { type: String, unique: false, required: true },
   lastName: { type: String, unique: false, required: true },
-  email: { type: String, unique: false, required: true },
+  email: { type: String, unique: true, required: true },
   profile: { type: String, unique: false, required: false },
   github: { type: String, unique: false, required: false },
   portfolio: { type: String, unique: false, required: false },
