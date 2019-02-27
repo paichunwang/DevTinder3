@@ -19,6 +19,10 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 const update_button = {
   // border: "1px red solid",
   width: "100%",
@@ -39,6 +43,17 @@ const add_project_inputs = {
   //   projectDue: "Project Due Date"
 };
 
+const skill_req = {
+  angular: "Angular",
+  css: "CSS",
+  html: "HTML",
+  java: "Java",
+  javascript: "Javascript",
+  nodejs: "Node JS",
+  python: "Python",
+  reactjs: "React JS"
+};
+
 function getSteps() {
   return [
     "Project Information",
@@ -48,26 +63,26 @@ function getSteps() {
   ];
 }
 
-const getStepContent = (step, action) => {
+const getStepContent = (classes, step, actionThis, error, skillList) => {
   switch (step) {
     case 0:
       return Object.keys(add_project_inputs).map((keyName, keyIndex) => {
         return (
           <TextField
             key={keyIndex}
-            name={Object.keys(add_project_inputs)[keyIndex]}
+            name={keyName}
             id={"outlined-full-width " + keyIndex}
             label={add_project_inputs[keyName]}
             style={{ textAlign: "-webkit-left" }}
             // placeholder={placeholder[keyName]}
-            // value={this.state[keyName]}
+            value={actionThis.state[keyName]}
             // helperText=""
             // rows="3"
             // multiline
             fullWidth
             margin="normal"
             variant="outlined"
-            //   onChange={this.handleChange}
+            onChange={actionThis.handleProjectInfoChange}
           />
         );
       });
@@ -78,9 +93,9 @@ const getStepContent = (step, action) => {
           //   key={keyIndex}
           // required
           fullWidth
-          //   error={error}
+          error={error}
           component="fieldset"
-          //   className={classes.formControl}
+          className={classes.formControl}
         >
           <FormLabel component="legend" style={{ padding: "0px" }}>
             <p style={{ margin: "0px" }}>
@@ -88,26 +103,49 @@ const getStepContent = (step, action) => {
             </p>
           </FormLabel>
           <FormGroup style={{ display: "inline-block" }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  // checked={angular}
-                  onChange={action.handleChange("angular")}
-                  value="angular"
+            {Object.keys(skill_req).map((keyName, keyIndex) => {
+              return (
+                <FormControlLabel
+                  key={keyIndex}
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={actionThis.state[keyName]}
+                      onChange={actionThis.handleSkillChange([keyName])}
+                      value="angular"
+                    />
+                  }
+                  label={skill_req[keyName]}
                 />
-              }
-              label="Angular"
-            />
+              );
+            })}
           </FormGroup>
           {/* <FormHelperText>You can display an error</FormHelperText> */}
         </FormControl>
       );
     case 2:
-      return `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`;
+      return (
+        <>
+          <FormControl
+            style={{ padding: "10px" }}
+            className={classes.margin}
+            fullWidth
+          >
+            <InputLabel htmlFor="adornment-amount">
+              Project Allocation: in whole dollar amount
+            </InputLabel>
+            <Input
+              id="adornment-amount"
+              value={actionThis.state.minBudget}
+              onChange={actionThis.handleBudgetChange("budget")}
+              type="number"
+              startAdornment={
+                <InputAdornment position="start">$</InputAdornment>
+              }
+            />
+          </FormControl>
+        </>
+      );
     case 3:
       return `Try out different ad text to see what brings in the most customers,
                 and learn how to enhance your ads using features like ad extensions.
@@ -118,21 +156,25 @@ const getStepContent = (step, action) => {
   }
 };
 
-class Profile extends React.Component {
+class AddProject extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 1,
-      angular: true,
+      activeStep: 2,
+      projectName: "",
+      projectDescription: "",
+      angular: false,
       css: false,
       html: false,
       java: false,
       javascript: false,
       nodejs: false,
       python: false,
-      reactjs: false
+      reactjs: false,
+      budget: 0
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSkillChange = this.handleSkillChange.bind(this);
+    this.handleProjectInfoChange = this.handleProjectInfoChange.bind(this);
   }
 
   handleNext = () => {
@@ -153,23 +195,25 @@ class Profile extends React.Component {
     });
   };
 
-  handleChange = name => event => {
+  handleProjectInfoChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handleSkillChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
 
+  handleBudgetChange = name => event => {
+    this.setState({ [name]: parseInt(event.target.value) });
+  };
+
   render() {
+    console.log("the THIS of class Profile", this);
+    console.log(this.state);
     const { classes } = this.props;
     const steps = getSteps();
-    const skillList = [
-      angular,
-      css,
-      html,
-      java,
-      javascript,
-      nodejs,
-      python,
-      reactjs
-    ];
     const {
       angular,
       css,
@@ -181,6 +225,16 @@ class Profile extends React.Component {
       reactjs,
       activeStep
     } = this.state;
+    const skillList = [
+      angular,
+      css,
+      html,
+      java,
+      javascript,
+      nodejs,
+      python,
+      reactjs
+    ];
 
     const error = skillList.filter(values => values).length < 1;
     return (
@@ -206,7 +260,7 @@ class Profile extends React.Component {
               <StepLabel>{label}</StepLabel>
               <StepContent>
                 <Typography component={"div"}>
-                  {getStepContent(index, this)}
+                  {getStepContent(classes, index, this, error, skillList)}
                 </Typography>
                 <div className={classes.actionsContainer}>
                   <div>
@@ -263,8 +317,8 @@ class Profile extends React.Component {
   }
 }
 
-Profile.propTypes = {
+AddProject.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Profile);
+export default withStyles(styles)(AddProject);
