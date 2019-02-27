@@ -127,7 +127,7 @@ class Sidenav extends React.Component {
   render() {
     const { classes, theme, currentLocation, display } = this.props;
     const { open } = this.state;
-    console.log("this.prop sidenav", this.props.display);
+    //console.log("this.prop sidenav", this.props.display);
 
     const objectWithoutKey = (object, key) => {
       const { [key]: deletedKey, ...filterList } = object;

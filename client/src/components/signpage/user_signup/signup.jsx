@@ -123,9 +123,9 @@ class Signup extends Component {
           password: this.state.password
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           if (!response.data.error) {
-            console.log("successful signup");
+            //console.log("successful signup");
             // this.setState({
             //   //redirect to login page
             //   redirectTo: "/login"

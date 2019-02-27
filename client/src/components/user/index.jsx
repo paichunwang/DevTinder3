@@ -15,7 +15,7 @@ class User extends React.Component {
     super(props);
 
     this.state = {
-      currentLocation: "/user",
+      currentLocation: "/user/add",
       // set to null since only want what the passport deserializer calls on THIS page.
       userInfo: null,
       skillSlider: null,
@@ -28,16 +28,16 @@ class User extends React.Component {
   }
 
   handler(location) {
-    console.log("Hitting Parent handler ", location);
+    //console.log("Hitting Parent handler ", location);
     this.setState({
       currentLocation: location
     });
-    console.log("POST STATE ", this.state.currentLocation);
+    //console.log("POST STATE ", this.state.currentLocation);
   }
 
   handleChildUpdate = values => {
-    console.log("hitting handleChildUpdate user index with ", values);
-    console.log("Value location", [values.location]);
+    //console.log("hitting handleChildUpdate user index with ", values);
+    //console.log("Value location", [values.location]);
 
     //need to catch when user name gets replace by "" empty content
     if (values.firstName || values.lastName) {
@@ -51,10 +51,10 @@ class User extends React.Component {
           }
         },
         function() {
-          console.log(
-            "hitting values with first or last name",
-            this.state.navBar
-          );
+          // console.log(
+          //   "hitting values with first or last name",
+          //   this.state.navBar
+          // );
         }
       );
     } else if (values.role) {
@@ -67,10 +67,10 @@ class User extends React.Component {
           }
         },
         function() {
-          console.log(
-            "hitting role change and updating navbar display state",
-            this.state.navBar
-          );
+          //console.log(
+          //   "hitting role change and updating navbar display state",
+          //   this.state.navBar
+          // );
         }
       );
     } else {
@@ -79,7 +79,7 @@ class User extends React.Component {
           [values.location]: values
         },
         function() {
-          console.log("Hitting generic value / state change", values);
+          //console.log("Hitting generic value / state change", values);
         }
       );
     }
@@ -87,13 +87,14 @@ class User extends React.Component {
 
   componentDidMount() {
     this.getCookie();
+    this.callProject();
   }
 
   //this call is not passported
   getCookie() {
     axios.get("/user/").then(response => {
-      console.log("Get user response: ");
-      console.log(response.data.user);
+      //console.log("Get user response: ");
+      //console.log(response.data.user);
       //here need to pass id back from passport call
       if (response.data.user) {
         const {
@@ -103,7 +104,7 @@ class User extends React.Component {
           lastName,
           profile,
           github,
-          protfolio,
+          portfolio,
           angular,
           css,
           html,
@@ -124,7 +125,7 @@ class User extends React.Component {
               lastName,
               profile,
               github,
-              protfolio
+              portfolio
             },
             skillSlider: {
               _id,
@@ -141,19 +142,27 @@ class User extends React.Component {
             navBar: { firstName, lastName, role }
           },
           function() {
-            console.log(this.state.userInfo, this.state.skillSlider);
-            console.log(this.state.roleChoice, this.state.navBar);
+            //console.log(this.state.userInfo, this.state.skillSlider);
+            //console.log(this.state.roleChoice, this.state.navBar);
           }
         );
       } else {
-        console.log("No user found. redircting user back to /login");
+        //console.log("No user found. redircting user back to /login");
       }
     });
   }
 
+  addProject() {
+    console.log("Hitting user index addProject");
+  }
+
+  callProject() {
+    console.log("Hitting user index callProject");
+  }
+
   render() {
-    console.log(this.props);
-    console.log("this.state in user index", this.state);
+    //console.log(this.props);
+    //console.log("this.state in user index", this.state);
     const {
       currentLocation,
       userInfo,
@@ -165,7 +174,6 @@ class User extends React.Component {
 
     return (
       <div>
-        {console.log("this is navbar state checking", navBar)}
         {userInfo !== null && (
           <>
             <Sidenav
@@ -182,10 +190,18 @@ class User extends React.Component {
                   onChildUpdate={this.handleChildUpdate}
                 />
               )}
-              {currentLocation === "/user/add" && <Project />}
-              {currentLocation === "/user/invite" && "INVITE"}
-              {currentLocation === "/user/project" && "PROJECT"}
-              {currentLocation === "/user/complete" && "COMPLETE"}
+              {currentLocation === "/user/add" && (
+                <Project addProject={this.addProject} />
+              )}
+              {currentLocation === "/user/invite" && (
+                <Project inviteProject={this.callProject} />
+              )}
+              {currentLocation === "/user/project" && (
+                <Project callProject={this.callProject} />
+              )}
+              {currentLocation === "/user/complete" && (
+                <Project callProject={this.callProject} />
+              )}
               {currentLocation === "/user/signout" && "SIGNOUT"}
             </div>
           </>

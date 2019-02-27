@@ -41,24 +41,17 @@ class ProfileIndex extends React.Component {
   };
 
   handleChildUpdate = values => {
-    console.log("hitting handleChildUpdate profile index with ", values);
+    //console.log("hitting handleChildUpdate profile index with ", values);
     this.props.onChildUpdate(values);
   };
 
-  componentDidMount() {
-    console.log(
-      "Hitting project index, axios calling project for update on project listing"
-    );
-  }
-
   render() {
-    console.log("index render for account setting", this.props);
+    //console.log("index render for account setting", this.props);
     const { classes, userInfo, skillSlider, roleChoice } = this.props;
     const { value } = this.state;
 
     return (
       <Paper className={classes.root}>
-        {/* <div> */}
         <Tabs
           value={this.state.value}
           onChange={this.handleChange}
@@ -70,7 +63,6 @@ class ProfileIndex extends React.Component {
           <Tab label="Indicate Skills" />
           <Tab label="Select Role" />
         </Tabs>
-        {/* </div> */}
         {value === 0 && (
           <TabContainer>
             <ProfileSettings

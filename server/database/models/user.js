@@ -10,7 +10,7 @@ const userSchema = new Schema({
   email: { type: String, unique: false, required: true },
   profile: { type: String, unique: false, required: false },
   github: { type: String, unique: false, required: false },
-  protfolio: { type: String, unique: false, required: false },
+  portfolio: { type: String, unique: false, required: false },
   password: { type: String, unique: false, required: false },
   angular: { type: Number, unique: false, required: false },
   css: { type: Number, unique: false, required: false },

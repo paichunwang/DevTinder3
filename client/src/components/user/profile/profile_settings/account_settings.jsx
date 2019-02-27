@@ -27,7 +27,7 @@ const profile_values = {
   lastName: "Last Name",
   email: "Email",
   github: "Github Link",
-  protfolio: "Protfolio Link",
+  portfolio: "Portfolio Link",
   password: "Current Password",
   newPassword: "New Password"
 };
@@ -44,7 +44,7 @@ class Profile extends React.Component {
       lastName: this.props.display.lastName,
       email: this.props.display.email,
       github: this.props.display.github,
-      protfolio: this.props.display.protfolio,
+      portfolio: this.props.display.portfolio,
       password: "",
       newPassword: "",
       placeholder: {
@@ -53,12 +53,12 @@ class Profile extends React.Component {
         lastName: this.props.display.lastName,
         email: this.props.display.email,
         github: this.props.display.github,
-        protfolio: this.props.display.protfolio,
+        portfolio: this.props.display.portfolio,
         password: "Enter current password",
         newPassword: "Enter new password"
       }
     };
-    console.log("account setting props: ", this.props);
+    //console.log("account setting props: ", this.props);
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
@@ -66,13 +66,13 @@ class Profile extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log("this.state", this.state);
+    //console.log("this.state", this.state);
   };
 
   handleUpdate = event => {
     //   something here to catch update on the profile attribute and check if password change, or all validation is correct
-    console.log("hitting account handleupdate");
-    console.log(this.state);
+    //console.log("hitting account handleupdate");
+    //console.log(this.state);
     event.preventDefault();
     axios
       .post("/update/user", {
@@ -81,29 +81,29 @@ class Profile extends React.Component {
         lastName: this.state.lastName,
         profile: this.state.profile,
         github: this.state.github,
-        protfolio: this.state.protfolio
+        portfolio: this.state.portfolio
       })
       .then(response => {
-        console.log("login response: ", response);
+        //console.log("login response: ", response);
         if (response.status === 200) {
           this.props.onChildUpdate(this.state);
         }
       })
       .catch(error => {
-        console.log("user account page update error: ", error);
+        //console.log("user account page update error: ", error);
       });
-    //need validation on profile, github, protfolio, password and newPassword
+    //need validation on profile, github, portfolio, password and newPassword
   };
 
   componentDidMount() {
-    console.log("hitting did mount on account setting");
+    //console.log("hitting did mount on account setting");
     this.setState({
       id: this.state.id,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       profile: this.state.profile,
       github: this.state.github,
-      protfolio: this.state.protfolio
+      portfolio: this.state.portfolio
     });
   }
 
@@ -153,9 +153,9 @@ class Profile extends React.Component {
                   fullWidth
                   margin="normal"
                   variant="outlined"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
+                  // InputLabelProps={{
+                  //   shrink: true
+                  // }}
                   type="password"
                   onChange={this.handleChange}
                 />
@@ -174,9 +174,9 @@ class Profile extends React.Component {
                   fullWidth
                   margin="normal"
                   variant="outlined"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
+                  // InputLabelProps={{
+                  //   shrink: true
+                  // }}
                   onChange={this.handleChange}
                 />
               );

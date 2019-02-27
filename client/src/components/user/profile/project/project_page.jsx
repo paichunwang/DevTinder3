@@ -7,6 +7,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import AddProject from "./add_project";
+
 const styles = theme => ({
   root: {
     width: "100%"
@@ -23,9 +25,12 @@ const styles = theme => ({
 });
 
 class ControlledExpansionPanels extends React.Component {
-  state = {
-    expanded: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: null
+    };
+  }
 
   handleChange = panel => (event, expanded) => {
     this.setState({
@@ -34,12 +39,15 @@ class ControlledExpansionPanels extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, addProject, inviteProject, callProject } = this.props;
     const { expanded } = this.state;
 
     return (
       <div className={classes.root}>
-        <ExpansionPanel
+        {addProject && <AddProject />}
+        {inviteProject && <div>Invite Project</div>}
+        {callProject && <div>Call Project</div>}
+        {/* <ExpansionPanel
           expanded={expanded === "panel1"}
           onChange={this.handleChange("panel1")}
         >
@@ -108,7 +116,7 @@ class ControlledExpansionPanels extends React.Component {
               sit amet egestas eros, vitae egestas augue. Duis vel est augue.
             </Typography>
           </ExpansionPanelDetails>
-        </ExpansionPanel>
+        </ExpansionPanel> */}
       </div>
     );
   }

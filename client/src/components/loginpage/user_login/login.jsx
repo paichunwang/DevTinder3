@@ -18,7 +18,7 @@ class Login extends Component {
   }
 
   handleChange(event) {
-    // console.log(event.target.name, event.target.value);
+    // //console.log(event.target.name, event.target.value);
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -27,24 +27,24 @@ class Login extends Component {
   //axios post for user login
   handleSubmit(event) {
     event.preventDefault();
-    console.log("handleSubmit with ", this.state.email + this.state.password);
+    //console.log("handleSubmit with ", this.state.email + this.state.password);
     axios
       .post("/user/login", {
         email: this.state.email,
         password: this.state.password
       })
       .then(response => {
-        console.log("login response data: ", response.data);
+        //console.log("login response data: ", response.data);
         if (response.status === 200) {
           this.setState({
             // userInfo: response.data,
             redirectTo: "/user"
           });
-          console.log("post login user response: ", response.data);
+          //console.log("post login user response: ", response.data);
         }
       })
       .catch(error => {
-        console.log("Login page .catch error: ", error);
+        //console.log("Login page .catch error: ", error);
       });
   }
 
@@ -55,15 +55,15 @@ class Login extends Component {
   //this call is not passported
   getCookie() {
     axios.get("/user/").then(response => {
-      console.log("Get user response: ");
-      console.log(response.data.user);
+      //console.log("Get user response: ");
+      //console.log(response.data.user);
       //here need to pass id back from passport call
       if (response.data.user) {
         this.setState({
           redirectTo: "/user"
         });
       } else {
-        console.log("No user found.");
+        //console.log("No user found.");
         this.setState({
           redirectTo: null
         });
@@ -73,7 +73,7 @@ class Login extends Component {
 
   render() {
     if (this.state.redirectTo) {
-      console.log("Hiting loginpage user_login login Redirect");
+      //console.log("Hiting loginpage user_login login Redirect");
       return <Redirect to={{ pathname: this.state.redirectTo }} />;
     } else {
       return (

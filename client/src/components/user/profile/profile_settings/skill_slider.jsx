@@ -48,7 +48,7 @@ class SkillSlider extends React.Component {
       python: this.props.display.python,
       reactjs: this.props.display.reactjs
     };
-    console.log("checking this prop in slider", this.props);
+    //console.log("checking this prop in slider", this.props);
   }
 
   handleChange = name => (e, value) => {
@@ -58,8 +58,8 @@ class SkillSlider extends React.Component {
   };
 
   handleUpdate = event => {
-    console.log("hitting update on skill slider", this.props.display._id);
-    console.log(this.state);
+    //console.log("hitting update on skill slider", this.props.display._id);
+    //console.log(this.state);
     event.preventDefault();
     const {
       angular,
@@ -84,15 +84,15 @@ class SkillSlider extends React.Component {
         reactjs: reactjs
       })
       .then(response => {
-        console.log("skill slider update response: ", response);
+        //console.log("skill slider update response: ", response);
         if (response.status === 200) {
           this.props.onChildUpdate(this.state);
         }
       })
       .catch(error => {
-        console.log("skill slider update error: ", error);
+        //console.log("skill slider update error: ", error);
       });
-    //need validation on profile, github, protfolio, password and newPassword
+    //need validation on profile, github, portfolio, password and newPassword
   };
 
   render() {

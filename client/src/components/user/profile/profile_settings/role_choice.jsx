@@ -32,7 +32,7 @@ const styles = theme => ({
 class RadioButtonsGroup extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+    //console.log(this.props);
     this.state = {
       location: "roleChoice",
       role: this.props.display.role
@@ -40,14 +40,14 @@ class RadioButtonsGroup extends React.Component {
   }
 
   handleChange = event => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     this.setState({ role: event.target.value }, function() {
-      console.log(this.state);
+      //console.log(this.state);
     });
   };
 
   handleUpdate = event => {
-    console.log("hitting role_choice handleUpdate");
+    //console.log("hitting role_choice handleUpdate");
     event.preventDefault();
     axios
       .post("/update/user", {
@@ -55,13 +55,13 @@ class RadioButtonsGroup extends React.Component {
         role: this.state.role
       })
       .then(response => {
-        console.log("role update response: ", response);
+        //console.log("role update response: ", response);
         if (response.status === 200) {
           this.props.onChildUpdate(this.state);
         }
       })
       .catch(error => {
-        console.log("role update error: ", error);
+        //console.log("role update error: ", error);
       });
   };
 
