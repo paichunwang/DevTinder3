@@ -9,6 +9,7 @@ import Project from "./profile/project/project_page";
 import axios from "axios";
 
 const userContent = { width: "50%" };
+const ObjectId = require("mongodb").ObjectID;
 
 class User extends React.Component {
   constructor(props) {
@@ -96,6 +97,7 @@ class User extends React.Component {
       //console.log("Get user response: ");
       //console.log(response.data.user);
       //here need to pass id back from passport call
+
       if (response.data.user) {
         const {
           _id,

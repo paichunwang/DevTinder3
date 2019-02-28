@@ -266,6 +266,7 @@ class AddProject extends React.Component {
       //   Object.keys(skill_req).filter(key => this.state[key])
       // );
       // /user/addProject routes
+      console.log("add project user id", this.props.userID._id);
       axios
         .post("/user/addProject", {
           ownerID: this.props.userID._id,
