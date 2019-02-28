@@ -10,7 +10,11 @@ const projectSchema = new Schema({
   projectSkillReq: { type: Array, unique: false, required: false },
   projectBudget: { type: Number, unique: false, required: false },
   projectDue: { type: Date, unique: false, required: false },
-  projectInit: { type: Date, default: Date.now, required: false }
+  projectInit: { type: Date, default: Date.now, required: false },
+  projectFinish: { type: Date, unique: false, required: false },
+  projectState: { type: String, unique: false, required: false },
+  projectDeveloper: { type: Object, unique: false, required: false },
+  projectInvite: { type: Object, unique: false, required: false }
   // assign, assignee, completed
 });
 

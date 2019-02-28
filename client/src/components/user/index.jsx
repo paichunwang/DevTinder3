@@ -140,7 +140,11 @@ class User extends React.Component {
       .post("/user/callProject", { ownerID: userID })
       .then(response => {
         console.log("Server response from get user project: ", response.data);
-        this.setState({ project: response.data });
+        this.setState({
+          project: response.data,
+          //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
+          currentLocation: "/user/project"
+        });
       })
       .catch(error => {
         console.log("Get user project error: ", error);
@@ -197,6 +201,7 @@ class User extends React.Component {
                   callProject={this.callProject}
                   location={currentLocation}
                   project={project}
+                  complete={true}
                 />
               )}
               {currentLocation === "/user/signout" && "SIGNOUT"}

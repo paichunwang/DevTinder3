@@ -52,7 +52,7 @@ class MainProject extends React.Component {
       userID
     } = this.props;
     // const { expanded } = this.state;
-    console.log(this.props);
+    // console.log(this.props);
 
     return (
       <div className={classes.root}>
@@ -63,6 +63,7 @@ class MainProject extends React.Component {
             callProject={this.callProject}
             location={location}
             project={this.state.project}
+            complete={this.props.complete}
           />
         )}
       </div>
