@@ -258,6 +258,8 @@ class AddProject extends React.Component {
       }
     }
 
+    console.log("add project user id", this.props.userID);
+
     //Project Post
     if (this.state.activeStep === 3) {
       // console.log("Posting to MongoDB", this.props.userID._id);
@@ -266,10 +268,9 @@ class AddProject extends React.Component {
       //   Object.keys(skill_req).filter(key => this.state[key])
       // );
       // /user/addProject routes
-      console.log("add project user id", this.props.userID._id);
       axios
         .post("/user/addProject", {
-          ownerID: this.props.userID._id,
+          ownerID: this.props.userID,
           projectName: this.state.projectName,
           projectDescription: this.state.projectDescription,
           projectSkillReq: Object.keys(skill_req).filter(

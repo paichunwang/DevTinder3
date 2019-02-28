@@ -9,7 +9,6 @@ import Project from "./profile/project/project_page";
 import axios from "axios";
 
 const userContent = { width: "50%" };
-const ObjectId = require("mongodb").ObjectID;
 
 class User extends React.Component {
   constructor(props) {
@@ -38,52 +37,28 @@ class User extends React.Component {
   }
 
   handleChildUpdate = values => {
-    //console.log("hitting handleChildUpdate user index with ", values);
-    //console.log("Value location", [values.location]);
-
-    //need to catch when user name gets replace by "" empty content
+    console.log(this.state);
     if (values.firstName || values.lastName) {
-      this.setState(
-        {
-          [values.location]: values,
-          navBar: {
-            ...this.state.navBar,
-            firstName: values.firstName,
-            lastName: values.lastName
-          }
-        },
-        function() {
-          // console.log(
-          //   "hitting values with first or last name",
-          //   this.state.navBar
-          // );
+      this.setState({
+        [values.location]: values,
+        navBar: {
+          ...this.state.navBar,
+          firstName: values.firstName,
+          lastName: values.lastName
         }
-      );
+      });
     } else if (values.role) {
-      this.setState(
-        {
-          [values.location]: values,
-          navBar: {
-            ...this.state.navBar,
-            role: values.role
-          }
-        },
-        function() {
-          //console.log(
-          //   "hitting role change and updating navbar display state",
-          //   this.state.navBar
-          // );
+      this.setState({
+        [values.location]: values,
+        navBar: {
+          ...this.state.navBar,
+          role: values.role
         }
-      );
+      });
     } else {
-      this.setState(
-        {
-          [values.location]: values
-        },
-        function() {
-          //console.log("Hitting generic value / state change", values);
-        }
-      );
+      this.setState({
+        [values.location]: values
+      });
     }
   };
 
@@ -205,7 +180,7 @@ class User extends React.Component {
                 />
               )}
               {currentLocation === "/user/add" && (
-                <Project addProject={this.addProject} userID={roleChoice} />
+                <Project addProject={this.addProject} userID={userInfo._id} />
               )}
               {currentLocation === "/user/invite" && (
                 <Project inviteProject={this.callProject} />

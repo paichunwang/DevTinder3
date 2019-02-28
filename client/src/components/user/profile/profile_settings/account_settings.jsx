@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
-import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 import axios from "axios";
@@ -36,8 +35,6 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: "userInfo",
-      redirectTo: null,
       id: this.props.display._id,
       profile: this.props.display.profile,
       firstName: this.props.display.firstName,
@@ -108,92 +105,87 @@ class Profile extends React.Component {
   }
 
   render() {
-    if (this.state.redirectTo) {
-      return <Redirect to={{ pathname: this.state.redirectTo }} />;
-    } else {
-      const { classes } = this.props;
-      const { placeholder } = this.state;
-      return (
-        <div
-          className={classes.container}
-          // style={{ border: "1px red solid" }}
+    const { classes } = this.props;
+    const { placeholder } = this.state;
+    return (
+      <div
+        className={classes.container}
+        // style={{ border: "1px red solid" }}
+      >
+        {Object.keys(profile_values).map((keyName, keyIndex) => {
+          if (keyName === "email") {
+            return (
+              <TextField
+                key={keyIndex}
+                id={"outlined-full-width " + keyIndex}
+                label={
+                  profile_values[keyName] + ": Login Credential - Edit Disabled"
+                }
+                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                placeholder={this.state[keyName]}
+                disabled
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            );
+          } else if (keyName === "password" || keyName === "newPassword") {
+            return (
+              <TextField
+                key={keyIndex}
+                name={Object.keys(profile_values)[keyIndex]}
+                id={"outlined-full-width " + keyIndex}
+                label={profile_values[keyName] + ": 6 or more characters"}
+                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                placeholder={placeholder[keyName]}
+                // value={this.state[keyName]}
+                // helperText=""
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                // InputLabelProps={{
+                //   shrink: true
+                // }}
+                type="password"
+                onChange={this.handleChange}
+              />
+            );
+          } else {
+            return (
+              <TextField
+                key={keyIndex}
+                name={Object.keys(profile_values)[keyIndex]}
+                id={"outlined-full-width " + keyIndex}
+                label={profile_values[keyName]}
+                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                // placeholder={placeholder[keyName]}
+                value={this.state[keyName]}
+                // helperText=""
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                // InputLabelProps={{
+                //   shrink: true
+                // }}
+                onChange={this.handleChange}
+              />
+            );
+          }
+        })}
+        <Button
+          style={update_button}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.handleUpdate}
         >
-          {Object.keys(profile_values).map((keyName, keyIndex) => {
-            if (keyName === "email") {
-              return (
-                <TextField
-                  key={keyIndex}
-                  id={"outlined-full-width " + keyIndex}
-                  label={
-                    profile_values[keyName] +
-                    ": Login Credential - Edit Disabled"
-                  }
-                  style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                  placeholder={this.state[keyName]}
-                  disabled
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-              );
-            } else if (keyName === "password" || keyName === "newPassword") {
-              return (
-                <TextField
-                  key={keyIndex}
-                  name={Object.keys(profile_values)[keyIndex]}
-                  id={"outlined-full-width " + keyIndex}
-                  label={profile_values[keyName] + ": 6 or more characters"}
-                  style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                  placeholder={placeholder[keyName]}
-                  // value={this.state[keyName]}
-                  // helperText=""
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  // InputLabelProps={{
-                  //   shrink: true
-                  // }}
-                  type="password"
-                  onChange={this.handleChange}
-                />
-              );
-            } else {
-              return (
-                <TextField
-                  key={keyIndex}
-                  name={Object.keys(profile_values)[keyIndex]}
-                  id={"outlined-full-width " + keyIndex}
-                  label={profile_values[keyName]}
-                  style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                  // placeholder={placeholder[keyName]}
-                  value={this.state[keyName]}
-                  // helperText=""
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  // InputLabelProps={{
-                  //   shrink: true
-                  // }}
-                  onChange={this.handleChange}
-                />
-              );
-            }
-          })}
-          <Button
-            style={update_button}
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.handleUpdate}
-          >
-            Update Account Settings
-          </Button>
-        </div>
-      );
-    }
+          Update Account Settings
+        </Button>
+      </div>
+    );
   }
 }
 

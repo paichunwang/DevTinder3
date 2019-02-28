@@ -39,14 +39,14 @@ class SkillSlider extends React.Component {
     super(props);
     this.state = {
       location: "skillSlider",
-      angular: this.props.display.angular,
-      css: this.props.display.css,
-      html: this.props.display.html,
-      java: this.props.display.java,
-      javascript: this.props.display.javascript,
-      nodejs: this.props.display.nodejs,
-      python: this.props.display.python,
-      reactjs: this.props.display.reactjs
+      angular: this.props.display.angular || 0,
+      css: this.props.display.css || 0,
+      html: this.props.display.html || 0,
+      java: this.props.display.java || 0,
+      javascript: this.props.display.javascript || 0,
+      nodejs: this.props.display.nodejs || 0,
+      python: this.props.display.python || 0,
+      reactjs: this.props.display.reactjs || 0
     };
     //console.log("checking this prop in slider", this.props);
   }

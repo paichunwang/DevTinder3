@@ -52,6 +52,7 @@ class MainProject extends React.Component {
       userID
     } = this.props;
     // const { expanded } = this.state;
+    console.log(this.props);
 
     return (
       <div className={classes.root}>
