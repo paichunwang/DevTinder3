@@ -38,7 +38,7 @@ class Login extends Component {
         if (response.status === 200) {
           this.setState({
             // userInfo: response.data,
-            redirectTo: "/user"
+            redirectTo: "/users"
           });
           //console.log("post login user response: ", response.data);
         }
@@ -60,7 +60,7 @@ class Login extends Component {
       //here need to pass id back from passport call
       if (response.data.user) {
         this.setState({
-          redirectTo: "/user"
+          redirectTo: "/users"
         });
       } else {
         //console.log("No user found.");
