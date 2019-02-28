@@ -1,13 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-// import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-// import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-// import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-// import Typography from "@material-ui/core/Typography";
-// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import AddProject from "./add_project";
+import InviteProject from "./invite_project";
+import CallProject from "./call_project";
 
 const styles = theme => ({
   root: {
@@ -28,19 +25,45 @@ class MainProject extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: null
+      project: this.props.project
     };
+    this.callProject = this.callProject.bind(this);
+  }
+
+  // componentDidMount() {
+  //   this.props.callProject();
+  // }
+
+  // callProject() {
+  //   console.log("Hitting call project on project page");
+  // }
+
+  callProject(info) {
+    this.props.callProject(info);
   }
 
   render() {
-    const { classes, addProject, inviteProject, callProject } = this.props;
+    const {
+      classes,
+      addProject,
+      inviteProject,
+      callProject,
+      location,
+      userID
+    } = this.props;
     // const { expanded } = this.state;
 
     return (
       <div className={classes.root}>
-        {addProject && <AddProject userID={this.props.userID} />}
-        {inviteProject && <div>Invite Project</div>}
-        {callProject && <div>Call Project</div>}
+        {addProject && <AddProject userID={userID} />}
+        {inviteProject && <InviteProject />}
+        {callProject && (
+          <CallProject
+            callProject={this.callProject}
+            location={location}
+            project={this.state.project}
+          />
+        )}
       </div>
     );
   }

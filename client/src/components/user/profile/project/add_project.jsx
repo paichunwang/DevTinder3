@@ -260,20 +260,29 @@ class AddProject extends React.Component {
 
     //Project Post
     if (this.state.activeStep === 3) {
-      console.log("Posting to MongoDB");
+      // console.log("Posting to MongoDB", this.props.userID._id);
+      // console.log(
+      //   "Getting all true skills",
+      //   Object.keys(skill_req).filter(key => this.state[key])
+      // );
       // /user/addProject routes
       axios
-        .post("/update/user", {
+        .post("/user/addProject", {
           ownerID: this.props.userID._id,
           projectName: this.state.projectName,
           projectDescription: this.state.projectDescription,
-          projectSkillReq: "Requirement",
-          projectBudget: this.state.budget
-          // projectDue: this.state.selectedDate,
-          // projectInit: new Date()
+          projectSkillReq: Object.keys(skill_req).filter(
+            key => this.state[key]
+          ),
+          projectBudget: this.state.budget,
+          projectDue: this.state.selectedDate,
+          projectInit: new Date()
         })
         .then(response => {
           console.log("login response: ", response);
+          this.setState(state => ({
+            activeStep: state.activeStep + 1
+          }));
         })
         .catch(error => {
           console.log("add project page error: ", error);
@@ -372,7 +381,7 @@ class AddProject extends React.Component {
     ];
 
     const error = skillList.filter(values => values).length < 1;
-    console.log("addproject props: ", this.props);
+    // console.log("addproject props: ", this.props);
     return (
       <div
         className={classes.container}

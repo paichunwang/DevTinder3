@@ -15,12 +15,13 @@ class User extends React.Component {
     super(props);
 
     this.state = {
-      currentLocation: "/user/add",
+      currentLocation: "/user",
       // set to null since only want what the passport deserializer calls on THIS page.
       userInfo: null,
       skillSlider: null,
       roleChoice: null,
-      navBar: null
+      navBar: null,
+      project: null
     };
     this.handler = this.handler.bind(this);
     this.getCookie = this.getCookie.bind(this);
@@ -87,12 +88,11 @@ class User extends React.Component {
 
   componentDidMount() {
     this.getCookie();
-    this.callProject();
   }
 
   //this call is not passported
   getCookie() {
-    axios.get("/user/").then(response => {
+    axios.get("/user").then(response => {
       //console.log("Get user response: ");
       //console.log(response.data.user);
       //here need to pass id back from passport call
@@ -142,8 +142,8 @@ class User extends React.Component {
             navBar: { firstName, lastName, role }
           },
           function() {
-            //console.log(this.state.userInfo, this.state.skillSlider);
-            //console.log(this.state.roleChoice, this.state.navBar);
+            // pass in user id from passport deserializer to call inital project
+            this.callProject(_id);
           }
         );
       } else {
@@ -156,8 +156,19 @@ class User extends React.Component {
     console.log("Hitting user index addProject");
   }
 
-  callProject() {
-    console.log("Hitting user index callProject");
+  callProject(userID) {
+    console.log("Hitting user index callProject for id: ", userID);
+    // if (this.state.userInfo._id) {
+    axios
+      .post("/user/callProject", { ownerID: userID })
+      .then(response => {
+        console.log("Server response from get user project: ", response.data);
+        this.setState({ project: response.data });
+      })
+      .catch(error => {
+        console.log("Get user project error: ", error);
+      });
+    // }
   }
 
   render() {
@@ -168,7 +179,8 @@ class User extends React.Component {
       userInfo,
       skillSlider,
       roleChoice,
-      navBar
+      navBar,
+      project
     } = this.state;
     // const { userInfo } = this.state.userInfo;
 
@@ -197,10 +209,18 @@ class User extends React.Component {
                 <Project inviteProject={this.callProject} />
               )}
               {currentLocation === "/user/project" && (
-                <Project callProject={this.callProject} />
+                <Project
+                  callProject={this.callProject}
+                  location={currentLocation}
+                  project={project}
+                />
               )}
               {currentLocation === "/user/complete" && (
-                <Project callProject={this.callProject} />
+                <Project
+                  callProject={this.callProject}
+                  location={currentLocation}
+                  project={project}
+                />
               )}
               {currentLocation === "/user/signout" && "SIGNOUT"}
             </div>

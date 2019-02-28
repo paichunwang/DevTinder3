@@ -85,6 +85,7 @@ app.post("/update/user", (req, res) => {
   });
 });
 
+// using the project schema to add a new project
 app.post("/user/addProject", (req, res) => {
   const {
     ownerID,
@@ -98,33 +99,35 @@ app.post("/user/addProject", (req, res) => {
 
   console.log("add project", req.body);
 
-  Project.findOne({ projectName: projectName }, (err, project) => {
-    if (err) {
-      console.log("project findone error: ", err);
-    } else if (project) {
-      res.json({
-        error: `Sorry, already a project with the name: ${projectName}`
-      });
-    } else {
-      const newProject = new Project({
-        ownerID: ownerID,
-        projectName: projectName,
-        projectDescription: projectDescription,
-        projectSkillReq: projectSkillReq,
-        projectBudget: projectBudget
-        // projectDue: projectDue,
-        // projectInit: projectInit
-      });
-      newProject.save((err, savedProject) => {
-        if (err) return res.json(err);
-        res.json(savedProject);
-      });
-    }
+  // Create an instance of model SomeModel
+  const newProject = new Project({
+    ownerID: ownerID,
+    projectName: projectName,
+    projectDescription: projectDescription,
+    projectSkillReq: projectSkillReq,
+    projectBudget: projectBudget,
+    projectDue: projectDue,
+    projectInit: projectInit
+  });
+
+  // Save the new model instance, passing a callback
+  newProject.save((err, savedProject) => {
+    console.log("saveproject", savedProject);
+    if (err) return res.json(err);
+    res.json(savedProject);
   });
 });
 
-app.get("/user/callProject", (req, res) => {
-  // User.findOne;
+//calls db with id passed from component to get all open and completed projects
+app.post("/user/callProject", (req, res) => {
+  const { ownerID } = req.body;
+  Project.find({ ownerID: ownerID }, function(err, project) {
+    if (err) {
+      console.log("Project find one error: ", err);
+    } else {
+      res.send(project);
+    }
+  });
 });
 
 //user account re-render method
