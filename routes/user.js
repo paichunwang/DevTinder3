@@ -130,6 +130,17 @@ app.post("/user/callProject", (req, res) => {
   });
 });
 
+app.post("/user/completeProject", (req, res) => {
+  const { id } = req.body;
+  Project.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
+    if (err) {
+      console.log("Complete Project error", err);
+    } else {
+      res.json(user);
+    }
+  });
+});
+
 //user account re-render method
 // app.get("/update/user/render", (req, res) => {
 //   User.findById(req.query.id, (err, user) => {

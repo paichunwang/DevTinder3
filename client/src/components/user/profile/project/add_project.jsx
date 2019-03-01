@@ -244,7 +244,7 @@ class AddProject extends React.Component {
 
     //Project Budget Checker
     if (this.state.activeStep === 2) {
-      console.log("Hitting 2");
+      // console.log("Hitting 2");
       if (this.state.budget.length < 1) {
         // console.log("Error on budget");
         this.setState(state => ({
@@ -258,7 +258,7 @@ class AddProject extends React.Component {
       }
     }
 
-    console.log("add project user id", this.props.userID);
+    // console.log("add project user id", this.props.userID);
 
     //Project Post
     if (this.state.activeStep === 3) {
@@ -281,7 +281,7 @@ class AddProject extends React.Component {
           projectInit: new Date()
         })
         .then(response => {
-          console.log("login response: ", response);
+          // console.log("login response: ", response);
           this.setState(state => ({
             activeStep: state.activeStep + 1
           }));
@@ -354,6 +354,14 @@ class AddProject extends React.Component {
     // console.log("the date in date changer", date);
     this.setState({ selectedDate: date });
   };
+
+  componentDidMount() {
+    this.handleCallproject();
+  }
+
+  handleCallproject() {
+    this.props.callProject();
+  }
 
   render() {
     // console.log("the THIS of class Profile", this);

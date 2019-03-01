@@ -26,6 +26,7 @@ class User extends React.Component {
     this.handler = this.handler.bind(this);
     this.getCookie = this.getCookie.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
+    // this.callProject = this.callProject.bind(this);
   }
 
   handler(location) {
@@ -120,7 +121,7 @@ class User extends React.Component {
           },
           function() {
             // pass in user id from passport deserializer to call inital project
-            this.callProject(_id);
+            this.initCallProject(_id);
           }
         );
       } else {
@@ -133,27 +134,46 @@ class User extends React.Component {
     console.log("Hitting user index addProject");
   }
 
-  callProject(userID) {
-    console.log("Hitting user index callProject for id: ", userID);
+  callProject = () => {
+    console.log(this.state.userInfo._id);
+    axios
+      .post("/user/callProject", { ownerID: this.state.userInfo._id })
+      .then(response => {
+        // console.log("Server response from get user project: ", response.data);
+        this.setState({
+          project: response.data
+          //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
+          // currentLocation: "/user/project"
+        });
+        // console.log(this.state);
+      })
+      .catch(error => {
+        console.log("Get user project error: ", error);
+      });
+  };
+
+  initCallProject = userID => {
+    // console.log("Hitting user index callProject for id: ", userID);
     // if (this.state.userInfo._id) {
     axios
       .post("/user/callProject", { ownerID: userID })
       .then(response => {
-        console.log("Server response from get user project: ", response.data);
+        // console.log("Server response from get user project: ", response.data);
         this.setState({
           project: response.data,
           //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          currentLocation: "/user/project"
+          currentLocation: "/user/complete"
         });
+        // console.log(this.state);
       })
       .catch(error => {
         console.log("Get user project error: ", error);
       });
     // }
-  }
+  };
 
   render() {
-    //console.log(this.props);
+    // console.log("re-rendering user index");
     //console.log("this.state in user index", this.state);
     const {
       currentLocation,
@@ -184,13 +204,21 @@ class User extends React.Component {
                 />
               )}
               {currentLocation === "/user/add" && (
-                <Project addProject={this.addProject} userID={userInfo._id} />
+                <Project
+                  addProject={this.addProject}
+                  userID={userInfo._id}
+                  callProject={this.callProject}
+                />
               )}
               {currentLocation === "/user/invite" && (
-                <Project inviteProject={this.callProject} />
+                <Project
+                  inviteProject={this.callProject}
+                  userID={userInfo._id}
+                />
               )}
               {currentLocation === "/user/project" && (
                 <Project
+                  userID={userInfo._id}
                   callProject={this.callProject}
                   location={currentLocation}
                   project={project}
@@ -198,6 +226,7 @@ class User extends React.Component {
               )}
               {currentLocation === "/user/complete" && (
                 <Project
+                  userID={userInfo._id}
                   callProject={this.callProject}
                   location={currentLocation}
                   project={project}

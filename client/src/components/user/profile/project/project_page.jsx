@@ -25,22 +25,27 @@ class MainProject extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      project: this.props.project
+      // project: this.props.project
     };
     this.callProject = this.callProject.bind(this);
   }
 
+  //this catch when user change page
   // componentDidMount() {
-  //   this.props.callProject();
+  //   console.log("hiting project page did mount");
+  //   this.setState({ project: this.props.project }, () => {
+  //     console.log(this.state);
+  //   });
   // }
 
   // callProject() {
   //   console.log("Hitting call project on project page");
   // }
 
-  callProject(info) {
-    this.props.callProject(info);
-  }
+  callProject = () => {
+    console.log("hitting project page");
+    this.props.callProject();
+  };
 
   render() {
     const {
@@ -52,17 +57,21 @@ class MainProject extends React.Component {
       userID
     } = this.props;
     // const { expanded } = this.state;
-    // console.log(this.props);
+    // console.log("project page state: ", this.state);
+    // console.log("project page props: ", this.props);
 
     return (
       <div className={classes.root}>
-        {addProject && <AddProject userID={userID} />}
-        {inviteProject && <InviteProject />}
+        {addProject && (
+          <AddProject userID={userID} callProject={this.callProject} />
+        )}
+        {inviteProject && <InviteProject userID={userID} />}
         {callProject && (
           <CallProject
+            userID={userID}
             callProject={this.callProject}
             location={location}
-            project={this.state.project}
+            project={this.props.project}
             complete={this.props.complete}
           />
         )}
