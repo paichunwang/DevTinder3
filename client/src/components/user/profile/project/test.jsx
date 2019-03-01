@@ -139,15 +139,104 @@ class ControlledExpansionPanels extends React.Component {
   };
 
   render() {
-    const { classes, project, complete } = this.props;
+    const project = [
+      {
+        _id: "5c7767a2d744ea35e8800afc",
+        projectSkillReq: ["angular", "css", "html", "java"],
+        ownerID: "5c77100b13cfbf0aac3299a9",
+        projectName: "Project #1",
+        projectDescription: "Project #1",
+        projectBudget: 123,
+        projectDue: "2019-04-01T03:46:00.000Z",
+        projectInit: "2019-02-28T04:46:26.079Z",
+        projectDeveloper: {
+          "John Smith": "458",
+          "Mary Sue": "798",
+          "Job Bob": "987"
+        },
+        projectInvite: {
+          "Billy Joe": "123",
+          "David Smithe": "456"
+        },
+        __v: 0,
+        projectFinish: "2019-03-01T08:12:53.825Z",
+        projectState: "complete"
+      },
+      {
+        _id: "5c7767a2d744ea35e8800afb",
+        projectSkillReq: ["angular", "css", "html", "java"],
+        ownerID: "5c77100b13cfbf0aac3299a9",
+        projectName: "Project #1",
+        projectDescription: "Project #1",
+        projectBudget: 123,
+        projectDue: "2019-04-01T03:46:00.000Z",
+        projectInit: "2019-02-28T04:46:26.079Z",
+        projectDeveloper: {
+          "John Smith": "458",
+          "Mary Sue": "798",
+          "Job Bob": "987"
+        },
+        projectInvite: {
+          "Billy Joe": "123",
+          "David Smithe": "456"
+        },
+        projectFinish: "2019-03-01T08:12:44.298Z"
+      },
+      {
+        _id: "5c7767a2d744ea35e8800afd",
+        projectSkillReq: ["angular", "css", "html", "java"],
+        ownerID: "5c77100b13cfbf0aac3299a9",
+        projectName: "Project #1",
+        projectDescription: "Project #1",
+        projectBudget: 123,
+        projectDue: "2019-04-01T03:46:00.000Z",
+        projectInit: "2019-02-28T04:46:26.079Z",
+        projectDeveloper: {
+          "John Smith": "458",
+          "Mary Sue": "798",
+          "Job Bob": "987"
+        },
+        projectInvite: {
+          "Billy Joe": "123",
+          "David Smithe": "456"
+        },
+        __v: 0,
+        projectFinish: "2019-03-01T08:12:58.262Z"
+      },
+      {
+        _id: "5c7767a2d744ea35e8800afe",
+        projectSkillReq: ["angular", "css", "html", "java"],
+        ownerID: "5c77100b13cfbf0aac3299a9",
+        projectName: "Project #1",
+        projectDescription: "Project #1",
+        projectBudget: 123,
+        projectDue: "2019-04-01T03:46:00.000Z",
+        projectInit: "2019-02-28T04:46:26.079Z",
+        projectDeveloper: {
+          "John Smith": "458",
+          "Mary Sue": "798",
+          "Job Bob": "987"
+        },
+        projectInvite: {
+          "Billy Joe": "123",
+          "David Smithe": "456"
+        },
+        __v: 0,
+        projectFinish: "2019-03-01T08:00:25.479Z"
+      }
+    ];
+
+    const { classes, complete } = this.props;
     const { expanded } = this.state;
-    console.log(this.props);
-    if (project) {
+    if (true) {
       return (
         <div className={classes.root}>
           {/* THIS IS OPEN PROJECT PAGE */}
           {!complete && (
             <>
+              {project.forEach(entry => {
+                console.log(entry);
+              })}
               {Object.keys(project).map((keyName, keyIndex) => {
                 if (!project[keyIndex].projectState) {
                   return (
@@ -193,19 +282,10 @@ class ControlledExpansionPanels extends React.Component {
                           className={classes.column}
                         >
                           <Typography variant="caption">
-                            {this.props.project.developer == null && (
-                              <>
-                                <Typography
-                                  className={classes.secondaryHeading}
-                                >
-                                  Invite a Developer
-                                </Typography>
-                                <InviteDeveloper />
-                              </>
-                            )}
-                            {this.props.project.developer && (
-                              <InviteDeveloper />
-                            )}
+                            <Typography className={classes.secondaryHeading}>
+                              Invite a Developer
+                            </Typography>
+                            <InviteDeveloper />
                           </Typography>
                         </div>
                         <div
@@ -253,8 +333,14 @@ class ControlledExpansionPanels extends React.Component {
                                   return (
                                     <Tooltip
                                       key={avatarIndex}
-                                      title={avatarIndex}
+                                      title={avatarName}
                                     >
+                                      {/* <Avatar
+                                        style={{ border: "1px red solid" }}
+                                        className={classes.avatar}
+                                      >
+                                        L
+                                      </Avatar> */}
                                       <Chip
                                         label={avatarName.charAt(0)}
                                         className={classes.chip}
@@ -364,173 +450,7 @@ class ControlledExpansionPanels extends React.Component {
               })}
             </>
           )}
-          {/* THIS IS COMPLETE PROJECT PAGE */}
-          {complete && (
-            <>
-              {Object.keys(project).map((keyName, keyIndex) => {
-                if (project[keyIndex].projectState) {
-                  return (
-                    <ExpansionPanel
-                      key={keyIndex}
-                      expanded={expanded === project[keyName]._id}
-                      onChange={this.handleChange(project[keyName]._id)}
-                    >
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <div className={classes.column}>
-                          <Typography className={classes.secondaryHeading}>
-                            Project Name: <br />
-                          </Typography>
-                          <Typography className={classes.heading}>
-                            {project[keyName].projectName}
-                          </Typography>
-                        </div>
-                        <div className={classes.column}>
-                          <Typography className={classes.secondaryHeading}>
-                            Project ID:
-                          </Typography>
-                          <Typography className={classes.heading}>
-                            {project[keyName]._id}
-                          </Typography>
-                        </div>
-                        <div className={classes.column}>
-                          <Typography className={classes.secondaryHeading}>
-                            Project Created On:
-                          </Typography>
-                          <Typography className={classes.heading}>
-                            {moment(project[keyName].projectInit).format(
-                              "MMM Do YY, h:mm a"
-                            )}
-                          </Typography>
-                        </div>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails
-                        style={{ height: "80px", backgroundColor: "#fafafa" }}
-                        className={classes.details}
-                      >
-                        <div
-                          style={{ height: "100%" }}
-                          className={classes.column}
-                        >
-                          <Typography className={classes.secondaryHeading}>
-                            Developers:
-                          </Typography>
-                          <div>
-                            {project[keyIndex].projectInvite &&
-                              Object.keys(
-                                project[keyName].projectDeveloper
-                              ).map((avatarName, avatarIndex) => {
-                                return (
-                                  <Tooltip key={avatarIndex} title={avatarName}>
-                                    {/* <Avatar
-                                        style={{ border: "1px red solid" }}
-                                        className={classes.avatar}
-                                      >
-                                        L
-                                      </Avatar> */}
-                                    <Chip
-                                      color="primary"
-                                      label={avatarName.charAt(0)}
-                                      className={classes.chip}
-                                    />
-                                  </Tooltip>
-                                );
-                              })}
-                          </div>
-                        </div>
-                        <div
-                          style={{ height: "100%" }}
-                          className={classes.column}
-                        >
-                          <Typography className={classes.secondaryHeading}>
-                            Project Budget:
-                          </Typography>
-                          <Typography className={classes.heading}>
-                            ${project[keyName].projectBudget}
-                          </Typography>
-                        </div>
-                        <div
-                          style={{
-                            height: "100%",
-                            paddingRight: "36px"
-                          }}
-                          className={classNames(classes.column)}
-                        >
-                          <Typography className={classes.secondaryHeading}>
-                            Project Due Date
-                          </Typography>
-                          <Typography className={classes.heading}>
-                            {moment(project[keyName].projectDue).format(
-                              "MMM Do YY"
-                            )}
-                          </Typography>
-                          <Typography className={classes.secondaryHeading}>
-                            Project Completion Date
-                          </Typography>
-                          <Typography className={classes.heading}>
-                            {moment(project[keyName].projectFinish).format(
-                              "MMM Do YY"
-                            )}
-                          </Typography>
-                        </div>
-                      </ExpansionPanelDetails>
 
-                      <ExpansionPanelDetails>
-                        <div style={{ width: "100%" }} className={classes.row}>
-                          <Typography className={classes.secondaryHeading}>
-                            Project Skill Requirement
-                          </Typography>
-                          {Object.keys(project[keyName].projectSkillReq).map(
-                            (subkeyName, subkeyIndex) => {
-                              return (
-                                <Tooltip
-                                  style={{
-                                    margin: "0px 10px"
-                                  }}
-                                  key={subkeyIndex}
-                                  title={project[keyName].projectSkillReq[
-                                    subkeyIndex
-                                  ].toUpperCase()}
-                                  aria-label={
-                                    project[keyName].projectSkillReq[
-                                      subkeyIndex
-                                    ]
-                                  }
-                                >
-                                  <FontAwesomeIcon
-                                    icon={
-                                      skillShield[
-                                        project[keyName].projectSkillReq[
-                                          subkeyName
-                                        ]
-                                      ]
-                                    }
-                                    size="3x"
-                                    color="lightgray"
-                                  />
-                                </Tooltip>
-                              );
-                            }
-                          )}
-                        </div>
-                      </ExpansionPanelDetails>
-                      <Divider />
-                      <ExpansionPanelActions>
-                        <Button
-                          size="small"
-                          color="primary"
-                          onClick={this.handleChange(project[keyName]._id)}
-                        >
-                          Close Project Tab
-                        </Button>
-                      </ExpansionPanelActions>
-                    </ExpansionPanel>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </>
-          )}
           <Tooltip
             style={{
               margin: "0px 10px"

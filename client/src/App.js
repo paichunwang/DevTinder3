@@ -6,7 +6,7 @@ import Loginpage from "./components/loginpage/index";
 import Signpage from "./components/signpage/index";
 import Started from "./components/gettingstarted/index";
 import User from "./components/user/index";
-import Test from "./components/user/profile/project/invite_developer";
+import Test from "./components/user/profile/project/test";
 
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -33,7 +33,7 @@ class App extends Component {
               <Route exact path="/signup" component={Signpage} />
               <Route exact path="/gettingstarted" component={Started} />
               <Route exact path="/users" component={User} />
-              <Route exact path="/testing" component={Test} />
+              <Route exact path="/test" component={Test} />
             </Switch>
           </div>
         </Router>

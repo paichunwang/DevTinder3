@@ -136,8 +136,20 @@ class User extends React.Component {
 
   callProject = () => {
     console.log(this.state.userInfo._id);
+    let searchField, searchID;
+    if (this.state.roleChoice.role === "client") {
+      searchField = "ownerID";
+      searchID = this.state.userInfo._id;
+    } else {
+      searchField = "projectDeveloper.devID";
+      searchID = this.state.userInfo._id;
+      // { $elemMatch: { qty: { $gt: 10, $lte: 20 } } }
+    }
     axios
-      .post("/user/callProject", { ownerID: this.state.userInfo._id })
+      .post("/user/callProject", {
+        searchField: searchField,
+        searchID: searchID
+      })
       .then(response => {
         // console.log("Server response from get user project: ", response.data);
         this.setState({
@@ -153,16 +165,25 @@ class User extends React.Component {
   };
 
   initCallProject = userID => {
-    // console.log("Hitting user index callProject for id: ", userID);
-    // if (this.state.userInfo._id) {
+    let searchField, searchID;
+    if (this.state.roleChoice.role === "client") {
+      searchField = "ownerID";
+      searchID = userID;
+    } else {
+      searchField = "projectDeveloper.devID";
+      searchID = "{" + userID + "}";
+    }
     axios
-      .post("/user/callProject", { ownerID: userID })
+      .post("/user/callProject", {
+        searchField: searchField,
+        searchID: searchID
+      })
       .then(response => {
         // console.log("Server response from get user project: ", response.data);
         this.setState({
-          project: response.data,
+          project: response.data
           //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          currentLocation: "/user/complete"
+          // currentLocation: "/user/complete"
         });
         // console.log(this.state);
       })

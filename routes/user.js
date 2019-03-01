@@ -120,11 +120,18 @@ app.post("/user/addProject", (req, res) => {
 
 //calls db with id passed from component to get all open and completed projects
 app.post("/user/callProject", (req, res) => {
-  const { ownerID } = req.body;
-  Project.find({ ownerID: ownerID }, function(err, project) {
+  // console.log("req body", req.body);
+  let name = req.body.searchField;
+  let value = req.body.searchID;
+  console.log(typeof value, value);
+  // let query = {};
+  // query[name] = value;
+  // console.log(query);
+  Project.find({ [name]: value }, function(err, project) {
     if (err) {
       console.log("Project find one error: ", err);
     } else {
+      console.log(project);
       res.send(project);
     }
   });
