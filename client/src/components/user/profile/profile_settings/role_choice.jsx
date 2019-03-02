@@ -6,6 +6,8 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 
+import { withSnackbar } from "notistack";
+
 import Button from "@material-ui/core/Button";
 
 import axios from "axios";
@@ -59,6 +61,9 @@ class RadioButtonsGroup extends React.Component {
         if (response.status === 200) {
           this.props.onChildUpdate(this.state);
         }
+        this.props.enqueueSnackbar("Role successfully updated.", {
+          variant: "success"
+        });
       })
       .catch(error => {
         //console.log("role update error: ", error);
@@ -112,4 +117,4 @@ RadioButtonsGroup.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(RadioButtonsGroup);
+export default withSnackbar(withStyles(styles)(RadioButtonsGroup));

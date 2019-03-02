@@ -141,6 +141,7 @@ class User extends React.Component {
       searchField = "ownerID";
       searchID = this.state.userInfo._id;
     } else {
+      console.log("hitting developer");
       searchField = "projectDeveloper.devID";
       searchID = this.state.userInfo._id;
       // { $elemMatch: { qty: { $gt: 10, $lte: 20 } } }
@@ -151,7 +152,7 @@ class User extends React.Component {
         searchID: searchID
       })
       .then(response => {
-        // console.log("Server response from get user project: ", response.data);
+        console.log("Server response from get user project: ", response.data);
         this.setState({
           project: response.data
           //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
@@ -171,7 +172,7 @@ class User extends React.Component {
       searchID = userID;
     } else {
       searchField = "projectDeveloper.devID";
-      searchID = "{" + userID + "}";
+      searchID = userID;
     }
     axios
       .post("/user/callProject", {
@@ -183,7 +184,7 @@ class User extends React.Component {
         this.setState({
           project: response.data
           //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          // currentLocation: "/user/complete"
+          // currentLocation: "/user/project"
         });
         // console.log(this.state);
       })
@@ -195,7 +196,7 @@ class User extends React.Component {
 
   render() {
     // console.log("re-rendering user index");
-    //console.log("this.state in user index", this.state);
+    // console.log("this.state in user index", this.state);
     const {
       currentLocation,
       userInfo,
@@ -222,6 +223,7 @@ class User extends React.Component {
                   skillSlider={skillSlider}
                   roleChoice={roleChoice}
                   onChildUpdate={this.handleChildUpdate}
+                  roleChange={this.callProject}
                 />
               )}
               {currentLocation === "/user/add" && (
@@ -243,6 +245,7 @@ class User extends React.Component {
                   callProject={this.callProject}
                   location={currentLocation}
                   project={project}
+                  roleChoice={roleChoice}
                 />
               )}
               {currentLocation === "/user/complete" && (
@@ -251,6 +254,7 @@ class User extends React.Component {
                   callProject={this.callProject}
                   location={currentLocation}
                   project={project}
+                  roleChoice={roleChoice}
                   complete={true}
                 />
               )}

@@ -20,6 +20,7 @@
     "material-ui-pickers": "^2.2.1",
     "moment": "^2.24.0",
     "mongoose": "^5.4.13",
+    "notistack": "^0.4.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "react": "^16.8.1",

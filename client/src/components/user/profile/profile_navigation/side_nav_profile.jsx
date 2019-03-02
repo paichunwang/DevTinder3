@@ -161,6 +161,11 @@ class Sidenav extends React.Component {
             >
               {display.firstName + " " + display.lastName}
               <ArrowRight style={{ fontSize: "10pt" }} />{" "}
+              {display.role &&
+                display.role.charAt(0).toUpperCase() +
+                  display.role.substring(1)}
+              {!display.role && "Undefined Role"}
+              <ArrowRight style={{ fontSize: "10pt" }} />{" "}
               {ListRoutes[currentLocation]}
             </Typography>
             <Button color="inherit" style={Logoutbutton}>

@@ -27,6 +27,9 @@ TabContainer.propTypes = {
 const styles = () => ({
   root: {
     flexGrow: 1
+  },
+  "MuiTab-labelContainer-182": {
+    border: "1px red solid"
   }
 });
 
@@ -43,6 +46,7 @@ class ProfileIndex extends React.Component {
   handleChildUpdate = values => {
     //console.log("hitting handleChildUpdate profile index with ", values);
     this.props.onChildUpdate(values);
+    this.props.roleChange();
   };
 
   render() {
@@ -60,7 +64,51 @@ class ProfileIndex extends React.Component {
           centered
         >
           <Tab label="Account Settings" />
-          <Tab label="Indicate Skills" />
+          {roleChoice.role === "client" && (
+            <Tab
+              style={{ backgroundColor: "#f2f2f2", maxWidth: "160px" }}
+              label={
+                <>
+                  <Typography
+                    style={{
+                      fontSize: "7px",
+                      // border: "1px red solid",
+                      margin: "0px"
+                    }}
+                  >
+                    Disabled on Client Role
+                  </Typography>
+                  <Typography variant="caption" style={{ color: "red" }}>
+                    Indicated Skills
+                  </Typography>
+                </>
+              }
+              disabled
+            />
+          )}
+          {roleChoice.role === "developer" && <Tab label="Indicate Skills" />}
+          {roleChoice.role === undefined && (
+            <Tab
+              style={{ backgroundColor: "#f2f2f2", maxWidth: "160px" }}
+              label={
+                <>
+                  <Typography
+                    style={{
+                      fontSize: "7px",
+                      // border: "1px red solid",
+                      margin: "0px"
+                    }}
+                  >
+                    Select Role First
+                  </Typography>
+                  <Typography variant="caption" style={{ color: "red" }}>
+                    Indicated Skills
+                  </Typography>
+                </>
+              }
+              disabled
+            />
+          )}
           <Tab label="Select Role" />
         </Tabs>
         {value === 0 && (

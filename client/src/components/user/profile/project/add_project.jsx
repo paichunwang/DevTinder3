@@ -29,6 +29,8 @@ import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
 
+import { withSnackbar } from "notistack";
+
 // const update_button = {
 //   // border: "1px red solid",
 //   width: "100%",
@@ -285,6 +287,12 @@ class AddProject extends React.Component {
           this.setState(state => ({
             activeStep: state.activeStep + 1
           }));
+          this.props.enqueueSnackbar(
+            "Project successfully added to database.",
+            {
+              variant: "success"
+            }
+          );
         })
         .catch(error => {
           console.log("add project page error: ", error);
@@ -450,9 +458,7 @@ class AddProject extends React.Component {
             }}
           >
             <Paper square elevation={0} className={classes.resetContainer}>
-              <Typography>
-                All steps completed - you&apos;re finished
-              </Typography>
+              <Typography>Project Created, Reset to create another.</Typography>
               <Button onClick={this.handleReset} className={classes.button}>
                 Reset
               </Button>
@@ -468,4 +474,4 @@ AddProject.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AddProject);
+export default withSnackbar(withStyles(styles)(AddProject));

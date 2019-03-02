@@ -5,6 +5,8 @@ import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
 
+import { withSnackbar } from "notistack";
+
 import axios from "axios";
 
 const update_button = {
@@ -85,6 +87,9 @@ class Profile extends React.Component {
         if (response.status === 200) {
           this.props.onChildUpdate(this.state);
         }
+        this.props.enqueueSnackbar("Account Settings successfully updated.", {
+          variant: "success"
+        });
       })
       .catch(error => {
         //console.log("user account page update error: ", error);
@@ -119,10 +124,13 @@ class Profile extends React.Component {
                 key={keyIndex}
                 id={"outlined-full-width " + keyIndex}
                 label={
-                  profile_values[keyName] + ": Login Credential - Edit Disabled"
+                  profile_values[keyName] + " Edit Disabled : Login Credential"
                 }
-                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                placeholder={this.state[keyName]}
+                style={{
+                  margin: "10px 25px",
+                  textAlign: "-webkit-left"
+                }}
+                value={this.state[keyName]}
                 disabled
                 fullWidth
                 margin="normal"
@@ -193,4 +201,4 @@ Profile.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Profile);
+export default withSnackbar(withStyles(styles)(Profile));

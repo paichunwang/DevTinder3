@@ -123,7 +123,7 @@ app.post("/user/callProject", (req, res) => {
   // console.log("req body", req.body);
   let name = req.body.searchField;
   let value = req.body.searchID;
-  console.log(typeof value, value);
+  // console.log(typeof value, value);
   // let query = {};
   // query[name] = value;
   // console.log(query);
@@ -131,7 +131,7 @@ app.post("/user/callProject", (req, res) => {
     if (err) {
       console.log("Project find one error: ", err);
     } else {
-      console.log(project);
+      // console.log(project);
       res.send(project);
     }
   });

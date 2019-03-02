@@ -71,6 +71,7 @@ class MainProject extends React.Component {
             userID={userID}
             callProject={this.callProject}
             location={location}
+            roleChoice={this.props.roleChoice}
             project={this.props.project}
             complete={this.props.complete}
           />

@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 
 import axios from "axios";
 
+import { withSnackbar } from "notistack";
+
 const update_button = {
   // border: "1px red solid",
   width: "100%",
@@ -88,6 +90,9 @@ class SkillSlider extends React.Component {
         if (response.status === 200) {
           this.props.onChildUpdate(this.state);
         }
+        this.props.enqueueSnackbar("Skill Settings successfully updated.", {
+          variant: "success"
+        });
       })
       .catch(error => {
         //console.log("skill slider update error: ", error);
@@ -169,4 +174,4 @@ SkillSlider.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SkillSlider);
+export default withSnackbar(withStyles(styles)(SkillSlider));
