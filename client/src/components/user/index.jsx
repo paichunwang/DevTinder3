@@ -15,8 +15,6 @@ class User extends React.Component {
     super(props);
 
     this.state = {
-      currentLocation: "/user",
-      // set to null since only want what the passport deserializer calls on THIS page.
       userInfo: null,
       skillSlider: null,
       roleChoice: null,
@@ -24,9 +22,10 @@ class User extends React.Component {
       project: null
     };
     this.handler = this.handler.bind(this);
-    this.getCookie = this.getCookie.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
+    // this.getCookie = this.getCookie.bind(this);
+    // this.componentDidMount = this.componentDidMount.bind(this);
     // this.callProject = this.callProject.bind(this);
+    console.log(this.props);
   }
 
   handler(location) {
@@ -63,135 +62,135 @@ class User extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this.getCookie();
-  }
+  // componentDidMount() {
+  //   this.getCookie();
+  // }
 
-  //this call is not passported
-  getCookie() {
-    axios.get("/user").then(response => {
-      //console.log("Get user response: ");
-      //console.log(response.data.user);
-      //here need to pass id back from passport call
+  // //this call is not passported
+  // getCookie() {
+  //   axios.get("/user").then(response => {
+  //     //console.log("Get user response: ");
+  //     //console.log(response.data.user);
+  //     //here need to pass id back from passport call
 
-      if (response.data.user) {
-        const {
-          _id,
-          email,
-          firstName,
-          lastName,
-          profile,
-          github,
-          portfolio,
-          angular,
-          css,
-          html,
-          java,
-          javascript,
-          nodejs,
-          python,
-          reactjs,
-          role
-        } = response.data.user[0];
-        this.setState(
-          {
-            userInfo: {
-              _id,
-              email,
-              firstName,
-              lastName,
-              profile,
-              github,
-              portfolio
-            },
-            skillSlider: {
-              _id,
-              angular,
-              css,
-              html,
-              java,
-              javascript,
-              nodejs,
-              python,
-              reactjs
-            },
-            roleChoice: { _id, role },
-            navBar: { firstName, lastName, role }
-          },
-          function() {
-            // pass in user id from passport deserializer to call inital project
-            this.initCallProject(_id);
-          }
-        );
-      } else {
-        //console.log("No user found. redircting user back to /login");
-      }
-    });
-  }
+  //     if (response.data.user) {
+  //       const {
+  //         _id,
+  //         email,
+  //         firstName,
+  //         lastName,
+  //         profile,
+  //         github,
+  //         portfolio,
+  //         angular,
+  //         css,
+  //         html,
+  //         java,
+  //         javascript,
+  //         nodejs,
+  //         python,
+  //         reactjs,
+  //         role
+  //       } = response.data.user[0];
+  //       this.setState(
+  //         {
+  //           userInfo: {
+  //             _id,
+  //             email,
+  //             firstName,
+  //             lastName,
+  //             profile,
+  //             github,
+  //             portfolio
+  //           },
+  //           skillSlider: {
+  //             _id,
+  //             angular,
+  //             css,
+  //             html,
+  //             java,
+  //             javascript,
+  //             nodejs,
+  //             python,
+  //             reactjs
+  //           },
+  //           roleChoice: { _id, role },
+  //           navBar: { firstName, lastName, role }
+  //         },
+  //         function() {
+  //           // pass in user id from passport deserializer to call inital project
+  //           this.initCallProject(_id);
+  //         }
+  //       );
+  //     } else {
+  //       //console.log("No user found. redircting user back to /login");
+  //     }
+  //   });
+  // }
 
-  addProject() {
-    console.log("Hitting user index addProject");
-  }
+  // addProject() {
+  //   console.log("Hitting user index addProject");
+  // }
 
-  callProject = () => {
-    console.log(this.state.userInfo._id);
-    let searchField, searchID;
-    if (this.state.roleChoice.role === "client") {
-      searchField = "ownerID";
-      searchID = this.state.userInfo._id;
-    } else {
-      console.log("hitting developer");
-      searchField = "projectDeveloper.devID";
-      searchID = this.state.userInfo._id;
-      // { $elemMatch: { qty: { $gt: 10, $lte: 20 } } }
-    }
-    axios
-      .post("/user/callProject", {
-        searchField: searchField,
-        searchID: searchID
-      })
-      .then(response => {
-        console.log("Server response from get user project: ", response.data);
-        this.setState({
-          project: response.data
-          //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          // currentLocation: "/user/project"
-        });
-        // console.log(this.state);
-      })
-      .catch(error => {
-        console.log("Get user project error: ", error);
-      });
-  };
+  // callProject = () => {
+  //   console.log(this.state.userInfo._id);
+  //   let searchField, searchID;
+  //   if (this.state.roleChoice.role === "client") {
+  //     searchField = "ownerID";
+  //     searchID = this.state.userInfo._id;
+  //   } else {
+  //     console.log("hitting developer");
+  //     searchField = "projectDeveloper.devID";
+  //     searchID = this.state.userInfo._id;
+  //     // { $elemMatch: { qty: { $gt: 10, $lte: 20 } } }
+  //   }
+  //   axios
+  //     .post("/user/callProject", {
+  //       searchField: searchField,
+  //       searchID: searchID
+  //     })
+  //     .then(response => {
+  //       console.log("Server response from get user project: ", response.data);
+  //       this.setState({
+  //         project: response.data
+  //         //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
+  //         // currentLocation: "/user/project"
+  //       });
+  //       // console.log(this.state);
+  //     })
+  //     .catch(error => {
+  //       console.log("Get user project error: ", error);
+  //     });
+  // };
 
-  initCallProject = userID => {
-    let searchField, searchID;
-    if (this.state.roleChoice.role === "client") {
-      searchField = "ownerID";
-      searchID = userID;
-    } else {
-      searchField = "projectDeveloper.devID";
-      searchID = userID;
-    }
-    axios
-      .post("/user/callProject", {
-        searchField: searchField,
-        searchID: searchID
-      })
-      .then(response => {
-        // console.log("Server response from get user project: ", response.data);
-        this.setState({
-          project: response.data
-          //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          // currentLocation: "/user/project"
-        });
-        // console.log(this.state);
-      })
-      .catch(error => {
-        console.log("Get user project error: ", error);
-      });
-    // }
-  };
+  // initCallProject = userID => {
+  //   let searchField, searchID;
+  //   if (this.state.roleChoice.role === "client") {
+  //     searchField = "ownerID";
+  //     searchID = userID;
+  //   } else {
+  //     searchField = "projectDeveloper.devID";
+  //     searchID = userID;
+  //   }
+  //   axios
+  //     .post("/user/callProject", {
+  //       searchField: searchField,
+  //       searchID: searchID
+  //     })
+  //     .then(response => {
+  //       // console.log("Server response from get user project: ", response.data);
+  //       this.setState({
+  //         project: response.data
+  //         //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
+  //         // currentLocation: "/user/project"
+  //       });
+  //       // console.log(this.state);
+  //     })
+  //     .catch(error => {
+  //       console.log("Get user project error: ", error);
+  //     });
+  //   // }
+  // };
 
   render() {
     // console.log("re-rendering user index");

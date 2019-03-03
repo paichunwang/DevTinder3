@@ -13,8 +13,8 @@ class Login extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.getCookie = this.getCookie.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
+    // this.getCookie = this.getCookie.bind(this);
+    // this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   handleChange(event) {
@@ -34,11 +34,11 @@ class Login extends Component {
         password: this.state.password
       })
       .then(response => {
-        //console.log("login response data: ", response.data);
+        console.log(response);
         if (response.status === 200) {
           this.setState({
-            // userInfo: response.data,
-            redirectTo: "/users"
+            userInfo: response.data,
+            redirectTo: "/user"
           });
           //console.log("post login user response: ", response.data);
         }
@@ -48,28 +48,28 @@ class Login extends Component {
       });
   }
 
-  componentDidMount() {
-    this.getCookie();
-  }
+  // componentDidMount() {
+  //   this.getCookie();
+  // }
 
   //this call is not passported
-  getCookie() {
-    axios.get("/user/").then(response => {
-      //console.log("Get user response: ");
-      //console.log(response.data.user);
-      //here need to pass id back from passport call
-      if (response.data.user) {
-        this.setState({
-          redirectTo: "/users"
-        });
-      } else {
-        //console.log("No user found.");
-        this.setState({
-          redirectTo: null
-        });
-      }
-    });
-  }
+  // getCookie() {
+  //   axios.get("/user/").then(response => {
+  //     //console.log("Get user response: ");
+  //     //console.log(response.data.user);
+  //     //here need to pass id back from passport call
+  //     if (response.data.user) {
+  //       this.setState({
+  //         redirectTo: "/users"
+  //       });
+  //     } else {
+  //       //console.log("No user found.");
+  //       this.setState({
+  //         redirectTo: null
+  //       });
+  //     }
+  //   });
+  // }
 
   render() {
     if (this.state.redirectTo) {
