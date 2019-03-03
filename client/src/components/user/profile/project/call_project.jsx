@@ -163,10 +163,10 @@ class ControlledExpansionPanels extends React.Component {
     return (
       <>
         {project !== undefined && (
-          <div className={classes.root}>
-            {/* THIS IS OPEN PROJECT PAGE */}
-            {!complete && (
-              <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+            <div className={classes.root}>
+              {/* THIS IS OPEN PROJECT PAGE */}
+              {!complete && (
                 <>
                   {Object.keys(project).map((keyName, keyIndex) => {
                     if (!project[keyIndex].projectState) {
@@ -437,123 +437,128 @@ class ControlledExpansionPanels extends React.Component {
                     }
                   })}
                 </>
-              </Slide>
-            )}
-            {/* THIS IS COMPLETE PROJECT PAGE */}
-            {complete && (
-              <>
-                {Object.keys(project).map((keyName, keyIndex) => {
-                  if (project[keyIndex].projectState) {
-                    return (
-                      <ExpansionPanel
-                        key={keyIndex}
-                        expanded={expanded === project[keyName]._id}
-                        onChange={this.handleChange(project[keyName]._id)}
-                      >
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                          <div className={classes.column}>
-                            <Typography className={classes.secondaryHeading}>
-                              Project Name: <br />
-                            </Typography>
-                            <Typography className={classes.heading}>
-                              {project[keyName].projectName}
-                            </Typography>
-                          </div>
-                          <div className={classes.column}>
-                            <Typography className={classes.secondaryHeading}>
-                              Project ID:
-                            </Typography>
-                            <Typography className={classes.heading}>
-                              {project[keyName]._id}
-                            </Typography>
-                          </div>
-                          <div className={classes.column}>
-                            <Typography className={classes.secondaryHeading}>
-                              Project Created On:
-                            </Typography>
-                            <Typography className={classes.heading}>
-                              {moment(project[keyName].projectInit).format(
-                                "MMM Do YY, h:mm a"
-                              )}
-                            </Typography>
-                          </div>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails
-                          style={{ height: "80px", backgroundColor: "#fafafa" }}
-                          className={classes.details}
+              )}
+              {/* THIS IS COMPLETE PROJECT PAGE */}
+              {complete && (
+                <>
+                  {Object.keys(project).map((keyName, keyIndex) => {
+                    if (project[keyIndex].projectState) {
+                      return (
+                        <ExpansionPanel
+                          key={keyIndex}
+                          expanded={expanded === project[keyName]._id}
+                          onChange={this.handleChange(project[keyName]._id)}
                         >
-                          <div
-                            style={{ height: "100%" }}
-                            className={classes.column}
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
                           >
-                            <Typography className={classes.secondaryHeading}>
-                              Developers:
-                            </Typography>
-                            <div>
-                              {project[keyIndex].projectInvite &&
-                                project[keyIndex].projectInvite.map(entry => {
-                                  return (
-                                    <Tooltip
-                                      key={entry.devID}
-                                      title={entry.devName}
-                                    >
-                                      <Chip
-                                        label={entry.devName.charAt(0)}
-                                        className={classes.chip}
-                                        color="primary"
-                                      />
-                                    </Tooltip>
-                                  );
-                                })}
+                            <div className={classes.column}>
+                              <Typography className={classes.secondaryHeading}>
+                                Project Name: <br />
+                              </Typography>
+                              <Typography className={classes.heading}>
+                                {project[keyName].projectName}
+                              </Typography>
                             </div>
-                          </div>
-                          <div
-                            style={{ height: "100%" }}
-                            className={classes.column}
-                          >
-                            <Typography className={classes.secondaryHeading}>
-                              Project Budget:
-                            </Typography>
-                            <Typography className={classes.heading}>
-                              ${project[keyName].projectBudget}
-                            </Typography>
-                          </div>
-                          <div
+                            <div className={classes.column}>
+                              <Typography className={classes.secondaryHeading}>
+                                Project ID:
+                              </Typography>
+                              <Typography className={classes.heading}>
+                                {project[keyName]._id}
+                              </Typography>
+                            </div>
+                            <div className={classes.column}>
+                              <Typography className={classes.secondaryHeading}>
+                                Project Created On:
+                              </Typography>
+                              <Typography className={classes.heading}>
+                                {moment(project[keyName].projectInit).format(
+                                  "MMM Do YY, h:mm a"
+                                )}
+                              </Typography>
+                            </div>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails
                             style={{
-                              height: "100%",
-                              paddingRight: "36px"
+                              height: "80px",
+                              backgroundColor: "#fafafa"
                             }}
-                            className={classNames(classes.column)}
+                            className={classes.details}
                           >
-                            <Typography className={classes.secondaryHeading}>
-                              Project Due Date
-                            </Typography>
-                            <Typography className={classes.heading}>
-                              {moment(project[keyName].projectDue).format(
-                                "MMM Do YY"
-                              )}
-                            </Typography>
-                            <Typography className={classes.secondaryHeading}>
-                              Project Completion Date
-                            </Typography>
-                            <Typography className={classes.heading}>
-                              {moment(project[keyName].projectFinish).format(
-                                "MMM Do YY"
-                              )}
-                            </Typography>
-                          </div>
-                        </ExpansionPanelDetails>
+                            <div
+                              style={{ height: "100%" }}
+                              className={classes.column}
+                            >
+                              <Typography className={classes.secondaryHeading}>
+                                Developers:
+                              </Typography>
+                              <div>
+                                {project[keyIndex].projectInvite &&
+                                  project[keyIndex].projectInvite.map(entry => {
+                                    return (
+                                      <Tooltip
+                                        key={entry.devID}
+                                        title={entry.devName}
+                                      >
+                                        <Chip
+                                          label={entry.devName.charAt(0)}
+                                          className={classes.chip}
+                                          color="primary"
+                                        />
+                                      </Tooltip>
+                                    );
+                                  })}
+                              </div>
+                            </div>
+                            <div
+                              style={{ height: "100%" }}
+                              className={classes.column}
+                            >
+                              <Typography className={classes.secondaryHeading}>
+                                Project Budget:
+                              </Typography>
+                              <Typography className={classes.heading}>
+                                ${project[keyName].projectBudget}
+                              </Typography>
+                            </div>
+                            <div
+                              style={{
+                                height: "100%",
+                                paddingRight: "36px"
+                              }}
+                              className={classNames(classes.column)}
+                            >
+                              <Typography className={classes.secondaryHeading}>
+                                Project Due Date
+                              </Typography>
+                              <Typography className={classes.heading}>
+                                {moment(project[keyName].projectDue).format(
+                                  "MMM Do YY"
+                                )}
+                              </Typography>
+                              <Typography className={classes.secondaryHeading}>
+                                Project Completion Date
+                              </Typography>
+                              <Typography className={classes.heading}>
+                                {moment(project[keyName].projectFinish).format(
+                                  "MMM Do YY"
+                                )}
+                              </Typography>
+                            </div>
+                          </ExpansionPanelDetails>
 
-                        <ExpansionPanelDetails>
-                          <div
-                            style={{ width: "100%" }}
-                            className={classes.row}
-                          >
-                            <Typography className={classes.secondaryHeading}>
-                              Project Skill Requirement
-                            </Typography>
-                            {Object.keys(project[keyName].projectSkillReq).map(
-                              (subkeyName, subkeyIndex) => {
+                          <ExpansionPanelDetails>
+                            <div
+                              style={{ width: "100%" }}
+                              className={classes.row}
+                            >
+                              <Typography className={classes.secondaryHeading}>
+                                Project Skill Requirement
+                              </Typography>
+                              {Object.keys(
+                                project[keyName].projectSkillReq
+                              ).map((subkeyName, subkeyIndex) => {
                                 return (
                                   <Tooltip
                                     style={{
@@ -582,55 +587,55 @@ class ControlledExpansionPanels extends React.Component {
                                     />
                                   </Tooltip>
                                 );
-                              }
-                            )}
-                          </div>
-                        </ExpansionPanelDetails>
-                        <Divider />
-                        <ExpansionPanelActions>
-                          <Button
-                            size="small"
-                            color="primary"
-                            onClick={this.handleChange(project[keyName]._id)}
-                          >
-                            Close Project Tab
-                          </Button>
-                        </ExpansionPanelActions>
-                      </ExpansionPanel>
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
-              </>
-            )}
-            {project.length >= 1 && (
-              <Tooltip
-                style={{
-                  margin: "0px 10px"
-                }}
-                key="refresh"
-                title="Refresh Project List"
-              >
-                <Fab
-                  style={{ backgroundColor: "#8dd258", marginTop: "20px" }}
-                  variant="extended"
-                  // fullWidth
-                  size="large"
-                  color="primary"
-                  onClick={this.handleCallproject}
+                              })}
+                            </div>
+                          </ExpansionPanelDetails>
+                          <Divider />
+                          <ExpansionPanelActions>
+                            <Button
+                              size="small"
+                              color="primary"
+                              onClick={this.handleChange(project[keyName]._id)}
+                            >
+                              Close Project Tab
+                            </Button>
+                          </ExpansionPanelActions>
+                        </ExpansionPanel>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </>
+              )}
+              {project.length >= 1 && (
+                <Tooltip
+                  style={{
+                    margin: "0px 10px"
+                  }}
+                  key="refresh"
+                  title="Refresh Project List"
                 >
-                  <FontAwesomeIcon
-                    icon={faSync}
-                    size="1x"
-                    color="white"
-                    style={{ marginRight: "5px" }}
-                  />{" "}
-                  Refresh Project List
-                </Fab>
-              </Tooltip>
-            )}
-          </div>
+                  <Fab
+                    style={{ backgroundColor: "#8dd258", marginTop: "20px" }}
+                    variant="extended"
+                    // fullWidth
+                    size="large"
+                    color="primary"
+                    onClick={this.handleCallproject}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSync}
+                      size="1x"
+                      color="white"
+                      style={{ marginRight: "5px" }}
+                    />{" "}
+                    Refresh Project List
+                  </Fab>
+                </Tooltip>
+              )}
+            </div>
+          </Slide>
         )}
         {project !== undefined && location !== undefined && (
           <>
