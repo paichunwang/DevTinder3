@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-//UI design materialUI and semanticUI
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Icon } from "semantic-ui-react";
@@ -11,6 +9,12 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 //show/hide password
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+
+import Slide from "@material-ui/core/Slide";
+
+import classNames from "classnames";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import green from "@material-ui/core/colors/green";
 
 //route caller
 import axios from "axios";
@@ -26,6 +30,24 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700]
+    }
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
   }
 });
 
@@ -68,11 +90,27 @@ class Signup extends Component {
       fname: "",
       lname: "",
       email: "",
-      password: ""
+      password: "",
+      loading: false,
+      success: false,
+      firstNameValid: false,
+      lastNameValid: false,
+      emailValid: false,
+      passwordValid: false,
+      formValid: false,
+      firstNameError: false,
+      lastNameError: false,
+      emailError: false,
+      passwordError: false,
+      formError: false
     };
     //this binds the change and submit function to the window
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
   }
 
   //update state with value from input field
@@ -87,148 +125,234 @@ class Signup extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  // handleEmailValidation = email => {
-  //   //email address (RFC 2822 mailbox) regex certification
-  //   const regexp = new RegExp(
-  //     /^((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|"((?=[\x01-\x7f])[^"\\]|\\[\x01-\x7f])*"\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|"((?=[\x01-\x7f])[^"\\]|\\[\x01-\x7f])*")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)$/
-  //   );
-  //   if (regexp.test(email)) {
-  //     console.log("email pattern match");
-  //   } else {
-  //     console.log("email pattern DO NOT match");
-  //   }
-  // };
+  handleValidation() {
+    const {
+      fname,
+      lname,
+      email,
+      password,
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+      passwordValid
+    } = this.state;
 
-  //get values when user click Join now
-  handleSubmit(event) {
-    // console.log("sign-up handleSubmit");
-    // console.log(
-    //   "First Name: " + this.state.fname,
-    //   "Last Name: " + this.state.lname,
-    //   "Email:" + this.state.email,
-    //   "Password: " + this.state.password
-    // );
-
-    event.preventDefault();
-
-    const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (regexp.test(this.state.email)) {
-      console.log("email pattern match");
-      // request to server to add a new username/password
-      axios
-        .post("/user/", {
-          firstname: this.state.fname,
-          lastname: this.state.lname,
-          email: this.state.email,
-          password: this.state.password
-        })
-        .then(response => {
-          //console.log(response);
-          if (!response.data.error) {
-            //console.log("successful signup");
-            // this.setState({
-            //   //redirect to login page
-            //   redirectTo: "/login"
-            // });
-          } else {
-            console.log("account with email already exist");
-          }
-        })
-        .catch(error => {
-          console.log("signup error: ");
-          console.log(error);
-        });
+    if (fname.length > 0) {
+      this.setState({ firstNameValid: true });
+      this.setState({ firstNameError: false });
     } else {
-      console.log("email pattern DO NOT match");
+      this.setState({ firstNameError: true });
+    }
+    if (lname.length > 0) {
+      this.setState({ lastNameValid: true });
+      this.setState({ lastNameError: false });
+    } else {
+      this.setState({ lastNameError: true });
+    }
+    const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    if (regexp.test(email)) {
+      this.setState({ emailValid: true });
+      this.setState({ emailError: false });
+    } else {
+      this.setState({ emailError: true });
+    }
+    if (password.length >= 6) {
+      this.setState({ passwordValid: true });
+      this.setState({ passwordError: false });
+    } else {
+      this.setState({ passwordError: true });
+    }
+
+    if (firstNameValid && lastNameValid && emailValid && passwordValid) {
+      console.log("All forms are valid");
+    } else {
+      console.log("something invalid");
     }
   }
 
+  handleSubmit() {
+    this.handleValidation();
+
+    if (this.state.formValid) {
+      if (!this.state.loading) {
+        this.setState(
+          {
+            success: false,
+            loading: true
+          },
+          () => {
+            this.timer = setTimeout(() => {
+              this.setState({
+                loading: false,
+                success: true
+              });
+            }, 2000);
+          }
+        );
+      }
+    } else {
+      console.log("FORM NOT VALID");
+    }
+
+    // const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    // if (regexp.test(this.state.email)) {
+    //   console.log("email pattern match");
+    //   // request to server to add a new username/password
+    //   axios
+    //     .post("/user/", {
+    //       firstname: this.state.fname,
+    //       lastname: this.state.lname,
+    //       email: this.state.email,
+    //       password: this.state.password
+    //     })
+    //     .then(response => {
+    //       console.log(response);
+    //       if (!response.data.error) {
+    //         axios
+    //           .post("/user/login", {
+    //             email: this.state.email,
+    //             password: this.state.password
+    //           })
+    //           .then(response => {
+    //             // console.log("hitting login post");
+    //             window.location.pathname = "/login";
+    //           })
+    //           .catch(error => {});
+    //       } else {
+    //         console.log("account with email already exist");
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log("signup error: ");
+    //       console.log(error);
+    //     });
+    // } else {
+    //   console.log("email pattern DO NOT match");
+    // }
+  }
+
   render() {
+    const {
+      loading,
+      success,
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+      passwordValid,
+      firstNameError,
+      lastNameError,
+      emailError,
+      passwordError
+    } = this.state;
+    const { classes } = this.props;
+    const buttonClassname = classNames({
+      [classes.buttonSuccess]: success
+    });
+
+    const validatorCall = {
+      fname: firstNameError,
+      lname: lastNameError,
+      email: emailError,
+      password: passwordError
+    };
+
     return (
-      <div className="column" style={columnStyle}>
-        <div>
-          <div className="login_page_title">
-            <p>
-              <Icon className="user circle" name="user circle" size="huge" />
-            </p>
-            <h3>Signup for DevTinder</h3>
-          </div>
-          {Object.keys(Values).map((keyName, keyIndex) => {
-            if (keyName !== "password") {
-              return (
-                <div key={keyIndex}>
-                  <TextField
-                    // error={true}
-                    style={inputStyle}
-                    name={keyName}
-                    // id="outlined-name"
-                    //does this id matter? prob near the call for values
-                    value={this.state.keyName}
-                    onChange={this.handleChange}
-                    fullWidth={true}
-                    label={Values[keyName]}
-                    className={keyName}
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <div key={keyIndex}>
-                  <TextField
-                    name={keyName}
-                    id="outlined-adornment-password"
-                    style={passwordStyle}
-                    className={keyName}
-                    variant="outlined"
-                    type={this.state.showPassword ? "text" : "password"}
-                    label={Values[keyName]}
-                    value={this.state.keyName}
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword}
-                          >
-                            {this.state.showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </div>
-              );
-            }
-          })}
-          <p style={{ color: "gray" }}>
-            By clicking Join now, you agree to DevTinder's User Agreement,
-            Privacy Policy, and Cookie Policy
-          </p>
-          <div className="signup">
-            <button
-              style={singupStyle}
-              className="ui secondary button"
-              onClick={this.handleSubmit}
-              type="submit"
-            >
-              Join now
-            </button>
-          </div>
-          <hr className="hr-text" data-content="OR" />
+      <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+        <div className="column" style={columnStyle}>
           <div>
-            <p style={{ padding: "20px 0px 0px" }}>
-              Already on DevTinder? Sign In{" "}
+            <div className="login_page_title">
+              <p>
+                <Icon className="user circle" name="user circle" size="huge" />
+              </p>
+              <h3>Signup for DevTinder</h3>
+            </div>
+            {Object.keys(Values).map((keyName, keyIndex) => {
+              if (keyName !== "password") {
+                return (
+                  <div key={keyIndex}>
+                    <TextField
+                      error={validatorCall[keyName]}
+                      required
+                      disabled={this.state.loading}
+                      style={inputStyle}
+                      name={keyName}
+                      value={this.state.keyName}
+                      onChange={this.handleChange}
+                      fullWidth={true}
+                      label={Values[keyName]}
+                      className={keyName}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={keyIndex}>
+                    <TextField
+                      error={validatorCall[keyName]}
+                      required
+                      name={keyName}
+                      disabled={this.state.loading}
+                      id="outlined-adornment-password"
+                      style={passwordStyle}
+                      className={keyName}
+                      variant="outlined"
+                      type={this.state.showPassword ? "text" : "password"}
+                      label={Values[keyName]}
+                      value={this.state.keyName}
+                      onChange={this.handleChange}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={this.handleClickShowPassword}
+                            >
+                              {this.state.showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </div>
+                );
+              }
+            })}
+            <p style={{ color: "gray" }}>
+              By clicking Join now, you agree to DevTinder's User Agreement,
+              Privacy Policy, and Cookie Policy
             </p>
+            <div className={classes.wrapper}>
+              <button
+                style={singupStyle}
+                className={buttonClassname + "ui secondary button"}
+                disabled={loading}
+                onClick={this.handleSubmit}
+                // type="submit"
+              >
+                Join now
+              </button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+            <hr className="hr-text" data-content="OR" />
+            <div>
+              <p style={{ padding: "20px 0px 0px" }}>
+                Already on DevTinder? Sign In{" "}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </Slide>
     );
   }
 }
