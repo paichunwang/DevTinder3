@@ -1,13 +1,13 @@
 import React from "react";
-
-//this page is the main render for user page, base on switch case, Sidnav + Profile / Project will be provided
-
 import Sidenav from "./profile/profile_navigation/side_nav_profile";
 import Profile from "./profile/index";
 import Project from "./profile/project/project_page";
-
 import axios from "axios";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Collapse from "@material-ui/core/Collapse";
+import AddProject from "./profile/project/add_project";
+import CallProject from "./profile/project/call_project";
+import InviteProject from "./profile/project/invite_project";
 const userContent = { width: "50%" };
 
 class User extends React.Component {
@@ -95,7 +95,6 @@ class User extends React.Component {
         } = response.data.user[0];
         this.setState(
           {
-            // redirectTo: "/user",
             userInfo: {
               _id,
               email,
@@ -208,67 +207,64 @@ class User extends React.Component {
     // const { userInfo } = this.state.userInfo;
 
     return (
-      <div>
-        {userInfo !== null && (
-          <>
-            <Sidenav
-              action={this.handler}
-              currentLocation={currentLocation}
-              display={navBar}
-            />
-            <div style={userContent}>
-              {currentLocation === "/user" && (
-                <Profile
-                  userInfo={userInfo}
-                  skillSlider={skillSlider}
-                  roleChoice={roleChoice}
-                  onChildUpdate={this.handleChildUpdate}
-                  roleChange={this.callProject}
-                />
-              )}
-              {currentLocation === "/user/add" && (
-                <Project
-                  addProject={this.addProject}
-                  userID={userInfo._id}
-                  callProject={this.callProject}
-                />
-              )}
-              {currentLocation === "/user/invite" && (
-                <Project
-                  inviteProject={this.callProject}
-                  userID={userInfo._id}
-                />
-              )}
-              {currentLocation === "/user/project" && (
-                <Project
-                  userID={userInfo._id}
-                  callProject={this.callProject}
-                  location={currentLocation}
-                  project={project}
-                  roleChoice={roleChoice}
-                />
-              )}
-              {currentLocation === "/user/complete" && (
-                <Project
-                  userID={userInfo._id}
-                  callProject={this.callProject}
-                  location={currentLocation}
-                  project={project}
-                  roleChoice={roleChoice}
-                  complete={true}
-                />
-              )}
-              {currentLocation === "/user/signout" && "SIGNOUT"}
-            </div>
-          </>
-        )}
-        {userInfo === null && (
-          <div>
-            hitting null, need some thing here for loading page incase query
-            took too long
-          </div>
-        )}
-      </div>
+      <Collapse in={true}>
+        <div>
+          {userInfo !== null && (
+            <>
+              <Sidenav
+                action={this.handler}
+                currentLocation={currentLocation}
+                display={navBar}
+              />
+              <div style={userContent}>
+                {currentLocation === "/user" && (
+                  <Profile
+                    userInfo={userInfo}
+                    skillSlider={skillSlider}
+                    roleChoice={roleChoice}
+                    onChildUpdate={this.handleChildUpdate}
+                    roleChange={this.callProject}
+                  />
+                )}
+                {currentLocation === "/user/add" && (
+                  <AddProject
+                    addProject={this.addProject}
+                    userID={userInfo._id}
+                    callProject={this.callProject}
+                    // roleChoice={roleChoice}
+                  />
+                )}
+                {currentLocation === "/user/invite" && (
+                  <InviteProject
+                    inviteProject={this.callProject}
+                    userID={userInfo._id}
+                  />
+                )}
+                {currentLocation === "/user/project" && (
+                  <CallProject
+                    userID={userInfo._id}
+                    callProject={this.callProject}
+                    location={currentLocation}
+                    project={project}
+                    roleChoice={roleChoice}
+                  />
+                )}
+                {currentLocation === "/user/complete" && (
+                  <CallProject
+                    userID={userInfo._id}
+                    callProject={this.callProject}
+                    location={currentLocation}
+                    project={project}
+                    roleChoice={roleChoice}
+                  />
+                )}
+                {currentLocation === "/user/signout" && "SIGNOUT"}
+              </div>
+            </>
+          )}
+          {userInfo === null && <CircularProgress disableShrink />}
+        </div>
+      </Collapse>
     );
   }
 }

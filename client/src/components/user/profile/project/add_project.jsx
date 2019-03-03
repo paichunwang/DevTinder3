@@ -31,6 +31,8 @@ import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
 
 import { withSnackbar } from "notistack";
 
+import Slide from "@material-ui/core/Slide";
+
 // const update_button = {
 //   // border: "1px red solid",
 //   width: "100%",
@@ -283,14 +285,19 @@ class AddProject extends React.Component {
           projectInit: new Date()
         })
         .then(response => {
-          // console.log("login response: ", response);
-          this.setState(state => ({
-            activeStep: state.activeStep + 1
-          }));
-          this.props.enqueueSnackbar(
-            "Project successfully added to database.",
-            {
-              variant: "success"
+          console.log("Add project props: ", this.props);
+          this.setState(
+            state => ({
+              activeStep: state.activeStep + 1
+            }),
+            () => {
+              this.props.callProject();
+              this.props.enqueueSnackbar(
+                "Project successfully added to database.",
+                {
+                  variant: "success"
+                }
+              );
             }
           );
         })
@@ -401,71 +408,77 @@ class AddProject extends React.Component {
     const error = skillList.filter(values => values).length < 1;
     // console.log("addproject props: ", this.props);
     return (
-      <div
-        className={classes.container}
-        style={{
-          // border: "1px red solid",
-          borderRadius: 4,
-          padding: "30px",
-          backgroundColor: "white"
-        }}
-      >
-        <Stepper
+      <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+        <div
+          className={classes.container}
           style={{
-            // border: "1px green solid",
-            textAlign: "-webkit-left",
-            width: "100%"
+            // border: "1px red solid",
+            borderRadius: 4,
+            padding: "30px",
+            backgroundColor: "white"
           }}
-          activeStep={activeStep}
-          orientation="vertical"
         >
-          {steps.map((label, index) => (
-            <Step key={index}>
-              <StepLabel>{label}</StepLabel>
-              <StepContent>
-                <Typography component={"div"}>
-                  {getStepContent(classes, index, this, error, skillList)}
-                </Typography>
-                <div className={classes.actionsContainer}>
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={this.handleBack}
-                      className={classes.button}
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1 ? "Add Project" : "Next"}
-                    </Button>
-                  </div>
-                </div>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length && (
-          <div
+          <Stepper
             style={{
+              // border: "1px green solid",
               textAlign: "-webkit-left",
-              width: "100%",
-              padding: "0 0 0 30px"
+              width: "100%"
             }}
+            activeStep={activeStep}
+            orientation="vertical"
           >
-            <Paper square elevation={0} className={classes.resetContainer}>
-              <Typography>Project Created, Reset to create another.</Typography>
-              <Button onClick={this.handleReset} className={classes.button}>
-                Reset
-              </Button>
-            </Paper>
-          </div>
-        )}
-      </div>
+            {steps.map((label, index) => (
+              <Step key={index}>
+                <StepLabel>{label}</StepLabel>
+                <StepContent>
+                  <Typography component={"div"}>
+                    {getStepContent(classes, index, this, error, skillList)}
+                  </Typography>
+                  <div className={classes.actionsContainer}>
+                    <div>
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={classes.button}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1
+                          ? "Add Project"
+                          : "Next"}
+                      </Button>
+                    </div>
+                  </div>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === steps.length && (
+            <div
+              style={{
+                textAlign: "-webkit-left",
+                width: "100%",
+                padding: "0 0 0 30px"
+              }}
+            >
+              <Paper square elevation={0} className={classes.resetContainer}>
+                <Typography>
+                  Project Created, Reset to create another.
+                </Typography>
+                <Button onClick={this.handleReset} className={classes.button}>
+                  Reset
+                </Button>
+              </Paper>
+            </div>
+          )}
+        </div>
+      </Slide>
     );
   }
 }
