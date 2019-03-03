@@ -55,7 +55,7 @@ const Values = {
   fname: "First Name",
   lname: "Last Name",
   email: "Email",
-  password: "Password (6 or more character)"
+  password: "Password (6 or more characters)"
 };
 
 const columnStyle = {
@@ -93,16 +93,11 @@ class Signup extends Component {
       password: "",
       loading: false,
       success: false,
-      firstNameValid: false,
-      lastNameValid: false,
-      emailValid: false,
-      passwordValid: false,
       formValid: false,
       firstNameError: false,
       lastNameError: false,
       emailError: false,
-      passwordError: false,
-      formError: false
+      passwordError: false
     };
     //this binds the change and submit function to the window
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -126,53 +121,37 @@ class Signup extends Component {
   };
 
   handleValidation() {
-    const {
-      fname,
-      lname,
-      email,
-      password,
-      firstNameValid,
-      lastNameValid,
-      emailValid,
-      passwordValid
-    } = this.state;
+    const { fname, lname, email, password } = this.state;
 
-    if (fname.length > 0) {
-      this.setState({ firstNameValid: true });
-      this.setState({ firstNameError: false });
-    } else {
-      this.setState({ firstNameError: true });
-    }
-    if (lname.length > 0) {
-      this.setState({ lastNameValid: true });
-      this.setState({ lastNameError: false });
-    } else {
-      this.setState({ lastNameError: true });
-    }
     const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (regexp.test(email)) {
-      this.setState({ emailValid: true });
-      this.setState({ emailError: false });
-    } else {
-      this.setState({ emailError: true });
-    }
-    if (password.length >= 6) {
-      this.setState({ passwordValid: true });
-      this.setState({ passwordError: false });
-    } else {
-      this.setState({ passwordError: true });
-    }
+    const firstNameError = !fname ? true : false;
+    const lastNameError = !lname ? true : false;
+    const emailError = !email || !regexp.test(email) ? true : false;
+    const passwordError = !password || password.length < 6 ? true : false;
+    // console.log(firstNameError, lastNameError, emailError, passwordError);
+    const formValid =
+      !firstNameError && !lastNameError && !emailError && !passwordError
+        ? true
+        : false;
+    console.log(formValid);
 
-    if (firstNameValid && lastNameValid && emailValid && passwordValid) {
-      console.log("All forms are valid");
-    } else {
-      console.log("something invalid");
-    }
+    this.setState(
+      {
+        firstNameError: firstNameError,
+        lastNameError: lastNameError,
+        emailError: emailError,
+        passwordError: passwordError,
+        formValid: formValid
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   handleSubmit() {
     this.handleValidation();
-
+    console.log(this.state.formValid);
     if (this.state.formValid) {
       if (!this.state.loading) {
         this.setState(
@@ -235,10 +214,6 @@ class Signup extends Component {
     const {
       loading,
       success,
-      firstNameValid,
-      lastNameValid,
-      emailValid,
-      passwordValid,
       firstNameError,
       lastNameError,
       emailError,
@@ -249,11 +224,18 @@ class Signup extends Component {
       [classes.buttonSuccess]: success
     });
 
-    const validatorCall = {
+    const validatorValues = {
       fname: firstNameError,
       lname: lastNameError,
       email: emailError,
       password: passwordError
+    };
+
+    const helperTextValues = {
+      fname: "Required field cannot be left blank",
+      lname: "Required field cannot be left blank",
+      email: "Invalid Email address",
+      password: "Password must be 6 or more characters"
     };
 
     return (
@@ -271,9 +253,14 @@ class Signup extends Component {
                 return (
                   <div key={keyIndex}>
                     <TextField
-                      error={validatorCall[keyName]}
+                      error={validatorValues[keyName]}
                       required
                       disabled={this.state.loading}
+                      helperText={
+                        validatorValues[keyName]
+                          ? helperTextValues[keyName]
+                          : ""
+                      }
                       style={inputStyle}
                       name={keyName}
                       value={this.state.keyName}
@@ -290,8 +277,13 @@ class Signup extends Component {
                 return (
                   <div key={keyIndex}>
                     <TextField
-                      error={validatorCall[keyName]}
+                      error={validatorValues[keyName]}
                       required
+                      helperText={
+                        validatorValues[keyName]
+                          ? helperTextValues[keyName]
+                          : ""
+                      }
                       name={keyName}
                       disabled={this.state.loading}
                       id="outlined-adornment-password"
