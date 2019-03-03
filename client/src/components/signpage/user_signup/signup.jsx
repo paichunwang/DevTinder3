@@ -15,6 +15,8 @@ import Slide from "@material-ui/core/Slide";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import green from "@material-ui/core/colors/green";
 
+import Typography from "@material-ui/core/Typography";
+
 //route caller
 import axios from "axios";
 
@@ -83,8 +85,8 @@ const singupStyle = {
 };
 
 class Signup extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fname: "",
       lname: "",
@@ -101,10 +103,15 @@ class Signup extends Component {
     //this binds the change and submit function to the window
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
+  }
+
+  handleRedirect(values) {
+    this.props.handleRedirect(values);
   }
 
   //update state with value from input field
@@ -318,9 +325,17 @@ class Signup extends Component {
             </div>
             <hr className="hr-text" data-content="OR" />
             <div>
-              <p style={{ padding: "20px 0px 0px" }}>
-                Already on DevTinder? Sign In{" "}
-              </p>
+              <Typography
+                onClick={() => {
+                  this.handleRedirect("login");
+                }}
+                style={{ cursor: "pointer" }}
+                color="primary"
+                variant="button"
+                gutterBottom
+              >
+                Already have an account? Sign in here!
+              </Typography>
             </div>
           </div>
         </div>

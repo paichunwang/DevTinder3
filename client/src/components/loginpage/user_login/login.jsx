@@ -5,10 +5,12 @@ import axios from "axios";
 import "./login.css";
 import Slide from "@material-ui/core/Slide";
 
+import Typography from "@material-ui/core/Typography";
+
 class Login extends Component {
   //need to check if login is active
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       redirectTo: null
     };
@@ -16,6 +18,11 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.getCookie = this.getCookie.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
+  }
+
+  handleRedirect(values) {
+    this.props.handleRedirect(values);
   }
 
   handleChange(event) {
@@ -125,8 +132,17 @@ class Login extends Component {
                   </button>
                 </div>
                 <div className="newDevtinder">
-                  <p>New to DevTinder?</p>
-                  Sign Up and start using DevTinder
+                  <Typography
+                    onClick={() => {
+                      this.handleRedirect("signup");
+                    }}
+                    style={{ cursor: "pointer" }}
+                    color="primary"
+                    variant="button"
+                    gutterBottom
+                  >
+                    Don't have a accounnt? REGEISTER HERE
+                  </Typography>
                 </div>
               </div>
             </div>

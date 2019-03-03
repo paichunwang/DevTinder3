@@ -9,17 +9,10 @@
   /* overflow: auto; */
 }
 
-.column,
-.login_page_title,
-.rowUser,
-.rowPassword,
-.rowLogaction {
-  /* border: 1px red solid; */
-}
 .column {
   width: 30%;
   height: 50%;
-  background-color: #ffffff60;
+  background-color: #ffffff90;
   margin-top: 20vh;
   padding: 50px;
   border-radius: 15px;
