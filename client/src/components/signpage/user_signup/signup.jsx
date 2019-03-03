@@ -12,7 +12,6 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import Slide from "@material-ui/core/Slide";
 
-import classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import green from "@material-ui/core/colors/green";
 
@@ -120,20 +119,17 @@ class Signup extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  handleValidation() {
+  handleSubmit() {
     const { fname, lname, email, password } = this.state;
-
     const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     const firstNameError = !fname ? true : false;
     const lastNameError = !lname ? true : false;
     const emailError = !email || !regexp.test(email) ? true : false;
     const passwordError = !password || password.length < 6 ? true : false;
-    // console.log(firstNameError, lastNameError, emailError, passwordError);
     const formValid =
       !firstNameError && !lastNameError && !emailError && !passwordError
         ? true
         : false;
-    console.log(formValid);
 
     this.setState(
       {
@@ -143,86 +139,70 @@ class Signup extends Component {
         passwordError: passwordError,
         formValid: formValid
       },
+      // function in setstate calls comparison and runs off the result
       () => {
         console.log(this.state);
+        if (this.state.formValid) {
+          if (!this.state.loading) {
+            this.setState(
+              {
+                success: false,
+                loading: true
+              },
+              () => {
+                this.timer = setTimeout(() => {
+                  this.setState({
+                    loading: false,
+                    success: true
+                  });
+                }, 2000);
+              }
+            );
+          }
+          axios
+            .post("/user/", {
+              firstname: this.state.fname,
+              lastname: this.state.lname,
+              email: this.state.email,
+              password: this.state.password
+            })
+            .then(response => {
+              console.log(response);
+              if (!response.data.error) {
+                axios
+                  .post("/user/login", {
+                    email: this.state.email,
+                    password: this.state.password
+                  })
+                  .then(response => {
+                    // console.log("hitting login post");
+                    window.location.pathname = "/login";
+                  })
+                  .catch(error => {});
+              } else {
+                console.log("account with email already exist");
+              }
+            })
+            .catch(error => {
+              console.log("signup error: ");
+              console.log(error);
+            });
+        } else {
+          console.log("FORM NOT VALID");
+        }
       }
     );
-  }
-
-  handleSubmit() {
-    this.handleValidation();
-    console.log(this.state.formValid);
-    if (this.state.formValid) {
-      if (!this.state.loading) {
-        this.setState(
-          {
-            success: false,
-            loading: true
-          },
-          () => {
-            this.timer = setTimeout(() => {
-              this.setState({
-                loading: false,
-                success: true
-              });
-            }, 2000);
-          }
-        );
-      }
-    } else {
-      console.log("FORM NOT VALID");
-    }
-
-    // const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    // if (regexp.test(this.state.email)) {
-    //   console.log("email pattern match");
-    //   // request to server to add a new username/password
-    //   axios
-    //     .post("/user/", {
-    //       firstname: this.state.fname,
-    //       lastname: this.state.lname,
-    //       email: this.state.email,
-    //       password: this.state.password
-    //     })
-    //     .then(response => {
-    //       console.log(response);
-    //       if (!response.data.error) {
-    //         axios
-    //           .post("/user/login", {
-    //             email: this.state.email,
-    //             password: this.state.password
-    //           })
-    //           .then(response => {
-    //             // console.log("hitting login post");
-    //             window.location.pathname = "/login";
-    //           })
-    //           .catch(error => {});
-    //       } else {
-    //         console.log("account with email already exist");
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log("signup error: ");
-    //       console.log(error);
-    //     });
-    // } else {
-    //   console.log("email pattern DO NOT match");
-    // }
   }
 
   render() {
     const {
       loading,
-      success,
       firstNameError,
       lastNameError,
       emailError,
       passwordError
     } = this.state;
     const { classes } = this.props;
-    const buttonClassname = classNames({
-      [classes.buttonSuccess]: success
-    });
 
     const validatorValues = {
       fname: firstNameError,
@@ -322,7 +302,7 @@ class Signup extends Component {
             <div className={classes.wrapper}>
               <button
                 style={singupStyle}
-                className={buttonClassname + "ui secondary button"}
+                className={"ui secondary button"}
                 disabled={loading}
                 onClick={this.handleSubmit}
                 // type="submit"
