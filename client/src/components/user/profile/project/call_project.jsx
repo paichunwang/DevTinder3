@@ -143,7 +143,7 @@ class ControlledExpansionPanels extends React.Component {
         this.props.enqueueSnackbar("Project Completed.", {
           variant: "success"
         });
-        this.handleCallproject();
+        this.props.callProject();
       })
       .catch(error => {
         console.log("complete project page error: ", error);

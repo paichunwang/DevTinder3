@@ -144,7 +144,6 @@ class User extends React.Component {
       console.log("hitting developer");
       searchField = "projectDeveloper.devID";
       searchID = this.state.userInfo._id;
-      // { $elemMatch: { qty: { $gt: 10, $lte: 20 } } }
     }
     axios
       .post("/user/callProject", {
@@ -155,10 +154,7 @@ class User extends React.Component {
         console.log("Server response from get user project: ", response.data);
         this.setState({
           project: response.data
-          //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          // currentLocation: "/user/project"
         });
-        // console.log(this.state);
       })
       .catch(error => {
         console.log("Get user project error: ", error);
@@ -180,13 +176,9 @@ class User extends React.Component {
         searchID: searchID
       })
       .then(response => {
-        // console.log("Server response from get user project: ", response.data);
         this.setState({
           project: response.data
-          //NEED TO REMOVE THIS BEFORE PRODUCTION PUSH
-          // currentLocation: "/user/project"
         });
-        // console.log(this.state);
       })
       .catch(error => {
         console.log("Get user project error: ", error);
