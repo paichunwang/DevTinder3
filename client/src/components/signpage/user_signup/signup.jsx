@@ -183,7 +183,7 @@ class Signup extends Component {
                   })
                   .then(response => {
                     // console.log("hitting login post");
-                    window.location.pathname = "/login";
+                    window.location.pathname = "/users";
                   })
                   .catch(error => {});
               } else {

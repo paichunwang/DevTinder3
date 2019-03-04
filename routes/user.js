@@ -5,6 +5,7 @@ const User = require("../server/database/models/user");
 const Project = require("../server/database/models/project");
 const passport = require("passport");
 const LocalStrategy = require("../server/passport/localStrategy");
+const bcrypt = require("bcrypt");
 passport.use(LocalStrategy);
 
 //user passport deserializer to get information, if user exists, send user information back to front
@@ -82,16 +83,36 @@ app.post("/user/logout", (req, res) => {
 
 //user account update method
 app.post("/update/user", (req, res) => {
-  const { id } = req.body;
-  //console.log(req.body);
+  let { id, password, newPassword } = req.body;
+  console.log(req.body);
 
-  User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
-    if (err) {
-      //console.log("account settings : user id lookup error", err);
-    } else {
+  if (password || newPassword) {
+    console.log("not empty");
+    User.findById(id, "password", (err, result) => {
+      if (err) return err;
+      bcrypt.compare(password, result.password, function(err, result) {
+        if (result) {
+          bcrypt.hash(newPassword, 13, function(err, hash) {
+            // console.log("this is new hash", hash);
+            req.body.password = hash;
+            req.body.newPassword = "";
+            console.log("post hash", req.body);
+            User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
+              if (err) return err;
+            });
+          });
+        } else {
+          res.status(500);
+        }
+      });
+    });
+    res.json();
+  } else {
+    User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
+      if (err) return err;
       res.json(user);
-    }
-  });
+    });
+  }
 });
 
 // using the project schema to add a new project
