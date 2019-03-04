@@ -28,7 +28,7 @@ export default class Mainpage extends Component {
   }
 
   handleRedirect(values) {
-    console.log("Hitting set state for main page", values);
+    // console.log("Hitting set state for main page", values);
     this.setState({ location: values });
   }
 

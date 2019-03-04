@@ -63,9 +63,9 @@ class User extends React.Component {
       });
     }
 
-    if (values.password && values.password) {
-      console.log("Password field not empty");
-    }
+    // if (values.password && values.password) {
+    //   console.log("Password field not empty");
+    // }
   };
 
   componentDidMount() {
@@ -76,7 +76,7 @@ class User extends React.Component {
   getCookie() {
     axios.get("/user").then(response => {
       // console.log("Get user response: ");
-      console.log(response.data.user);
+      // console.log(response.data.user);
       //here need to pass id back from passport call
 
       if (response.data.user) {

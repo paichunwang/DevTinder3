@@ -46,7 +46,7 @@ class Login extends Component {
             // userInfo: response.data,
             redirectTo: "/users"
           });
-          console.log("post login user response: ", response.data);
+          // console.log("post login user response: ", response.data);
         }
       })
       .catch(error => {

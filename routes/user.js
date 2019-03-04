@@ -87,7 +87,7 @@ app.post("/update/user", (req, res) => {
   console.log(req.body);
 
   if (password || newPassword) {
-    console.log("not empty");
+    // console.log("not empty");
     User.findById(id, "password", (err, result) => {
       if (err) return err;
       bcrypt.compare(password, result.password, function(err, result) {
@@ -96,17 +96,16 @@ app.post("/update/user", (req, res) => {
             // console.log("this is new hash", hash);
             req.body.password = hash;
             req.body.newPassword = "";
-            console.log("post hash", req.body);
+            // console.log("post hash", req.body);
             User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
               if (err) return err;
             });
           });
         } else {
-          res.status(500);
+          res.status(403).send({ error: err });
         }
       });
     });
-    res.json();
   } else {
     User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
       if (err) return err;

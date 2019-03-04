@@ -148,7 +148,7 @@ class Signup extends Component {
       },
       // function in setstate calls comparison and runs off the result
       () => {
-        console.log(this.state);
+        // console.log(this.state);
         if (this.state.formValid) {
           if (!this.state.loading) {
             this.setState(
@@ -174,7 +174,7 @@ class Signup extends Component {
               password: this.state.password
             })
             .then(response => {
-              console.log(response);
+              // console.log(response);
               if (!response.data.error) {
                 axios
                   .post("/user/login", {

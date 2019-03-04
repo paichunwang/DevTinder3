@@ -53,18 +53,17 @@ class Profile extends React.Component {
       portfolio: this.props.display.portfolio,
       password: "",
       newPassword: "",
-      passwordError: false,
-      showPassword: { password: false, newPassword: false },
-      placeholder: {
-        profile: this.props.display.profile,
-        firstName: this.props.display.firstName,
-        lastName: this.props.display.lastName,
-        email: this.props.display.email,
-        github: this.props.display.github,
-        portfolio: this.props.display.portfolio,
-        password: "Enter current password",
-        newPassword: "Enter new password"
-      }
+      showPassword: { password: false, newPassword: false }
+      // placeholder: {
+      //   profile: this.props.display.profile,
+      //   firstName: this.props.display.firstName,
+      //   lastName: this.props.display.lastName,
+      //   email: this.props.display.email,
+      //   github: this.props.display.github,
+      //   portfolio: this.props.display.portfolio,
+      //   password: "Enter current password",
+      //   newPassword: "Enter new password"
+      // }
     };
     //console.log("account setting props: ", this.props);
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -82,36 +81,94 @@ class Profile extends React.Component {
 
     const { password, newPassword } = this.state;
 
-    if (password && newPassword) {
-      return null;
+    if (password || newPassword || (password && newPassword)) {
+      if (password && !newPassword) {
+        if (password.length < 6) {
+          this.props.enqueueSnackbar("Please enter a new password.", {
+            variant: "error"
+          });
+        }
+      } else if (!password && newPassword) {
+        if (newPassword.length < 6) {
+          this.props.enqueueSnackbar("Please enter your current password", {
+            variant: "error"
+          });
+        }
+      } else {
+        if (password.length < 6) {
+          this.props.enqueueSnackbar("Current Password length too short.", {
+            variant: "error"
+          });
+        } else if (newPassword.length < 6) {
+          this.props.enqueueSnackbar("New Password length too short.", {
+            variant: "error"
+          });
+        } else {
+          axios
+            .post("/update/user", {
+              id: this.state.id,
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
+              profile: this.state.profile,
+              github: this.state.github,
+              portfolio: this.state.portfolio,
+              password: this.state.password,
+              newPassword: this.state.newPassword
+            })
+            .then(response => {
+              console.log("login response: ", response);
+              if (response.status === 200) {
+                // console.log(response);
+                this.props.onChildUpdate(this.state);
+                this.props.enqueueSnackbar(
+                  "Account Settings successfully updated.",
+                  {
+                    variant: "success"
+                  }
+                );
+              }
+            })
+            .catch(error => {
+              this.displayServerError();
+            });
+        }
+      }
+    } else {
+      axios
+        .post("/update/user", {
+          id: this.state.id,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          profile: this.state.profile,
+          github: this.state.github,
+          portfolio: this.state.portfolio
+        })
+        .then(response => {
+          //console.log("login response: ", response);
+          if (response.status === 200) {
+            console.log(response);
+            this.props.onChildUpdate(this.state);
+            this.props.enqueueSnackbar(
+              "Account Settings successfully updated.",
+              {
+                variant: "success"
+              }
+            );
+          } else {
+            this.props.enqueueSnackbar("Account update error.", {
+              variant: "error"
+            });
+          }
+        })
+        .catch(error => {});
     }
-    console.log("hitting outside if");
-
-    // axios
-    //   .post("/update/user", {
-    //     id: this.state.id,
-    //     firstName: this.state.firstName,
-    //     lastName: this.state.lastName,
-    //     profile: this.state.profile,
-    //     github: this.state.github,
-    //     portfolio: this.state.portfolio,
-    //     password: this.state.password,
-    //     newPassword: this.state.newPassword
-    //   })
-    //   .then(response => {
-    //     //console.log("login response: ", response);
-    //     if (response.status === 200) {
-    //       console.log(response);
-    //       this.props.onChildUpdate(this.state);
-    //       this.props.enqueueSnackbar("Account Settings successfully updated.", {
-    //         variant: "success"
-    //       });
-    //     } else {
-    //       console.log("Internal Server Error");
-    //     }
-    //   })
-    //   .catch(error => {});
   };
+
+  displayServerError() {
+    this.props.enqueueSnackbar("Invalid Current Password.", {
+      variant: "error"
+    });
+  }
 
   handleClickShowPassword = keyName => {
     this.setState(state => ({
@@ -124,7 +181,7 @@ class Profile extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { placeholder, passwordError } = this.state;
+    const { passwordError } = this.state;
     return (
       <div
         className={classes.container}
@@ -161,7 +218,7 @@ class Profile extends React.Component {
                 id={"outlined-full-width " + keyIndex}
                 label={profile_values[keyName] + ": 6 or more characters"}
                 style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
-                placeholder={placeholder[keyName]}
+                // placeholder={placeholder[keyName]}
                 fullWidth
                 error={passwordError}
                 margin="normal"

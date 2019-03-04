@@ -27,6 +27,11 @@ const styles = {
     backgroundColor: "#8dd258",
     "box-shadow":
       "0px 7px 8px -4px rgba(0,0,0,0.2), 0px 12px 17px 2px rgba(0,0,0,0.14), 0px 5px 22px 4px rgba(0,0,0,0.12)"
+  },
+  error: {
+    backgroundColor: "#f83d5a",
+    "box-shadow":
+      "0px 7px 8px -4px rgba(0,0,0,0.2), 0px 12px 17px 2px rgba(0,0,0,0.14), 0px 5px 22px 4px rgba(0,0,0,0.12)"
   }
 };
 
@@ -37,7 +42,8 @@ class App extends Component {
       <SnackbarProvider
         maxSnack={3}
         classes={{
-          variantSuccess: classes.success
+          variantSuccess: classes.success,
+          variantError: classes.error
         }}
       >
         <MuiThemeProvider theme={theme}>
