@@ -9,6 +9,12 @@ import { withSnackbar } from "notistack";
 
 import axios from "axios";
 
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+//show/hide password
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+
 const update_button = {
   // border: "1px red solid",
   width: "100%",
@@ -37,6 +43,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      location: "userInfo",
       id: this.props.display._id,
       profile: this.props.display.profile,
       firstName: this.props.display.firstName,
@@ -46,6 +53,7 @@ class Profile extends React.Component {
       portfolio: this.props.display.portfolio,
       password: "",
       newPassword: "",
+      showPassword: { password: false, newPassword: false },
       placeholder: {
         profile: this.props.display.profile,
         firstName: this.props.display.firstName,
@@ -85,6 +93,7 @@ class Profile extends React.Component {
       .then(response => {
         //console.log("login response: ", response);
         if (response.status === 200) {
+          console.log(this.state);
           this.props.onChildUpdate(this.state);
         }
         this.props.enqueueSnackbar("Account Settings successfully updated.", {
@@ -97,17 +106,26 @@ class Profile extends React.Component {
     //need validation on profile, github, portfolio, password and newPassword
   };
 
-  componentDidMount() {
-    //console.log("hitting did mount on account setting");
-    this.setState({
-      id: this.state.id,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      profile: this.state.profile,
-      github: this.state.github,
-      portfolio: this.state.portfolio
-    });
-  }
+  // componentDidMount() {
+  //   //console.log("hitting did mount on account setting");
+  //   this.setState({
+  //     id: this.state.id,
+  //     firstName: this.state.firstName,
+  //     lastName: this.state.lastName,
+  //     profile: this.state.profile,
+  //     github: this.state.github,
+  //     portfolio: this.state.portfolio
+  //   });
+  // }
+
+  handleClickShowPassword = keyName => {
+    this.setState(state => ({
+      showPassword: {
+        ...state.showPassword,
+        [keyName]: !state.showPassword[keyName]
+      }
+    }));
+  };
 
   render() {
     const { classes } = this.props;
@@ -149,16 +167,29 @@ class Profile extends React.Component {
                 label={profile_values[keyName] + ": 6 or more characters"}
                 style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
                 placeholder={placeholder[keyName]}
-                // value={this.state[keyName]}
-                // helperText=""
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                // InputLabelProps={{
-                //   shrink: true
-                // }}
-                type="password"
+                type={this.state.showPassword[keyName] ? "text" : "password"}
                 onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={() => {
+                          this.handleClickShowPassword(keyName);
+                        }}
+                      >
+                        {this.state.showPassword[keyName] ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
               />
             );
           } else {

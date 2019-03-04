@@ -286,9 +286,14 @@ class AddProject extends React.Component {
         })
         .then(response => {
           // console.log("login response: ", response);
-          this.setState(state => ({
-            activeStep: state.activeStep + 1
-          }));
+          this.setState(
+            state => ({
+              activeStep: state.activeStep + 1
+            }),
+            () => {
+              this.handleCallproject();
+            }
+          );
           this.props.enqueueSnackbar(
             "Project successfully added to database.",
             {
@@ -364,10 +369,6 @@ class AddProject extends React.Component {
     // console.log("the date in date changer", date);
     this.setState({ selectedDate: date });
   };
-
-  componentDidMount() {
-    this.handleCallproject();
-  }
 
   handleCallproject() {
     this.props.callProject();

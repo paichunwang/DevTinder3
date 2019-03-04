@@ -46,7 +46,6 @@ class ProfileIndex extends React.Component {
   };
 
   handleChildUpdate = values => {
-    //console.log("hitting handleChildUpdate profile index with ", values);
     this.props.onChildUpdate(values);
     this.props.roleChange();
   };

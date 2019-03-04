@@ -7,6 +7,8 @@ import Slide from "@material-ui/core/Slide";
 
 import Typography from "@material-ui/core/Typography";
 
+import userIndex from "../../user/index";
+
 class Login extends Component {
   //need to check if login is active
   constructor(props) {
@@ -16,8 +18,6 @@ class Login extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.getCookie = this.getCookie.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
     this.handleRedirect = this.handleRedirect.bind(this);
   }
 
@@ -48,35 +48,12 @@ class Login extends Component {
             // userInfo: response.data,
             redirectTo: "/users"
           });
-          //console.log("post login user response: ", response.data);
+          console.log("post login user response: ", response.data);
         }
       })
       .catch(error => {
         //console.log("Login page .catch error: ", error);
       });
-  }
-
-  componentDidMount() {
-    this.getCookie();
-  }
-
-  //this call is not passported
-  getCookie() {
-    axios.get("/user/").then(response => {
-      //console.log("Get user response: ");
-      //console.log(response.data.user);
-      //here need to pass id back from passport call
-      if (response.data.user) {
-        this.setState({
-          redirectTo: "/users"
-        });
-      } else {
-        //console.log("No user found.");
-        this.setState({
-          redirectTo: null
-        });
-      }
-    });
   }
 
   render() {

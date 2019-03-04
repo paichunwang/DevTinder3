@@ -38,7 +38,7 @@ class User extends React.Component {
   }
 
   handleChildUpdate = values => {
-    console.log(this.state);
+    console.log(values);
     if (values.firstName || values.lastName) {
       this.setState({
         [values.location]: values,
@@ -70,8 +70,8 @@ class User extends React.Component {
   //this call is not passported
   getCookie() {
     axios.get("/user").then(response => {
-      //console.log("Get user response: ");
-      //console.log(response.data.user);
+      console.log("Get user response: ");
+      console.log(response.data.user[0]);
       //here need to pass id back from passport call
 
       if (response.data.user) {
