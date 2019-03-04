@@ -157,7 +157,7 @@ class ControlledExpansionPanels extends React.Component {
   };
 
   render() {
-    const { classes, project, complete, location } = this.props;
+    const { classes, project, complete, location, roleChoice } = this.props;
     const { expanded } = this.state;
     console.log(this.props);
     return (
@@ -226,7 +226,12 @@ class ControlledExpansionPanels extends React.Component {
                                       >
                                         Invite a Developer
                                       </Typography>
-                                      <InviteDeveloper />
+                                      <InviteDeveloper
+                                        ownerID={roleChoice}
+                                        projectReq={
+                                          project[keyName].projectSkillReq
+                                        }
+                                      />
                                     </>
                                   )}
                                   {this.props.project.developer && (

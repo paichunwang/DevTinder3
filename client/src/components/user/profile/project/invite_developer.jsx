@@ -2,47 +2,130 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
+import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemText from "@material-ui/core/ListItemText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import PersonIcon from "@material-ui/icons/Person";
+import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
-import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide";
+import blue from "@material-ui/core/colors/blue";
+import axios from "axios";
 
+const emails = ["username@gmail.com", "user02@gmail.com"];
 const styles = {
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
+  avatar: {
+    backgroundColor: blue[100],
+    color: blue[600]
   }
 };
 
-function Transition(props) {
-  console.log(props);
-  return <Slide direction="up" {...props} />;
-}
-
-class FullScreenDialog extends React.Component {
-  state = {
-    open: false
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
+class SearchResult extends React.Component {
   handleClose = () => {
-    this.setState({ open: false });
+    this.props.onClose(this.props.selectedValue);
+  };
+
+  handleListItemClick = value => {
+    this.props.onClose(value);
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onClose, selectedValue, ...other } = this.props;
+
+    return (
+      <Dialog
+        onClose={this.handleClose}
+        aria-labelledby="simple-dialog-title"
+        {...other}
+      >
+        <DialogTitle id="simple-dialog-title">Developer Matches</DialogTitle>
+        <div>
+          <List>
+            {emails.map(email => (
+              <ListItem
+                button
+                onClick={() => this.handleListItemClick(email)}
+                key={email}
+              >
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar}>
+                    <PersonIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={email} />
+              </ListItem>
+            ))}
+            <ListItem
+              button
+              onClick={() => this.handleListItemClick("addAccount")}
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  <AddIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="add account" />
+            </ListItem>
+          </List>
+        </div>
+      </Dialog>
+    );
+  }
+}
+
+SearchResult.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onClose: PropTypes.func,
+  selectedValue: PropTypes.string
+};
+
+const ResultPage = withStyles(styles)(SearchResult);
+
+class InviteButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      selectedValue: emails[1]
+    };
+  }
+
+  handleClickOpen = () => {
+    // this.setState({
+    //   open: true
+    // });
+    console.log(this.props);
+
+    const { _id } = this.props.ownerID;
+    const projectReq = this.props.projectReq;
+
+    console.log(_id, projectReq);
+
+    axios
+      .post("/user/callDeveloper", {
+        id: _id,
+        projectReq
+      })
+      .then(response => {
+        console.log("Project response: ", response);
+        // this.props.enqueueSnackbar("Project Completed.", {
+        //   variant: "success"
+        // });
+        // this.props.callProject();
+      })
+      .catch(error => {
+        console.log("complete project page error: ", error);
+      });
+  };
+
+  handleClose = value => {
+    this.setState({ selectedValue: value, open: false });
+  };
+
+  render() {
     return (
       <div>
         <Button
@@ -52,49 +135,14 @@ class FullScreenDialog extends React.Component {
         >
           Send Invite
         </Button>
-        <Dialog
-          fullScreen
+        <ResultPage
+          selectedValue={this.state.selectedValue}
           open={this.state.open}
           onClose={this.handleClose}
-          TransitionComponent={Transition}
-        >
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                onClick={this.handleClose}
-                aria-label="Close"
-              >
-                <CloseIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" className={classes.flex}>
-                Invite a developer
-              </Typography>
-              <Button color="inherit" onClick={this.handleClose}>
-                Send Invites
-              </Button>
-            </Toolbar>
-          </AppBar>
-          <List>
-            <ListItem button>
-              <ListItemText primary="Phone ringtone" secondary="Titania" />
-            </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemText
-                primary="Default notification ringtone"
-                secondary="Tethys"
-              />
-            </ListItem>
-          </List>
-        </Dialog>
+        />
       </div>
     );
   }
 }
 
-FullScreenDialog.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(FullScreenDialog);
+export default InviteButton;

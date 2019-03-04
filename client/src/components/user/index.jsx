@@ -50,13 +50,19 @@ class User extends React.Component {
         }
       });
     } else if (values.role) {
-      this.setState({
-        [values.location]: values,
-        navBar: {
-          ...this.state.navBar,
-          role: values.role
+      console.log(values);
+      this.setState(
+        {
+          [values.location]: values,
+          navBar: {
+            ...this.state.navBar,
+            role: values.role
+          }
+        },
+        () => {
+          console.log("post role check", this.state);
         }
-      });
+      );
     } else {
       this.setState({
         [values.location]: values

@@ -10,7 +10,7 @@ passport.use(LocalStrategy);
 
 //user passport deserializer to get information, if user exists, send user information back to front
 app.get("/user/", (req, res, next) => {
-  console.log("GET /user/ routes: ", req.user);
+  // console.log("GET /user/ routes: ", req.user);
   if (req.user) {
     res.json({ user: req.user });
   } else {
@@ -84,7 +84,7 @@ app.post("/user/logout", (req, res) => {
 //user account update method
 app.post("/update/user", (req, res) => {
   let { id, password, newPassword } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
 
   if (password || newPassword) {
     // console.log("not empty");
@@ -126,7 +126,7 @@ app.post("/user/addProject", (req, res) => {
     projectInit
   } = req.body;
 
-  console.log("add project", req.body);
+  // console.log("add project", req.body);
 
   // Create an instance of model SomeModel
   const newProject = new Project({
@@ -141,7 +141,7 @@ app.post("/user/addProject", (req, res) => {
 
   // Save the new model instance, passing a callback
   newProject.save((err, savedProject) => {
-    console.log("saveproject", savedProject);
+    // console.log("saveproject", savedProject);
     if (err) return res.json(err);
     res.json(savedProject);
   });
@@ -164,6 +164,40 @@ app.post("/user/callProject", (req, res) => {
       res.send(project);
     }
   });
+});
+
+app.post("/user/callDeveloper", (req, res) => {
+  // console.log("req body", req.body);
+
+  let list = req.body.projectReq;
+  let arrayList = {
+    role: { $eq: "developer" }
+  };
+  let arraySort = {};
+  for (p in list) {
+    arrayList[list[p]] = { $exists: true };
+    arraySort[list[p]] = -1;
+  }
+
+  console.log(arrayList, arraySort);
+
+  User.find(arrayList, (err, developer) => {
+    console.log(developer);
+  }).sort(arraySort);
+  // let id = req.body.id;
+  // let requirement = req.body.projectReq;
+  // console.log(typeof id, requirement);
+  // let query = {};
+  // query[name] = value;
+  // console.log(query);
+  // Project.find({ [name]: value }, function(err, project) {
+  //   if (err) {
+  //     console.log("Project find one error: ", err);
+  //   } else {
+  //     // console.log(project);
+  //     res.send(project);
+  //   }
+  // });
 });
 
 app.post("/user/completeProject", (req, res) => {
@@ -190,8 +224,8 @@ app.post("/user/completeProject", (req, res) => {
 // });
 
 // catch all non-existing routes and serve the react static files
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/../client/build/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/../client/build/index.html"));
+// });
 
 module.exports = app;

@@ -80,7 +80,10 @@ class ProfileIndex extends React.Component {
                     >
                       Disabled on Client Role
                     </Typography>
-                    <Typography variant="caption" style={{ color: "red" }}>
+                    <Typography
+                      variant="caption"
+                      style={{ color: "rgba(0, 0, 0, 0.54)" }}
+                    >
                       Indicated Skills
                     </Typography>
                   </>
