@@ -7,8 +7,6 @@ import Slide from "@material-ui/core/Slide";
 
 import Typography from "@material-ui/core/Typography";
 
-import userIndex from "../../user/index";
-
 class Login extends Component {
   //need to check if login is active
   constructor(props) {

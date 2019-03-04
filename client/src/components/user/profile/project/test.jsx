@@ -464,7 +464,6 @@ class ControlledExpansionPanels extends React.Component {
               // fullWidth
               size="large"
               color="primary"
-              onClick={this.handleCallproject}
             >
               <FontAwesomeIcon
                 icon={faSync}

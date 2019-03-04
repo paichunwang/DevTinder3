@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Redirect } from "react-router-dom";
 
 //this page is the main render for user page, base on switch case, Sidnav + Profile / Project will be provided
 
@@ -38,7 +39,7 @@ class User extends React.Component {
   }
 
   handleChildUpdate = values => {
-    console.log(values);
+    // console.log(values);
     if (values.firstName || values.lastName) {
       this.setState({
         [values.location]: values,
@@ -61,6 +62,10 @@ class User extends React.Component {
         [values.location]: values
       });
     }
+
+    if (values.password && values.password) {
+      console.log("Password field not empty");
+    }
   };
 
   componentDidMount() {
@@ -70,8 +75,8 @@ class User extends React.Component {
   //this call is not passported
   getCookie() {
     axios.get("/user").then(response => {
-      console.log("Get user response: ");
-      console.log(response.data.user[0]);
+      // console.log("Get user response: ");
+      console.log(response.data.user);
       //here need to pass id back from passport call
 
       if (response.data.user) {
@@ -125,7 +130,7 @@ class User extends React.Component {
           }
         );
       } else {
-        //console.log("No user found. redircting user back to /login");
+        this.props.history.push("/");
       }
     });
   }
@@ -135,7 +140,7 @@ class User extends React.Component {
   }
 
   callProject = () => {
-    console.log(this.state.userInfo._id);
+    console.log(this.state.userInfo);
     let searchField, searchID;
     if (this.state.roleChoice.role === "client") {
       searchField = "ownerID";
@@ -250,15 +255,8 @@ class User extends React.Component {
                   complete={true}
                 />
               )}
-              {currentLocation === "/user/signout" && "SIGNOUT"}
             </div>
           </>
-        )}
-        {userInfo === null && (
-          <div>
-            hitting null, need some thing here for loading page incase query
-            took too long
-          </div>
         )}
       </div>
     );

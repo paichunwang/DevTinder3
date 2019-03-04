@@ -19,8 +19,8 @@ passport.deserializeUser((id, done) => {
     { _id: id },
     "_id firstName lastName email profile github portfolio angular css html java javascript nodejs python reactjs role",
     (err, user) => {
-      // console.log(user);
-      done(err, user);
+      console.log(user);
+      done(null, user);
     }
   );
 });

@@ -9,7 +9,7 @@ passport.use(LocalStrategy);
 
 //user passport deserializer to get information, if user exists, send user information back to front
 app.get("/user/", (req, res, next) => {
-  //console.log("GET /user/ routes: ", req.user);
+  console.log("GET /user/ routes: ", req.user);
   if (req.user) {
     res.json({ user: req.user });
   } else {
@@ -69,6 +69,15 @@ app.post("/user/login", passport.authenticate("local"), (req, res) => {
   };
   //console.log("info sent back to front end", userInfo);
   res.send(userInfo);
+});
+
+app.post("/user/logout", (req, res) => {
+  if (req.user) {
+    req.logout();
+    res.send({ msg: "logging out" });
+  } else {
+    res.send({ msg: "no user to log out" });
+  }
 });
 
 //user account update method

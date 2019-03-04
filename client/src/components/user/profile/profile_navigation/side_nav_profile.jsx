@@ -13,6 +13,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
+import { withRouter } from "react-router";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -25,6 +27,8 @@ import FolderOpen from "@material-ui/icons/FolderOpen";
 import Folder from "@material-ui/icons/Folder";
 
 import Button from "@material-ui/core/Button";
+
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -124,6 +128,24 @@ class Sidenav extends React.Component {
     this.setState({ open: false });
   };
 
+  handleRedirectHome() {
+    this.props.history.push("/");
+  }
+
+  handleSignout = event => {
+    event.preventDefault();
+    console.log("logging out");
+    axios
+      .post("/user/logout")
+      .then(response => {
+        console.log(response.data);
+        this.handleRedirectHome();
+      })
+      .catch(error => {
+        console.log("Logout error");
+      });
+  };
+
   render() {
     const { classes, theme, currentLocation, display } = this.props;
     const { open } = this.state;
@@ -168,7 +190,11 @@ class Sidenav extends React.Component {
               <ArrowRight style={{ fontSize: "10pt" }} />{" "}
               {ListRoutes[currentLocation]}
             </Typography>
-            <Button color="inherit" style={Logoutbutton}>
+            <Button
+              onClick={this.handleSignout}
+              color="inherit"
+              style={Logoutbutton}
+            >
               <DirectionWalk />
               Sign out
             </Button>
@@ -197,19 +223,35 @@ class Sidenav extends React.Component {
             <>
               {Object.keys(objectWithoutKey(ListRoutes, "/user/invite")).map(
                 (keyName, keyIndex) => {
-                  return (
-                    <ListItem
-                      button={true}
-                      key={ListRoutes[keyName]}
-                      value={keyName}
-                      // component={NavLink}
-                      // to={keyName}
-                      onClick={() => this.props.action(keyName)}
-                    >
-                      <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
-                      <ListItemText primary={ListRoutes[keyName]} />
-                    </ListItem>
-                  );
+                  if (keyName !== "/user/signout") {
+                    return (
+                      <ListItem
+                        button={true}
+                        key={ListRoutes[keyName]}
+                        value={keyName}
+                        // component={NavLink}
+                        // to={keyName}
+                        onClick={() => this.props.action(keyName)}
+                      >
+                        <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                        <ListItemText primary={ListRoutes[keyName]} />
+                      </ListItem>
+                    );
+                  } else {
+                    return (
+                      <ListItem
+                        button={true}
+                        key={ListRoutes[keyName]}
+                        value={keyName}
+                        // component={NavLink}
+                        // to={keyName}
+                        onClick={this.handleSignout}
+                      >
+                        <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                        <ListItemText primary={ListRoutes[keyName]} />
+                      </ListItem>
+                    );
+                  }
                 }
               )}
             </>
@@ -247,4 +289,4 @@ Sidenav.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(Sidenav);
+export default withRouter(withStyles(styles, { withTheme: true })(Sidenav));

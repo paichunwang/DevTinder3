@@ -93,7 +93,7 @@ class Profile extends React.Component {
       .then(response => {
         //console.log("login response: ", response);
         if (response.status === 200) {
-          console.log(this.state);
+          // console.log(this.state);
           this.props.onChildUpdate(this.state);
         }
         this.props.enqueueSnackbar("Account Settings successfully updated.", {

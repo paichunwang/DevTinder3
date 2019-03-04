@@ -291,6 +291,7 @@ class AddProject extends React.Component {
               activeStep: state.activeStep + 1
             }),
             () => {
+              console.log("CallProject in add project");
               this.handleCallproject();
             }
           );
