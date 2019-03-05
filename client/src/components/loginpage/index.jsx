@@ -1,13 +1,13 @@
 import UserLogin from "./user_login/login";
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirectTo: null
+      // redirectTo: null
     };
 
     // this.getCookie = this.getCookie.bind(this);
@@ -18,6 +18,10 @@ class index extends Component {
     this.getCookie();
   }
 
+  handleRedirect = value => {
+    this.props.redirect(value);
+  };
+
   //this call is not passported
   getCookie() {
     axios.get("/user/").then(response => {
@@ -25,29 +29,17 @@ class index extends Component {
       //console.log(response.data.user);
       //here need to pass id back from passport call
       if (response.data.user) {
-        this.setState({
-          redirectTo: "/users"
-        });
-      } else {
-        //console.log("No user found.");
-        this.setState({
-          redirectTo: null
-        });
+        this.handleRedirect("users");
       }
     });
   }
 
   render() {
-    if (this.state.redirectTo) {
-      //console.log("Hiting loginpage user_login login Redirect");
-      return <Redirect to={{ pathname: this.state.redirectTo }} />;
-    } else {
-      return (
-        <div>
-          <UserLogin handleRedirect={this.props.redirect} />
-        </div>
-      );
-    }
+    return (
+      <div>
+        <UserLogin handleRedirect={this.handleRedirect} />
+      </div>
+    );
   }
 }
 

@@ -128,18 +128,16 @@ class Sidenav extends React.Component {
     this.setState({ open: false });
   };
 
-  handleRedirectHome() {
-    this.props.history.push("/");
+  handleRedirectHome(value) {
+    this.props.handleRedirect(value);
   }
 
-  handleSignout = event => {
-    event.preventDefault();
-    console.log("logging out");
+  handleSignout = value => {
     axios
       .post("/user/logout")
       .then(response => {
-        console.log(response.data);
-        this.handleRedirectHome();
+        // console.log(response.data);
+        this.handleRedirectHome(value);
       })
       .catch(error => {
         console.log("Logout error");
@@ -191,7 +189,9 @@ class Sidenav extends React.Component {
               {ListRoutes[currentLocation]}
             </Typography>
             <Button
-              onClick={this.handleSignout}
+              onClick={() => {
+                this.handleSignout("main");
+              }}
               color="inherit"
               style={Logoutbutton}
             >
@@ -245,7 +245,9 @@ class Sidenav extends React.Component {
                         value={keyName}
                         // component={NavLink}
                         // to={keyName}
-                        onClick={this.handleSignout}
+                        onClick={() => {
+                          this.handleSignout("main");
+                        }}
                       >
                         <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
                         <ListItemText primary={ListRoutes[keyName]} />

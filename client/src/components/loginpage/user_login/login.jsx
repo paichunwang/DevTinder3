@@ -30,6 +30,10 @@ class Login extends Component {
     });
   }
 
+  handleRedirect = value => {
+    this.props.handleRedirect(value);
+  };
+
   //axios post for user login
   handleSubmit(event) {
     event.preventDefault();
@@ -42,11 +46,7 @@ class Login extends Component {
       .then(response => {
         //console.log("login response data: ", response.data);
         if (response.status === 200) {
-          this.setState({
-            // userInfo: response.data,
-            redirectTo: "/users"
-          });
-          // console.log("post login user response: ", response.data);
+          this.handleRedirect("users");
         }
       })
       .catch(error => {

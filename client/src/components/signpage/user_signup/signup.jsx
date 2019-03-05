@@ -15,6 +15,8 @@ import Slide from "@material-ui/core/Slide";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import green from "@material-ui/core/colors/green";
 
+// import { Redirect } from "react-router-dom";
+
 import Typography from "@material-ui/core/Typography";
 
 //route caller
@@ -170,7 +172,7 @@ class Signup extends Component {
             .post("/user/", {
               firstname: this.state.fname,
               lastname: this.state.lname,
-              email: this.state.email,
+              email: this.state.email.toLowerCase(),
               password: this.state.password
             })
             .then(response => {
@@ -183,11 +185,14 @@ class Signup extends Component {
                   })
                   .then(response => {
                     // console.log("hitting login post");
-                    window.location.pathname = "/users";
+                    this.handleRedirect("users");
                   })
                   .catch(error => {});
               } else {
                 console.log("account with email already exist");
+                this.setState({ emailError: true }, () => {
+                  console.log(this.state);
+                });
               }
             })
             .catch(error => {
@@ -222,6 +227,7 @@ class Signup extends Component {
       fname: "Required field cannot be left blank",
       lname: "Required field cannot be left blank",
       email: "Invalid Email address",
+      email1: "Account with email already exists",
       password: "Password must be 6 or more characters"
     };
 

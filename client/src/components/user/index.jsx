@@ -215,6 +215,7 @@ class User extends React.Component {
               action={this.handler}
               currentLocation={currentLocation}
               display={navBar}
+              handleRedirect={this.props.redirect}
             />
             <div style={userContent}>
               {currentLocation === "/user" && (

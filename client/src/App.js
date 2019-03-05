@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Mainpage from "./components/landingpage/index";
-import User from "./components/user/index";
+// import User from "./components/user/index";
 
 import {
   MuiThemeProvider,
@@ -51,7 +51,7 @@ class App extends Component {
             <div>
               <Switch>
                 <Route exact path="/" component={Mainpage} />
-                <Route exact path="/users" component={User} />
+                {/* <Route exact path="/users" component={User} /> */}
               </Switch>
             </div>
           </Router>
