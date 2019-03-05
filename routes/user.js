@@ -168,22 +168,45 @@ app.post("/user/callProject", (req, res) => {
 
 app.post("/user/callDeveloper", (req, res) => {
   // console.log("req body", req.body);
+  let bestResult = [];
+  let UnsortedResult = [];
 
   let list = req.body.projectReq;
   let arrayList = {
     role: { $eq: "developer" }
   };
-  let arraySort = {};
   for (p in list) {
     arrayList[list[p]] = { $exists: true };
-    arraySort[list[p]] = -1;
+    // arraySort[p] = {[list[p]] : -1}
   }
 
-  console.log(arrayList, arraySort);
+  // console.log(arrayList, arraySort);
 
   User.find(arrayList, (err, developer) => {
-    console.log(developer);
-  }).sort(arraySort);
+    // console.log(developer);
+
+    developer.forEach((result, index) => {
+      let listTotal = 0;
+      list.forEach(
+        (listResult = (value, index) => {
+          listTotal = result[value] + listTotal;
+        })
+      );
+
+      UnsortedResult[index] = {
+        id: result._id,
+        name: result.firstName + " " + result.lastName,
+        rank: listTotal / list.length
+      };
+    });
+
+    bestResult = UnsortedResult.sort(function(a, b) {
+      return b.rank - a.rank;
+    });
+
+    console.log(bestResult);
+    res.status(200).send({ data: bestResult });
+  });
   // let id = req.body.id;
   // let requirement = req.body.projectReq;
   // console.log(typeof id, requirement);

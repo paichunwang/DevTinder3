@@ -1,8 +1,5 @@
 import React from "react";
-import { BrowserRouter as Redirect } from "react-router-dom";
-
 //this page is the main render for user page, base on switch case, Sidnav + Profile / Project will be provided
-
 import Sidenav from "./profile/profile_navigation/side_nav_profile";
 import Profile from "./profile/index";
 import Project from "./profile/project/project_page";
