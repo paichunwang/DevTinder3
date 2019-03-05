@@ -166,6 +166,21 @@ app.post("/user/callProject", (req, res) => {
   });
 });
 
+app.post("/user/updateproject", (req, res) => {
+  const { devId, devName } = req.body;
+  console.log(devId, devName);
+  Project.findByIdAndUpdate(devId, { projectInvite: devName }, function(
+    err,
+    project
+  ) {
+    if (project) {
+      res.json(200, "Success");
+    } else {
+      res.json(403, "Error, project update failed");
+    }
+  });
+});
+
 app.post("/user/callDeveloper", (req, res) => {
   // console.log("req body", req.body);
   let bestResult = [];

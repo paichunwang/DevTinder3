@@ -219,24 +219,19 @@ class ControlledExpansionPanels extends React.Component {
                             >
                               {this.props.roleChoice.role === "client" && (
                                 <Typography variant="caption">
-                                  {this.props.project.developer == null && (
-                                    <>
-                                      <Typography
-                                        className={classes.secondaryHeading}
-                                      >
-                                        Invite a Developer
-                                      </Typography>
-                                      <InviteDeveloper
-                                        ownerID={roleChoice}
-                                        projectReq={
-                                          project[keyName].projectSkillReq
-                                        }
-                                      />
-                                    </>
-                                  )}
-                                  {this.props.project.developer && (
-                                    <InviteDeveloper />
-                                  )}
+                                  <Typography
+                                    className={classes.secondaryHeading}
+                                  >
+                                    Invite a Developer
+                                  </Typography>
+                                  <InviteDeveloper
+                                    existingDev={project[keyName].projectInvite}
+                                    ownerID={roleChoice._id}
+                                    projectId={project[keyName]._id}
+                                    projectReq={
+                                      project[keyName].projectSkillReq
+                                    }
+                                  />
                                 </Typography>
                               )}
                               {this.props.roleChoice.role === "developer" && (
@@ -310,11 +305,11 @@ class ControlledExpansionPanels extends React.Component {
                                   project[keyIndex].projectInvite.map(entry => {
                                     return (
                                       <Tooltip
-                                        key={entry.devID}
-                                        title={entry.devName}
+                                        key={entry.id}
+                                        title={entry.name}
                                       >
                                         <Chip
-                                          label={entry.devName.charAt(0)}
+                                          label={entry.name.charAt(0)}
                                           className={classes.chip}
                                         />
                                       </Tooltip>

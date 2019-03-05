@@ -56,7 +56,7 @@ class SearchResult extends React.Component {
     this.props.onClose();
   };
 
-  handleSendinvite = value => {
+  handleSendinvite = (id, value) => {
     if (!this.state.loading) {
       this.setState(
         {
@@ -74,15 +74,29 @@ class SearchResult extends React.Component {
       );
       if (value.length === 0) {
         this.props.enqueueSnackbar(
-          "Send Invites failed, no developers selected.",
+          "Send invites failed, no developers selected.",
           {
-            variant: "error"
+            variant: "error",
+            action: (
+              <Button style={{ color: "white" }} size="small">
+                {"Close"}
+              </Button>
+            )
           }
         );
-      } else if (!value.length === 0) {
-        console.log("Appending to db and call prop close");
       } else {
-        console.log("failed");
+        // console.log(this.props.ownerid._id);
+        axios
+          .post("/user/updateproject", {
+            devId: id,
+            devName: value
+          })
+          .then(response => {
+            console.log("success");
+          })
+          .catch(error => {
+            console.log("error");
+          });
       }
     }
   };
@@ -159,7 +173,12 @@ class SearchResult extends React.Component {
               <ListItem
                 button
                 disabled={this.state.loading}
-                onClick={() => this.handleSendinvite(this.state.checked)}
+                onClick={() =>
+                  this.handleSendinvite(
+                    this.props.projectId,
+                    this.state.checked
+                  )
+                }
               >
                 <ListItemAvatar>
                   <Avatar>
@@ -198,14 +217,15 @@ class InviteButton extends React.Component {
       selectedValue: emails[1],
       projectList: null
     };
+    this.senderror = this.senderror.bind(this);
   }
 
   handleClickOpen = () => {
-    const { _id } = this.props.ownerID;
+    console.log(this.props.ownerID);
     const projectReq = this.props.projectReq;
     axios
       .post("/user/callDeveloper", {
-        id: _id,
+        id: this.props.ownerID,
         projectReq
       })
       .then(response => {
@@ -236,7 +256,7 @@ class InviteButton extends React.Component {
           Send Invite
         </Button>
         <ResultPage
-          ownerid={this.props.ownerID}
+          projectId={this.props.projectId}
           project={this.state.projectList}
           open={this.state.open}
           onClose={this.handleClose}
