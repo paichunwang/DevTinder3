@@ -174,9 +174,9 @@ app.post("/user/updateproject", (req, res) => {
     project
   ) {
     if (project) {
-      res.json(200, "Success");
+      res.status(200).json({ success: "Success" });
     } else {
-      res.json(403, "Error, project update failed");
+      res.status(403).json({ error: "Error, project update failed" });
     }
   });
 });
@@ -219,7 +219,7 @@ app.post("/user/callDeveloper", (req, res) => {
       return b.rank - a.rank;
     });
 
-    console.log(bestResult);
+    // console.log(bestResult);
     res.status(200).send({ data: bestResult });
   });
   // let id = req.body.id;

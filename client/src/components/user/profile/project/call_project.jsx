@@ -141,7 +141,7 @@ class ControlledExpansionPanels extends React.Component {
         projectFinish: new Date()
       })
       .then(response => {
-        console.log("Project response: ", response);
+        // console.log("Project response: ", response);
         this.props.enqueueSnackbar("Project Completed.", {
           variant: "success"
         });
@@ -159,7 +159,7 @@ class ControlledExpansionPanels extends React.Component {
   render() {
     const { classes, project, complete, location, roleChoice } = this.props;
     const { expanded } = this.state;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <>
         {project !== undefined && (
@@ -225,6 +225,7 @@ class ControlledExpansionPanels extends React.Component {
                                     Invite a Developer
                                   </Typography>
                                   <InviteDeveloper
+                                    callProject={this.props.callProject}
                                     existingDev={project[keyName].projectInvite}
                                     ownerID={roleChoice._id}
                                     projectId={project[keyName]._id}
@@ -494,21 +495,23 @@ class ControlledExpansionPanels extends React.Component {
                                 Developers:
                               </Typography>
                               <div>
-                                {project[keyIndex].projectInvite &&
-                                  project[keyIndex].projectInvite.map(entry => {
-                                    return (
-                                      <Tooltip
-                                        key={entry.devID}
-                                        title={entry.devName}
-                                      >
-                                        <Chip
-                                          label={entry.devName.charAt(0)}
-                                          className={classes.chip}
-                                          color="primary"
-                                        />
-                                      </Tooltip>
-                                    );
-                                  })}
+                                {project[keyIndex].projectDeveloper &&
+                                  project[keyIndex].projectDeveloper.map(
+                                    entry => {
+                                      return (
+                                        <Tooltip
+                                          key={entry.devID}
+                                          title={entry.devName}
+                                        >
+                                          <Chip
+                                            label={entry.devName}
+                                            className={classes.chip}
+                                            color="primary"
+                                          />
+                                        </Tooltip>
+                                      );
+                                    }
+                                  )}
                               </div>
                             </div>
                             <div

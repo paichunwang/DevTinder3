@@ -73,17 +73,17 @@ class SearchResult extends React.Component {
         }
       );
       if (value.length === 0) {
-        this.props.enqueueSnackbar(
-          "Send invites failed, no developers selected.",
-          {
-            variant: "error",
-            action: (
-              <Button style={{ color: "white" }} size="small">
-                {"Close"}
-              </Button>
-            )
-          }
-        );
+        // this.props.enqueueSnackbar(
+        //   "Send invites failed, no developers selected.",
+        //   {
+        //     variant: "error",
+        //     action: (
+        //       <Button style={{ color: "white" }} size="small">
+        //         {"Close"}
+        //       </Button>
+        //     )
+        //   }
+        // );
       } else {
         // console.log(this.props.ownerid._id);
         axios
@@ -92,7 +92,9 @@ class SearchResult extends React.Component {
             devName: value
           })
           .then(response => {
-            console.log("success");
+            // console.log("success");
+            this.props.callProject();
+            this.handleClose();
           })
           .catch(error => {
             console.log("error");
@@ -217,11 +219,10 @@ class InviteButton extends React.Component {
       selectedValue: emails[1],
       projectList: null
     };
-    this.senderror = this.senderror.bind(this);
   }
 
   handleClickOpen = () => {
-    console.log(this.props.ownerID);
+    // console.log(this.props.ownerID);
     const projectReq = this.props.projectReq;
     axios
       .post("/user/callDeveloper", {
@@ -229,7 +230,7 @@ class InviteButton extends React.Component {
         projectReq
       })
       .then(response => {
-        console.log("Project response: ", response);
+        // console.log("Project response: ", response);
         this.setState({
           open: true,
           projectList: response.data
@@ -256,6 +257,7 @@ class InviteButton extends React.Component {
           Send Invite
         </Button>
         <ResultPage
+          callProject={this.props.callProject}
           projectId={this.props.projectId}
           project={this.state.projectList}
           open={this.state.open}
