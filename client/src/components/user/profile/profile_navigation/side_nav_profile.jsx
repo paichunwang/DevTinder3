@@ -6,12 +6,14 @@ import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
+// import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+
+import { withRouter } from "react-router";
 
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -25,6 +27,8 @@ import FolderOpen from "@material-ui/icons/FolderOpen";
 import Folder from "@material-ui/icons/Folder";
 
 import Button from "@material-ui/core/Button";
+
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -98,19 +102,23 @@ const ListRoutes = {
   "/user/signout": "Sign Out"
 };
 
-const IconRoutes = [
-  <AccountCircle />,
-  <AddCircle />,
-  <Drafts />,
-  <FolderOpen />,
-  <Folder />,
-  <DirectionWalk />
-];
+const IconRoutes = {
+  "/user": <AccountCircle />,
+  "/user/add": <AddCircle />,
+  "/user/invite": <Drafts />,
+  "/user/project": <FolderOpen />,
+  "/user/complete": <Folder />,
+  "/user/signout": <DirectionWalk />
+};
 
 class Sidenav extends React.Component {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+      // navList: this.props.display.role
+    };
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -120,9 +128,31 @@ class Sidenav extends React.Component {
     this.setState({ open: false });
   };
 
+  handleRedirectHome(value) {
+    this.props.handleRedirect(value);
+  }
+
+  handleSignout = value => {
+    axios
+      .post("/user/logout")
+      .then(response => {
+        // console.log(response.data);
+        this.handleRedirectHome(value);
+      })
+      .catch(error => {
+        console.log("Logout error");
+      });
+  };
+
   render() {
-    const { classes, theme, currentLocation } = this.props;
+    const { classes, theme, currentLocation, display } = this.props;
     const { open } = this.state;
+    //console.log("this.prop sidenav", this.props.display);
+
+    const objectWithoutKey = (object, key) => {
+      const { [key]: deletedKey, ...filterList } = object;
+      return filterList;
+    };
 
     return (
       <div className={classes.root}>
@@ -149,10 +179,22 @@ class Sidenav extends React.Component {
               style={{ flex: 1, textAlign: "left", paddingLeft: "15px" }}
               noWrap
             >
-              USER NAME GOES HERE <ArrowRight style={{ fontSize: "10pt" }} />{" "}
+              {display.firstName + " " + display.lastName}
+              <ArrowRight style={{ fontSize: "10pt" }} />{" "}
+              {display.role &&
+                display.role.charAt(0).toUpperCase() +
+                  display.role.substring(1)}
+              {!display.role && "Undefined Role"}
+              <ArrowRight style={{ fontSize: "10pt" }} />{" "}
               {ListRoutes[currentLocation]}
             </Typography>
-            <Button color="inherit" style={Logoutbutton}>
+            <Button
+              onClick={() => {
+                this.handleSignout("main");
+              }}
+              color="inherit"
+              style={Logoutbutton}
+            >
               <DirectionWalk />
               Sign out
             </Button>
@@ -168,7 +210,6 @@ class Sidenav extends React.Component {
           }}
         >
           <div className={classes.drawerHeader}>
-            {/* close button for drawer */}
             <IconButton onClick={this.handleDrawerClose}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
@@ -177,34 +218,68 @@ class Sidenav extends React.Component {
               )}
             </IconButton>
           </div>
-
-          <List>
-            {Object.keys(ListRoutes).map((keyName, keyIndex) => {
-              return (
-                <ListItem
-                  button={true}
-                  key={ListRoutes[keyName]}
-                  value={keyName}
-                  // component={NavLink}
-                  // to={keyName}
-                  onClick={() => this.props.action(keyName)}
-                >
-                  <ListItemIcon>{IconRoutes[keyIndex]}</ListItemIcon>
-                  <ListItemText primary={ListRoutes[keyName]} />
-                </ListItem>
-              );
-            })}
-          </List>
+          {display.role == null && <>PLEASE SELECT ROLE FIRST</>}
+          {display.role === "client" && (
+            <>
+              {Object.keys(objectWithoutKey(ListRoutes, "/user/invite")).map(
+                (keyName, keyIndex) => {
+                  if (keyName !== "/user/signout") {
+                    return (
+                      <ListItem
+                        button={true}
+                        key={ListRoutes[keyName]}
+                        value={keyName}
+                        // component={NavLink}
+                        // to={keyName}
+                        onClick={() => this.props.action(keyName)}
+                      >
+                        <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                        <ListItemText primary={ListRoutes[keyName]} />
+                      </ListItem>
+                    );
+                  } else {
+                    return (
+                      <ListItem
+                        button={true}
+                        key={ListRoutes[keyName]}
+                        value={keyName}
+                        // component={NavLink}
+                        // to={keyName}
+                        onClick={() => {
+                          this.handleSignout("main");
+                        }}
+                      >
+                        <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                        <ListItemText primary={ListRoutes[keyName]} />
+                      </ListItem>
+                    );
+                  }
+                }
+              )}
+            </>
+          )}
+          {display.role === "developer" && (
+            <>
+              {Object.keys(objectWithoutKey(ListRoutes, "/user/add")).map(
+                (keyName, keyIndex) => {
+                  return (
+                    <ListItem
+                      button={true}
+                      key={ListRoutes[keyName]}
+                      value={keyName}
+                      onClick={() => this.props.action(keyName)}
+                    >
+                      <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                      <ListItemText primary={ListRoutes[keyName]} />
+                    </ListItem>
+                  );
+                }
+              )}
+            </>
+          )}
         </Drawer>
-        {/* this changes content spacing on drawer opening */}
-        {/* <main
-          className={classNames(classes.content, {
-            [classes.contentShift]: open
-          })}
-        > */}
         <main className={classNames(classes.content)}>
           <div className={classes.drawerHeader} />
-          {/* <Profile /> */}
         </main>
       </div>
     );
@@ -216,4 +291,4 @@ Sidenav.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(Sidenav);
+export default withRouter(withStyles(styles, { withTheme: true })(Sidenav));

@@ -7,6 +7,10 @@ import Slider from "@material-ui/lab/Slider";
 
 import Button from "@material-ui/core/Button";
 
+import axios from "axios";
+
+import { withSnackbar } from "notistack";
+
 const update_button = {
   // border: "1px red solid",
   width: "100%",
@@ -33,50 +37,71 @@ const skills_values = {
 };
 
 class SkillSlider extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      user: {
-        profile: "State Profile",
-        fname: "State FName",
-        lname: "State LName",
-        github: "State Github",
-        protfolio: "State Protfolio",
-        password: "State password // this will need to be hashed or dummy code"
-      },
-      skill: {
-        angular: 1,
-        css: 2,
-        html: 3,
-        java: 4,
-        javascript: 5,
-        nodejs: 6,
-        python: 7,
-        reactjs: 8
-      }
+      location: "skillSlider",
+      angular: this.props.display.angular || 0,
+      css: this.props.display.css || 0,
+      html: this.props.display.html || 0,
+      java: this.props.display.java || 0,
+      javascript: this.props.display.javascript || 0,
+      nodejs: this.props.display.nodejs || 0,
+      python: this.props.display.python || 0,
+      reactjs: this.props.display.reactjs || 0
     };
+    //console.log("checking this prop in slider", this.props);
   }
 
   handleChange = name => (e, value) => {
-    // console.log(name, value);
-    // console.log("Pre State: ", this.state.skill.angular);
-
     this.setState({
-      skill: { ...this.state.skill, [name]: value }
-      // [name]: value // --> Important bit here: This is how you set the value of sliders
+      [name]: value
     });
-
-    // console.log("Post State: ", this.state.skill[name]);
   };
 
-  handleUpdate = () => {
-    //   something here to catch update on the skill slider page
+  handleUpdate = event => {
+    //console.log("hitting update on skill slider", this.props.display._id);
+    //console.log(this.state);
+    event.preventDefault();
+    const {
+      angular,
+      css,
+      html,
+      java,
+      javascript,
+      nodejs,
+      python,
+      reactjs
+    } = this.state;
+    axios
+      .post("/update/user", {
+        id: this.props.display._id,
+        angular: angular,
+        css: css,
+        html: html,
+        java: java,
+        javascript: javascript,
+        nodejs: nodejs,
+        python: python,
+        reactjs: reactjs
+      })
+      .then(response => {
+        //console.log("skill slider update response: ", response);
+        if (response.status === 200) {
+          this.props.onChildUpdate(this.state);
+        }
+        this.props.enqueueSnackbar("Skill Settings successfully updated.", {
+          variant: "success"
+        });
+      })
+      .catch(error => {
+        //console.log("skill slider update error: ", error);
+      });
+    //need validation on profile, github, portfolio, password and newPassword
   };
 
   render() {
     const { classes } = this.props;
-    // const { angular, css } = this.state.skill;
-
     return (
       <div className={classes.container}>
         {Object.keys(skills_values).map((keyName, keyIndex) => {
@@ -102,13 +127,13 @@ class SkillSlider extends React.Component {
                     style={{ fontSize: "8pt", color: "grey", float: "right" }}
                   >
                     {" Level of Mastery: "}
-                    {this.state.skill[keyName]}
+                    {this.state[keyName]}
                   </span>
                 }
               </Typography>
               <Slider
                 // classes={{ container: classes.slider }}
-                value={this.state.skill[keyName]}
+                value={this.state[keyName]}
                 min={0}
                 max={10}
                 step={1}
@@ -136,6 +161,7 @@ class SkillSlider extends React.Component {
           variant="contained"
           color="primary"
           className={classes.button}
+          onClick={this.handleUpdate}
         >
           Update Indicated Skills
         </Button>
@@ -148,4 +174,4 @@ SkillSlider.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SkillSlider);
+export default withSnackbar(withStyles(styles)(SkillSlider));

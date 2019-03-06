@@ -1,25 +1,18 @@
 #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  /* background-color: #337ab7; */
   background-image: linear-gradient(#0277bd, #58c1f0);
   position: absolute;
   top: 0px;
   left: 0px;
   text-align: -webkit-center;
+  /* overflow: auto; */
 }
 
-.column,
-.login_page_title,
-.rowUser,
-.rowPassword,
-.rowLogaction {
-  /* border: 1px red solid; */
-}
 .column {
   width: 30%;
   height: 50%;
-  background-color: #ffffff60;
+  background-color: #ffffff90;
   margin-top: 20vh;
   padding: 50px;
   border-radius: 15px;

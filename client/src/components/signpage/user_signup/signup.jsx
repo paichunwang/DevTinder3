@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-//UI design materialUI and semanticUI
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Icon } from "semantic-ui-react";
@@ -11,6 +9,15 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 //show/hide password
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+
+import Slide from "@material-ui/core/Slide";
+
+import CircularProgress from "@material-ui/core/CircularProgress";
+import green from "@material-ui/core/colors/green";
+
+// import { Redirect } from "react-router-dom";
+
+import Typography from "@material-ui/core/Typography";
 
 //route caller
 import axios from "axios";
@@ -26,6 +33,24 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700]
+    }
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
   }
 });
 
@@ -33,7 +58,7 @@ const Values = {
   fname: "First Name",
   lname: "Last Name",
   email: "Email",
-  password: "Password (6 or more character)"
+  password: "Password (6 or more characters)"
 };
 
 const columnStyle = {
@@ -62,17 +87,33 @@ const singupStyle = {
 };
 
 class Signup extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fname: "",
       lname: "",
       email: "",
-      password: ""
+      password: "",
+      loading: false,
+      success: false,
+      formValid: false,
+      firstNameError: false,
+      lastNameError: false,
+      emailError: false,
+      passwordError: false
     };
     //this binds the change and submit function to the window
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
+  handleRedirect(values) {
+    this.props.handleRedirect(values);
   }
 
   //update state with value from input field
@@ -87,150 +128,224 @@ class Signup extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  // handleEmailValidation = email => {
-  //   //email address (RFC 2822 mailbox) regex certification
-  //   const regexp = new RegExp(
-  //     /^((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|"((?=[\x01-\x7f])[^"\\]|\\[\x01-\x7f])*"\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|"((?=[\x01-\x7f])[^"\\]|\\[\x01-\x7f])*")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)$/
-  //   );
-  //   if (regexp.test(email)) {
-  //     console.log("email pattern match");
-  //   } else {
-  //     console.log("email pattern DO NOT match");
-  //   }
-  // };
-
-  //get values when user click Join now
-  handleSubmit(event) {
-    // console.log("sign-up handleSubmit");
-    // console.log(
-    //   "First Name: " + this.state.fname,
-    //   "Last Name: " + this.state.lname,
-    //   "Email:" + this.state.email,
-    //   "Password: " + this.state.password
-    // );
-
-    event.preventDefault();
-
-    console.log(event);
-
+  handleSubmit() {
+    const { fname, lname, email, password } = this.state;
     const regexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (regexp.test(this.state.email)) {
-      console.log("email pattern match");
-      // request to server to add a new username/password
-      axios
-        .post("/user/", {
-          firstname: this.state.fname,
-          lastname: this.state.lname,
-          email: this.state.email,
-          password: this.state.password
-        })
-        .then(response => {
-          // console.log(response);
-          if (!response.data.errmsg) {
-            console.log("successful signup");
-            // this.setState({
-            //   //redirect to login page
-            //   redirectTo: "/login"
-            // });
-          } else {
-            console.log("account with email already exist");
+    const firstNameError = !fname ? true : false;
+    const lastNameError = !lname ? true : false;
+    const emailError = !email || !regexp.test(email) ? true : false;
+    const passwordError = !password || password.length < 6 ? true : false;
+    const formValid =
+      !firstNameError && !lastNameError && !emailError && !passwordError
+        ? true
+        : false;
+
+    this.setState(
+      {
+        firstNameError: firstNameError,
+        lastNameError: lastNameError,
+        emailError: emailError,
+        passwordError: passwordError,
+        formValid: formValid
+      },
+      // function in setstate calls comparison and runs off the result
+      () => {
+        // console.log(this.state);
+        if (this.state.formValid) {
+          if (!this.state.loading) {
+            this.setState(
+              {
+                success: false,
+                loading: true
+              },
+              () => {
+                this.timer = setTimeout(() => {
+                  this.setState({
+                    loading: false,
+                    success: true
+                  });
+                }, 2000);
+              }
+            );
           }
-        })
-        .catch(error => {
-          console.log("signup error: ");
-          console.log(error);
-        });
-    } else {
-      console.log("email pattern DO NOT match");
-    }
+          axios
+            .post("/user/", {
+              firstname: this.state.fname,
+              lastname: this.state.lname,
+              email: this.state.email.toLowerCase(),
+              password: this.state.password
+            })
+            .then(response => {
+              // console.log(response);
+              if (!response.data.error) {
+                axios
+                  .post("/user/login", {
+                    email: this.state.email,
+                    password: this.state.password
+                  })
+                  .then(response => {
+                    // console.log("hitting login post");
+                    this.handleRedirect("users");
+                  })
+                  .catch(error => {});
+              } else {
+                console.log("account with email already exist");
+                this.setState({ emailError: true }, () => {
+                  console.log(this.state);
+                });
+              }
+            })
+            .catch(error => {
+              console.log("signup error: ");
+              console.log(error);
+            });
+        } else {
+          console.log("FORM NOT VALID");
+        }
+      }
+    );
   }
 
   render() {
+    const {
+      loading,
+      firstNameError,
+      lastNameError,
+      emailError,
+      passwordError
+    } = this.state;
+    const { classes } = this.props;
+
+    const validatorValues = {
+      fname: firstNameError,
+      lname: lastNameError,
+      email: emailError,
+      password: passwordError
+    };
+
+    const helperTextValues = {
+      fname: "Required field cannot be left blank",
+      lname: "Required field cannot be left blank",
+      email: "Invalid Email address",
+      email1: "Account with email already exists",
+      password: "Password must be 6 or more characters"
+    };
+
     return (
-      <div className="column" style={columnStyle}>
-        <div>
-          <div className="login_page_title">
-            <p>
-              <Icon className="user circle" name="user circle" size="huge" />
-            </p>
-            <h3>Signup for DevTinder</h3>
-          </div>
-          {Object.keys(Values).map((keyName, keyIndex) => {
-            if (keyName !== "password") {
-              return (
-                <div key={keyIndex}>
-                  <TextField
-                    // error={true}
-                    style={inputStyle}
-                    name={keyName}
-                    // id="outlined-name"
-                    //does this id matter? prob near the call for values
-                    value={this.state.keyName}
-                    onChange={this.handleChange}
-                    fullWidth={true}
-                    label={Values[keyName]}
-                    className={keyName}
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <div key={keyIndex}>
-                  <TextField
-                    name={keyName}
-                    id="outlined-adornment-password"
-                    style={passwordStyle}
-                    className={keyName}
-                    variant="outlined"
-                    type={this.state.showPassword ? "text" : "password"}
-                    label={Values[keyName]}
-                    value={this.state.keyName}
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword}
-                          >
-                            {this.state.showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </div>
-              );
-            }
-          })}
-          <p style={{ color: "gray" }}>
-            By clicking Join now, you agree to DevTinder's User Agreement,
-            Privacy Policy, and Cookie Policy
-          </p>
-          <div className="signup">
-            <button
-              style={singupStyle}
-              className="ui secondary button"
-              onClick={this.handleSubmit}
-              type="submit"
-            >
-              Join now
-            </button>
-          </div>
-          <hr className="hr-text" data-content="OR" />
+      <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+        <div className="column" style={columnStyle}>
           <div>
-            <p style={{ padding: "20px 0px 0px" }}>
-              Already on DevTinder? Sign In{" "}
+            <div className="login_page_title">
+              <p>
+                <Icon className="user circle" name="user circle" size="huge" />
+              </p>
+              <h3>Signup for DevTinder</h3>
+            </div>
+            {Object.keys(Values).map((keyName, keyIndex) => {
+              if (keyName !== "password") {
+                return (
+                  <div key={keyIndex}>
+                    <TextField
+                      error={validatorValues[keyName]}
+                      required
+                      disabled={this.state.loading}
+                      helperText={
+                        validatorValues[keyName]
+                          ? helperTextValues[keyName]
+                          : ""
+                      }
+                      style={inputStyle}
+                      name={keyName}
+                      value={this.state.keyName}
+                      onChange={this.handleChange}
+                      fullWidth={true}
+                      label={Values[keyName]}
+                      className={keyName}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={keyIndex}>
+                    <TextField
+                      error={validatorValues[keyName]}
+                      required
+                      helperText={
+                        validatorValues[keyName]
+                          ? helperTextValues[keyName]
+                          : ""
+                      }
+                      name={keyName}
+                      disabled={this.state.loading}
+                      id="outlined-adornment-password"
+                      style={passwordStyle}
+                      className={keyName}
+                      variant="outlined"
+                      type={this.state.showPassword ? "text" : "password"}
+                      label={Values[keyName]}
+                      value={this.state.keyName}
+                      onChange={this.handleChange}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={this.handleClickShowPassword}
+                            >
+                              {this.state.showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </div>
+                );
+              }
+            })}
+            <p style={{ color: "gray" }}>
+              By clicking Join now, you agree to DevTinder's User Agreement,
+              Privacy Policy, and Cookie Policy
             </p>
+            <div className={classes.wrapper}>
+              <button
+                style={singupStyle}
+                className={"ui secondary button"}
+                disabled={loading}
+                onClick={this.handleSubmit}
+                // type="submit"
+              >
+                Join now
+              </button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+            <hr className="hr-text" data-content="OR" />
+            <div>
+              <Typography
+                onClick={() => {
+                  this.handleRedirect("login");
+                }}
+                style={{ cursor: "pointer" }}
+                color="primary"
+                variant="button"
+                gutterBottom
+              >
+                Already have an account? Sign in here!
+              </Typography>
+            </div>
           </div>
         </div>
-      </div>
+      </Slide>
     );
   }
 }

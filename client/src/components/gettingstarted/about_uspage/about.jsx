@@ -10,6 +10,8 @@ import developerImage from "./developed_patrick.jpg";
 import developer from "./developer.jpg";
 import client from "./customer.jpg";
 
+import Fade from "@material-ui/core/Fade";
+
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: "50px 20px" }}>
@@ -75,86 +77,92 @@ class CenteredTabs extends React.Component {
           </Tabs>
           {value === 0 && (
             <TabContainer>
-              <div className="aboutus_section" style={aboutUs_section_style}>
-                <img
-                  alt="developerpicture"
-                  src={developerImage}
-                  style={{
-                    maxWidth: "250px",
-                    maxHeight: "250px",
-                    width: "50%",
-                    float: "left",
-                    marginRight: "20px"
-                  }}
-                />
-                <p style={aboutUs_text_style}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus imperdiet, nulla et dictum interdum, nisi lorem
-                  egestas odio, vitae scelerisque enim ligula venenatis dolor.
-                  Maecenas nisl est, ultrices nec congue eget, auctor vitae
-                  massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante
-                  ligula, facilisis sed ornare eu, lobortis in odio. Praesent
-                  convallis urna a lacus interdum ut hendrerit risus congue.
-                  Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim
-                  ac...
-                </p>
-              </div>
+              <Fade in={true}>
+                <div className="aboutus_section" style={aboutUs_section_style}>
+                  <img
+                    alt="developerpicture"
+                    src={developerImage}
+                    style={{
+                      maxWidth: "250px",
+                      maxHeight: "250px",
+                      width: "50%",
+                      float: "left",
+                      marginRight: "20px"
+                    }}
+                  />
+                  <p style={aboutUs_text_style}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus imperdiet, nulla et dictum interdum, nisi lorem
+                    egestas odio, vitae scelerisque enim ligula venenatis dolor.
+                    Maecenas nisl est, ultrices nec congue eget, auctor vitae
+                    massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante
+                    ligula, facilisis sed ornare eu, lobortis in odio. Praesent
+                    convallis urna a lacus interdum ut hendrerit risus congue.
+                    Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim
+                    ac...
+                  </p>
+                </div>
+              </Fade>
             </TabContainer>
           )}
           {value === 1 && (
             <TabContainer>
-              <div className="aboutus_section" style={aboutUs_section_style}>
-                <img
-                  alt="developerpicture"
-                  src={developer}
-                  style={{
-                    maxWidth: "250px",
-                    maxHeight: "250px",
-                    width: "50%",
-                    float: "left",
-                    marginRight: "20px"
-                  }}
-                />
-                <p style={aboutUs_text_style}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus imperdiet, nulla et dictum interdum, nisi lorem
-                  egestas odio, vitae scelerisque enim ligula venenatis dolor.
-                  Maecenas nisl est, ultrices nec congue eget, auctor vitae
-                  massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante
-                  ligula, facilisis sed ornare eu, lobortis in odio. Praesent
-                  convallis urna a lacus interdum ut hendrerit risus congue.
-                  Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim
-                  ac...
-                </p>
-              </div>
+              <Fade in={true}>
+                <div className="aboutus_section" style={aboutUs_section_style}>
+                  <img
+                    alt="developerpicture"
+                    src={developer}
+                    style={{
+                      maxWidth: "250px",
+                      maxHeight: "250px",
+                      width: "50%",
+                      float: "left",
+                      marginRight: "20px"
+                    }}
+                  />
+                  <p style={aboutUs_text_style}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus imperdiet, nulla et dictum interdum, nisi lorem
+                    egestas odio, vitae scelerisque enim ligula venenatis dolor.
+                    Maecenas nisl est, ultrices nec congue eget, auctor vitae
+                    massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante
+                    ligula, facilisis sed ornare eu, lobortis in odio. Praesent
+                    convallis urna a lacus interdum ut hendrerit risus congue.
+                    Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim
+                    ac...
+                  </p>
+                </div>
+              </Fade>
             </TabContainer>
           )}
           {value === 2 && (
             <TabContainer>
-              <div className="aboutus_section" style={aboutUs_section_style}>
-                <img
-                  alt="developerpicture"
-                  src={client}
-                  style={{
-                    maxWidth: "250px",
-                    maxHeight: "250px",
-                    width: "50%",
-                    float: "right",
-                    marginLeft: "20px"
-                  }}
-                />
-                <p style={aboutUs_text_style}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus imperdiet, nulla et dictum interdum, nisi lorem
-                  egestas odio, vitae scelerisque enim ligula venenatis dolor.
-                  Maecenas nisl est, ultrices nec congue eget, auctor vitae
-                  massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante
-                  ligula, facilisis sed ornare eu, lobortis in odio. Praesent
-                  convallis urna a lacus interdum ut hendrerit risus congue.
-                  Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim
-                  ac...
-                </p>
-              </div>
+              <Fade in={true}>
+                <div className="aboutus_section" style={aboutUs_section_style}>
+                  <img
+                    alt="developerpicture"
+                    src={client}
+                    style={{
+                      maxWidth: "250px",
+                      maxHeight: "250px",
+                      width: "50%",
+                      float: "right",
+                      marginLeft: "20px"
+                    }}
+                  />
+                  <p style={aboutUs_text_style}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus imperdiet, nulla et dictum interdum, nisi lorem
+                    egestas odio, vitae scelerisque enim ligula venenatis dolor.
+                    Maecenas nisl est, ultrices nec congue eget, auctor vitae
+                    massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante
+                    ligula, facilisis sed ornare eu, lobortis in odio. Praesent
+                    convallis urna a lacus interdum ut hendrerit risus congue.
+                    Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim
+                    ac...
+                  </p>
+                </div>
+              </Fade>
             </TabContainer>
           )}
         </Paper>

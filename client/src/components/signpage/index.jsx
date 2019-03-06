@@ -1,10 +1,12 @@
-import React from "react";
 import UserSignup from "./user_signup/signup";
+import React, { Component } from "react";
 
-const Signpage = () => (
-  <div>
-    <UserSignup />
-  </div>
-);
-
-export default Signpage;
+export default class Signpage extends Component {
+  render() {
+    return (
+      <div>
+        <UserSignup handleRedirect={this.props.redirect} />
+      </div>
+    );
+  }
+}

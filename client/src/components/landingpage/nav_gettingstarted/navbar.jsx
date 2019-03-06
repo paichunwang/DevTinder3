@@ -50,8 +50,11 @@ class Navbar extends Component {
             <Button
               // component={Link}
               // to="/login"
-              href="/login"
-              state="hello"
+              // href="/login"
+              // state="hello"
+              onClick={() => {
+                this.props.login("login");
+              }}
               color="secondary"
               className={classes.button}
             >
@@ -61,8 +64,10 @@ class Navbar extends Component {
             <Button
               // component={Link}
               // to="/login"
-              href="/signup"
-              onClick={this.handleSignup}
+              // href="/signup"
+              onClick={() => {
+                this.props.login("signup");
+              }}
               color="secondary"
               className={classes.button}
             >

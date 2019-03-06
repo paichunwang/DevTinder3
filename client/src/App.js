@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Mainpage from "./components/landingpage/index";
-import Loginpage from "./components/loginpage/index";
-import Signpage from "./components/signpage/index";
-import Started from "./components/gettingstarted/index";
-import User from "./components/user/index";
+// import User from "./components/user/index";
 
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
+import {
+  MuiThemeProvider,
+  withStyles,
+  createMuiTheme
+} from "@material-ui/core/styles";
+
+import { SnackbarProvider } from "notistack";
 
 const theme = createMuiTheme({
   typography: { useNextVariants: true },
@@ -20,83 +22,43 @@ const theme = createMuiTheme({
   }
 });
 
+const styles = {
+  success: {
+    backgroundColor: "#8dd258",
+    "box-shadow":
+      "0px 7px 8px -4px rgba(0,0,0,0.2), 0px 12px 17px 2px rgba(0,0,0,0.14), 0px 5px 22px 4px rgba(0,0,0,0.12)"
+  },
+  error: {
+    backgroundColor: "#f83d5a",
+    "box-shadow":
+      "0px 7px 8px -4px rgba(0,0,0,0.2), 0px 12px 17px 2px rgba(0,0,0,0.14), 0px 5px 22px 4px rgba(0,0,0,0.12)"
+  }
+};
+
 class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
-      <MuiThemeProvider theme={theme}>
-        <Router>
-          <div>
-            <Switch>
-              <Route exact path="/" component={Mainpage} />
-              <Route exact path="/login" component={Loginpage} />
-              <Route exact path="/signup" component={Signpage} />
-              <Route exact path="/gettingstarted" component={Started} />
-              <Route exact path="/user" component={User} />
-            </Switch>
-          </div>
-        </Router>
-      </MuiThemeProvider>
+      <SnackbarProvider
+        maxSnack={3}
+        classes={{
+          variantSuccess: classes.success,
+          variantError: classes.error
+        }}
+      >
+        <MuiThemeProvider theme={theme}>
+          <Router>
+            <div>
+              <Switch>
+                <Route exact path="/" component={Mainpage} />
+                {/* <Route exact path="/users" component={User} /> */}
+              </Switch>
+            </div>
+          </Router>
+        </MuiThemeProvider>
+      </SnackbarProvider>
     );
   }
 }
 
-export default App;
-
-// import React, { Component } from "react";
-// import "./App.css";
-
-// class App extends Component {
-//   // Initialize state
-//   state = { passwords: [] };
-
-//   // Fetch passwords after first mount
-//   componentDidMount() {
-//     this.getPasswords();
-//   }
-
-//   getPasswords = () => {
-//     // Get the passwords and store them in state
-//     fetch("/api/passwords")
-//       .then(res => res.json())
-//       .then(passwords => this.setState({ passwords }));
-//   };
-
-//   render() {
-//     const { passwords } = this.state;
-
-//     return (
-//       <div className="App">
-//         {/* Render the passwords if we have them */}
-//         {passwords.length ? (
-//           <div>
-//             <h1>5 Passwords.</h1>
-//             <ul className="passwords">
-//               {/*
-//                 Generally it's bad to use "index" as a key.
-//                 It's ok for this example because there will always
-//                 be the same number of passwords, and they never
-//                 change positions in the array.
-//               */}
-//               {passwords.map((password, index) => (
-//                 <li key={index}>{password}</li>
-//               ))}
-//             </ul>
-//             <button className="more" onClick={this.getPasswords}>
-//               Get More
-//             </button>
-//           </div>
-//         ) : (
-//           // Render a helpful message otherwise
-//           <div>
-//             <h1>No passwords :(</h1>
-//             <button className="more" onClick={this.getPasswords}>
-//               Try Again?
-//             </button>
-//           </div>
-//         )}
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
+export default withStyles(styles)(App);
