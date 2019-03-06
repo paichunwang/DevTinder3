@@ -331,8 +331,8 @@ class ControlledExpansionPanels extends React.Component {
                                     entry => {
                                       return (
                                         <Tooltip
-                                          key={entry.devID}
-                                          title={entry.devName}
+                                          key={entry.id}
+                                          title={entry.name}
                                         >
                                           <Chip
                                             label={entry.devName.charAt(0)}
