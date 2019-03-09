@@ -29,7 +29,7 @@
 
 .emailInput,
 .passwordInput {
-  width: 300px;
+  /* width: 300px; */
 }
 
 .emailInput .label,
@@ -43,7 +43,7 @@
 }
 
 .loginAction {
-  width: 300px !important;
+  width: 100% !important;
   margin: 0px !important;
   padding: 11px 0px !important;
 }
@@ -53,6 +53,6 @@
 }
 
 .forgotAction {
-  width: 200px;
+  width: 50%;
   font-size: 10pt;
 }

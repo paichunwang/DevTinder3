@@ -99,6 +99,7 @@ app.post("/update/user", (req, res) => {
             // console.log("post hash", req.body);
             User.updateOne({ _id: id }, { $set: req.body }, (err, user) => {
               if (err) return err;
+              res.status(200).send({ Success: user });
             });
           });
         } else {

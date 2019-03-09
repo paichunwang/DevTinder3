@@ -7,12 +7,20 @@ import Slide from "@material-ui/core/Slide";
 
 import Typography from "@material-ui/core/Typography";
 
+import TextField from "@material-ui/core/TextField";
+import Email from "@material-ui/icons/Email";
+import Lock from "@material-ui/icons/Lock";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 class Login extends Component {
   //need to check if login is active
   constructor(props) {
     super(props);
     this.state = {
-      redirectTo: null
+      redirectTo: null,
+      email: null,
+      password: null,
+      serverError: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -37,24 +45,56 @@ class Login extends Component {
   //axios post for user login
   handleSubmit(event) {
     event.preventDefault();
+    const { email, password } = this.state;
     //console.log("handleSubmit with ", this.state.email + this.state.password);
-    axios
-      .post("/user/login", {
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(response => {
-        //console.log("login response data: ", response.data);
-        if (response.status === 200) {
-          this.handleRedirect("users");
+
+    const loginEmailError = !email ? true : false;
+    const loginPasswordError = !password ? true : false;
+    const formValid = !loginEmailError && !loginPasswordError ? true : false;
+
+    // console.log(loginEmailError, loginPasswordError, formValid);
+
+    this.setState(
+      {
+        loginEmailError: loginEmailError,
+        loginPasswordError: loginPasswordError,
+        formValid: formValid
+      },
+      () => {
+        if (formValid) {
+          axios
+            .post("/user/login", {
+              email: this.state.email,
+              password: this.state.password
+            })
+            .then(response => {
+              //console.log("login response data: ", response.data);
+              if (response.status === 200) {
+                this.handleRedirect("users");
+              }
+            })
+            .catch(error => {
+              this.setState({
+                serverError: true
+              });
+            });
+        } else {
+          this.setState({
+            serverError: false
+          });
         }
-      })
-      .catch(error => {
-        //console.log("Login page .catch error: ", error);
-      });
+      }
+    );
   }
 
   render() {
+    const { loginEmailError, loginPasswordError, serverError } = this.state;
+    const helperTextValues = {
+      emailEmpty: "Email is required for login",
+      passwordEmpty: "Password is required for login",
+      serverError: "Incorrect Email or Password"
+    };
+
     if (this.state.redirectTo) {
       //console.log("Hiting loginpage user_login login Redirect");
       return <Redirect to={{ pathname: this.state.redirectTo }} />;
@@ -69,29 +109,57 @@ class Login extends Component {
                 </p>
                 devTinder
               </div>
-              <div className="rowUser">
-                <Input
-                  name="email"
-                  className="emailInput"
-                  label="Email"
-                  iconPosition="left"
-                  icon="envelope"
-                  placeholder="ie: John@google.com"
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="rowPassword">
-                <Input
-                  name="password"
-                  type="password"
-                  className="passwordInput"
-                  label="Password"
-                  iconPosition="left"
-                  icon="key"
-                  placeholder="ie: maryklover123"
-                  onChange={this.handleChange}
-                />
-              </div>
+              <TextField
+                error={loginEmailError || serverError}
+                className="emailInput"
+                id="input-with-icon-textfield"
+                name="email"
+                fullWidth
+                helperText={
+                  loginEmailError
+                    ? helperTextValues.emailEmpty
+                    : serverError
+                    ? helperTextValues.serverError
+                    : ""
+                }
+                label="Email"
+                placeholder="ie: John@google.com"
+                onChange={this.handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <p />
+              <TextField
+                error={loginPasswordError || serverError}
+                className="passwordInput"
+                id="input-with-icon-textfield"
+                name="password"
+                type="password"
+                fullWidth
+                helperText={
+                  loginPasswordError
+                    ? helperTextValues.passwordEmpty
+                    : serverError
+                    ? helperTextValues.serverError
+                    : ""
+                }
+                label="Password"
+                placeholder="ie: maryklover123"
+                onChange={this.handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock />
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <p />
               <div className="rowLogaction">
                 <div className="login">
                   <button

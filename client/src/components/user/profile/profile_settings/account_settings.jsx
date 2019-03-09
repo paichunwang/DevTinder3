@@ -119,13 +119,16 @@ class Profile extends React.Component {
               console.log("login response: ", response);
               if (response.status === 200) {
                 // console.log(response);
-                this.props.onChildUpdate(this.state);
-                this.props.enqueueSnackbar(
-                  "Account Settings successfully updated.",
-                  {
-                    variant: "success"
-                  }
-                );
+                this.setState({ password: "", newPassword: "" }, () => {
+                  console.log(this.state);
+                  this.props.onChildUpdate(this.state);
+                  this.props.enqueueSnackbar(
+                    "Account Settings + Pass successfully updated.",
+                    {
+                      variant: "success"
+                    }
+                  );
+                });
               }
             })
             .catch(error => {
@@ -218,6 +221,7 @@ class Profile extends React.Component {
                 id={"outlined-full-width " + keyIndex}
                 label={profile_values[keyName] + ": 6 or more characters"}
                 style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                value={this.state[keyName]}
                 // placeholder={placeholder[keyName]}
                 fullWidth
                 error={passwordError}
