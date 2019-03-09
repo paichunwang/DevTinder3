@@ -220,7 +220,11 @@ class Profile extends React.Component {
                 name={Object.keys(profile_values)[keyIndex]}
                 id={"outlined-full-width " + keyIndex}
                 label={profile_values[keyName] + ": 6 or more characters"}
-                style={{ margin: "10px 25px", textAlign: "-webkit-left" }}
+                style={{
+                  margin: "10px 25px",
+                  textAlign: "-webkit-left",
+                  width: "100%"
+                }}
                 value={this.state[keyName]}
                 // placeholder={placeholder[keyName]}
                 fullWidth

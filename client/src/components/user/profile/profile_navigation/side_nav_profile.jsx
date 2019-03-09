@@ -133,6 +133,7 @@ class Sidenav extends React.Component {
   }
 
   handleSignout = value => {
+    // console.log(value);
     axios
       .post("/user/logout")
       .then(response => {
@@ -246,6 +247,7 @@ class Sidenav extends React.Component {
                         // component={NavLink}
                         // to={keyName}
                         onClick={() => {
+                          console.log(keyName);
                           this.handleSignout("main");
                         }}
                       >
@@ -262,17 +264,36 @@ class Sidenav extends React.Component {
             <>
               {Object.keys(objectWithoutKey(ListRoutes, "/user/add")).map(
                 (keyName, keyIndex) => {
-                  return (
-                    <ListItem
-                      button={true}
-                      key={ListRoutes[keyName]}
-                      value={keyName}
-                      onClick={() => this.props.action(keyName)}
-                    >
-                      <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
-                      <ListItemText primary={ListRoutes[keyName]} />
-                    </ListItem>
-                  );
+                  if (keyName !== "/user/signout") {
+                    return (
+                      <ListItem
+                        button={true}
+                        key={ListRoutes[keyName]}
+                        value={keyName}
+                        onClick={() => this.props.action(keyName)}
+                      >
+                        <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                        <ListItemText primary={ListRoutes[keyName]} />
+                      </ListItem>
+                    );
+                  } else {
+                    return (
+                      <ListItem
+                        button={true}
+                        key={ListRoutes[keyName]}
+                        value={keyName}
+                        // component={NavLink}
+                        // to={keyName}
+                        onClick={() => {
+                          console.log(keyName);
+                          this.handleSignout("main");
+                        }}
+                      >
+                        <ListItemIcon>{IconRoutes[keyName]}</ListItemIcon>
+                        <ListItemText primary={ListRoutes[keyName]} />
+                      </ListItem>
+                    );
+                  }
                 }
               )}
             </>
